@@ -32,12 +32,15 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
-  jwt:
-    secret: ${JWT_SECRET_KEY}
-    access:
-      header: Authorization
-    refresh:
-      header: Authorization-refresh
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
+  access:
+    expiration: ${JWT_ACCESS_EXPIRATION}
+    header: Authorization
+  refresh:
+    expiration: ${JWT_REFRESH_EXPIRATION}
+    header: Authorization-refresh
 
 logging:
   level:
