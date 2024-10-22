@@ -1,7 +1,7 @@
-package com.ssafy.c106.config.security;
+package com.ssafy.c106.common.security;
 
-import com.ssafy.c106.config.security.jwt.JwtAuthenticationFilter;
-import com.ssafy.c106.config.security.jwt.service.JwtService;
+import com.ssafy.c106.common.security.jwt.JwtAuthenticationFilter;
+import com.ssafy.c106.common.security.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

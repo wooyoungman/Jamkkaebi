@@ -1,6 +1,6 @@
-package com.ssafy.c106.config.security.jwt;
+package com.ssafy.c106.common.security.jwt;
 
-import com.ssafy.c106.config.security.jwt.service.JwtService;
+import com.ssafy.c106.common.security.jwt.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
