@@ -1,4 +1,4 @@
-package com.ssafy.c106.config.security.jwt.dto;
+package com.ssafy.c106.common.security.jwt.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

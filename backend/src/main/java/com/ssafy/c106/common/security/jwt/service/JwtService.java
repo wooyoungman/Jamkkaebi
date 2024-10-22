@@ -1,6 +1,6 @@
-package com.ssafy.c106.config.security.jwt.service;
+package com.ssafy.c106.common.security.jwt.service;
 
-import com.ssafy.c106.config.security.jwt.dto.JwtTokenDto;
+import com.ssafy.c106.common.security.jwt.dto.JwtTokenDto;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
