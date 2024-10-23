@@ -23,9 +23,9 @@ spring:
       repositories:
         bootstrap-mode: deferred
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: ${JPA_DDL_AUTO}
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
@@ -51,6 +51,7 @@ logging:
           mongodb:
             core:
               MongoTemplate: DEBUG
+        security: DEBUG
       hibernate:
         type:
           descriptor:
