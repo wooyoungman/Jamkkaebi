@@ -1,6 +1,7 @@
 package com.ssafy.c106.common.security.jwt.service;
 
 import com.ssafy.c106.common.security.jwt.dto.JwtTokenDto;
+import com.ssafy.c106.domain.member.entity.MemberRole;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,13 +48,14 @@ public class JwtService {
 
         String accessToken = Jwts.builder()
                 .subject(authentication.getName())
-                .claim("auth", authorities)
+                .claim("authorities", authorities)
                 .expiration(new Date(currentTime + accessExpiration))
                 .signWith(secretKey)
                 .compact();
 
         String refreshToken = Jwts.builder()
                 .expiration(new Date(currentTime + refreshExpiration))
+                .signWith(secretKey)
                 .compact();
 
         return JwtTokenDto.builder()
@@ -67,12 +69,12 @@ public class JwtService {
 
         Claims claims = parseClaims(accessToken);
 
-        if (claims.get("auth") == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰");
+        if (claims.get("authorities") == null) {
+            throw new RuntimeException("Member authority information not found");
         }
 
         Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get("auth").toString().split(","))
+                Arrays.stream(claims.get("authorities").toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .toList();
 
@@ -102,6 +104,14 @@ public class JwtService {
 
     public Boolean isExpired(String token) {
         return parseClaims(token).getExpiration().before(new Date());
+    }
+
+    public String getUsername(String token) {
+        return parseClaims(token).getSubject();
+    }
+
+    public MemberRole getRole(String token) {
+        return MemberRole.valueOf(parseClaims(token).get("authorities", String.class));
     }
 
     private Claims parseClaims(String token) {
