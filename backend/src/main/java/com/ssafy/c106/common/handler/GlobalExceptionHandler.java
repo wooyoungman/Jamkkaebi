@@ -1,6 +1,7 @@
 package com.ssafy.c106.common.handler;
 
 import com.ssafy.c106.common.ApiResponse;
+import com.ssafy.c106.domain.member.exception.WrongPasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,4 +23,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
+    @ExceptionHandler(WrongPasswordException.class)
+    public ResponseEntity<ApiResponse<Void>> handleWrongPasswordException(WrongPasswordException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
 }
