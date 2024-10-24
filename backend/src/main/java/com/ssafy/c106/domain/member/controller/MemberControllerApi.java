@@ -1,6 +1,8 @@
 package com.ssafy.c106.domain.member.controller;
 
 import com.ssafy.c106.common.ApiResponse;
+import com.ssafy.c106.common.security.jwt.dto.JwtTokenDto;
+import com.ssafy.c106.domain.member.dto.request.LoginDto;
 import com.ssafy.c106.domain.member.dto.request.RegisterDto;
 import com.ssafy.c106.domain.member.dto.response.RegisterSuccessDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -9,4 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface MemberControllerApi {
 
     ApiResponse<RegisterSuccessDto> register(RegisterDto registerDto);
+
+    ApiResponse<JwtTokenDto> login(LoginDto loginDto);
 }
