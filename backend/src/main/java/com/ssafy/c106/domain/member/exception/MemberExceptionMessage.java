@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum MemberExceptionMessage {
+    USER_NOT_FOUND("User Not Found", HttpStatus.NOT_FOUND.value()),
     WRONG_PASSWORD("Incorrect Password", HttpStatus.BAD_REQUEST.value());
 
     private final String message;
