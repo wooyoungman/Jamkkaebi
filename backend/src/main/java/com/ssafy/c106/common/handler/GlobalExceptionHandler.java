@@ -3,8 +3,10 @@ package com.ssafy.c106.common.handler;
 import com.ssafy.c106.common.ApiResponse;
 import com.ssafy.c106.domain.member.exception.UserNotFoundException;
 import com.ssafy.c106.domain.member.exception.WrongPasswordException;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,9 +32,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(e.getStatus()).body(response);
     }
 
-    @ExceptionHandler(WrongPasswordException.class)
-    public ResponseEntity<ApiResponse<Void>> handleWrongPasswordException(WrongPasswordException e) {
-        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
-        return ResponseEntity.status(e.getStatus()).body(response);
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleBadCredentialsException(BadCredentialsException e) {
+        ApiResponse<Void> response = ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(response);
     }
 }

@@ -4,24 +4,20 @@ import com.ssafy.c106.common.security.jwt.dto.JwtTokenDto;
 import com.ssafy.c106.common.security.jwt.service.JwtService;
 import com.ssafy.c106.domain.member.dto.request.LoginDto;
 import com.ssafy.c106.domain.member.entity.Member;
-import com.ssafy.c106.domain.member.exception.WrongPasswordException;
-import com.ssafy.c106.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberReadService {
 
-    private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
@@ -30,24 +26,11 @@ public class MemberReadService {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
 
-        Member userInfo = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found: " + username));
-        String storedPassword = userInfo.getPassword();
-
-        if (passwordEncoder.matches(password, storedPassword)) {
-            return getLoginToken(userInfo);
-        } else {
-            throw new WrongPasswordException();
-        }
-    }
-
-    private JwtTokenDto getLoginToken(Member member) {
-
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                member.getUsername(), member.getPassword());
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManager.authenticate(authToken);
-
         JwtTokenDto tokenDto = jwtService.generateToken(authentication);
+
+        Member member = (Member) authentication.getPrincipal();
         tokenDto.setMemberId(member.getId());
 
         return tokenDto;
