@@ -1,7 +1,6 @@
 package com.ssafy.c106.domain.member.entity;
 
 import com.ssafy.c106.common.entity.BaseEntity;
-import com.ssafy.c106.domain.member.dto.request.RegisterDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -11,7 +10,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -41,14 +39,14 @@ public class Member extends BaseEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(role.toString()));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.toString()));
     }
 
     @Builder
-    public Member(RegisterDto registerDto) {
-        this.name = registerDto.getName();
-        this.username = registerDto.getUsername();
-        this.password = new BCryptPasswordEncoder().encode(registerDto.getPassword());
+    public Member(String name, String username, String password) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
         this.role = MemberRole.DRIVER;
     }
 }
