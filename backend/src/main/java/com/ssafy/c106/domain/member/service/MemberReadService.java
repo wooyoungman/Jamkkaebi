@@ -1,8 +1,11 @@
 package com.ssafy.c106.domain.member.service;
 
 import com.ssafy.c106.common.security.jwt.dto.JwtTokenDto;
+import com.ssafy.c106.common.security.jwt.exception.TokenExpirationException;
+import com.ssafy.c106.common.security.jwt.exception.TokenTypeException;
 import com.ssafy.c106.common.security.jwt.service.JwtService;
 import com.ssafy.c106.domain.member.dto.request.LoginDto;
+import com.ssafy.c106.domain.member.dto.response.ValidateSuccessDto;
 import com.ssafy.c106.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,5 +37,14 @@ public class MemberReadService {
         tokenDto.setMemberId(member.getId());
 
         return tokenDto;
+    }
+
+    public ValidateSuccessDto validate(String token) throws TokenTypeException, TokenExpirationException {
+        log.debug("Token to validate: {}", token);
+        return ValidateSuccessDto
+                .builder()
+                .tokenType(jwtService.getTokenType(token))
+                .expiration(jwtService.getExpiration(token))
+                .build();
     }
 }
