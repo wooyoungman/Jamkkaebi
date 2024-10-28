@@ -50,12 +50,14 @@ public class JwtService {
 
         String accessToken = Jwts.builder()
                 .subject(authentication.getName())
+                .claim("type", "access")
                 .claim("authorities", authorities)
                 .expiration(new Date(currentTime + accessExpiration))
                 .signWith(secretKey)
                 .compact();
 
         String refreshToken = Jwts.builder()
+                .claim("type", "refresh")
                 .expiration(new Date(currentTime + refreshExpiration))
                 .signWith(secretKey)
                 .compact();
