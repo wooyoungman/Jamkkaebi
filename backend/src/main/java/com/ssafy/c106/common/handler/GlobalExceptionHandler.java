@@ -1,8 +1,9 @@
 package com.ssafy.c106.common.handler;
 
 import com.ssafy.c106.common.ApiResponse;
+import com.ssafy.c106.common.security.jwt.exception.TokenExpirationException;
+import com.ssafy.c106.common.security.jwt.exception.TokenTypeException;
 import com.ssafy.c106.domain.member.exception.UserNotFoundException;
-import com.ssafy.c106.domain.member.exception.WrongPasswordException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +37,29 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleBadCredentialsException(BadCredentialsException e) {
         ApiResponse<Void> response = ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(response);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ApiResponse<Void>> handleExpiredJwtException(ExpiredJwtException e) {
+        ApiResponse<Void> response = ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(response);
+    }
+
+    @ExceptionHandler(io.jsonwebtoken.security.SignatureException.class)
+    public ResponseEntity<ApiResponse<Void>> handleSignatureException(io.jsonwebtoken.security.SignatureException e) {
+        ApiResponse<Void> response = ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(response);
+    }
+
+    @ExceptionHandler(TokenTypeException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTokenTypeException(TokenTypeException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(TokenExpirationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTokenExpirationException(TokenExpirationException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
     }
 }
