@@ -1,6 +1,8 @@
 package com.ssafy.c106.common.security.jwt.service;
 
 import com.ssafy.c106.common.security.jwt.dto.JwtTokenDto;
+import com.ssafy.c106.common.security.jwt.exception.TokenExpirationException;
+import com.ssafy.c106.common.security.jwt.exception.TokenTypeException;
 import com.ssafy.c106.domain.member.entity.MemberRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -94,8 +98,28 @@ public class JwtService {
         return true;
     }
 
+    public String getTokenType(String token) throws TokenTypeException {
+        Object tokenType = parseClaims(token).get("type");
+        if (tokenType != null) {
+            log.debug("Parsed token type: {}", tokenType);
+            return tokenType.toString();
+        } else {
+            throw new TokenTypeException();
+        }
+    }
+
     public Boolean isExpired(String token) {
         return parseClaims(token).getExpiration().before(new Date());
+    }
+
+    public LocalDateTime getExpiration(String token) throws TokenExpirationException {
+        Date expiration = parseClaims(token).getExpiration();
+        if (expiration != null) {
+            log.debug("Parsed token expiration: {}", expiration);
+            return LocalDateTime.ofInstant(expiration.toInstant(), ZoneId.systemDefault());
+        } else {
+            throw new TokenExpirationException();
+        }
     }
 
     public String getUsername(String token) {
