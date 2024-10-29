@@ -1,22 +1,28 @@
-package com.ssafy.c106.common.security.jwt;
+package com.ssafy.c106.common.security.filter;
 
+import com.ssafy.c106.common.security.jwt.service.CustomUserDetailsService;
 import com.ssafy.c106.common.security.jwt.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Slf4j
+@Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final CustomUserDetailsService userDetailsService;
 
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -25,9 +31,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = resolveToken(request);
 
         if (token != null && jwtService.validateToken(token)) {
-
+            userDetailsService.loadUserByUsername(jwtService.getUsername(token));
             Authentication authentication = jwtService.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.debug("Passed Token filter for token {}", token);
+        } else {
+            log.debug("Cannot validate token {}", token);
         }
 
         filterChain.doFilter(request, response);

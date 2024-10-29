@@ -1,7 +1,12 @@
 package com.ssafy.c106.common.security.jwt.service;
 
 import com.ssafy.c106.common.security.jwt.dto.JwtTokenDto;
-import io.jsonwebtoken.*;
+import com.ssafy.c106.common.security.jwt.exception.TokenExpirationException;
+import com.ssafy.c106.common.security.jwt.exception.TokenTypeException;
+import com.ssafy.c106.domain.member.entity.MemberRole;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +20,8 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -47,13 +54,16 @@ public class JwtService {
 
         String accessToken = Jwts.builder()
                 .subject(authentication.getName())
-                .claim("auth", authorities)
+                .claim("type", "access")
+                .claim("authorities", authorities)
                 .expiration(new Date(currentTime + accessExpiration))
                 .signWith(secretKey)
                 .compact();
 
         String refreshToken = Jwts.builder()
+                .claim("type", "refresh")
                 .expiration(new Date(currentTime + refreshExpiration))
+                .signWith(secretKey)
                 .compact();
 
         return JwtTokenDto.builder()
@@ -67,12 +77,12 @@ public class JwtService {
 
         Claims claims = parseClaims(accessToken);
 
-        if (claims.get("auth") == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰");
+        if (claims.get("authorities") == null) {
+            throw new RuntimeException("Member authority information not found");
         }
 
         Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get("auth").toString().split(","))
+                Arrays.stream(claims.get("authorities").toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .toList();
 
@@ -81,38 +91,50 @@ public class JwtService {
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parser()
-                    .verifyWith(secretKey)
-                    .build()
-                    .parseSignedClaims(token);
-            return true;
-        } catch (SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT Token", e);
-        } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token", e);
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
-        } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty.", e);
+    public boolean validateToken(String token)
+            throws ExpiredJwtException, io.jsonwebtoken.security.SignatureException {
+
+        parseClaims(token);
+        return true;
+    }
+
+    public String getTokenType(String token) throws TokenTypeException {
+        Object tokenType = parseClaims(token).get("type");
+        if (tokenType != null) {
+            log.debug("Parsed token type: {}", tokenType);
+            return tokenType.toString();
+        } else {
+            throw new TokenTypeException();
         }
-        return false;
     }
 
     public Boolean isExpired(String token) {
         return parseClaims(token).getExpiration().before(new Date());
     }
 
-    private Claims parseClaims(String token) {
-        try {
-            return Jwts.parser()
-                    .verifyWith(secretKey)
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-        } catch (ExpiredJwtException e) {
-            return e.getClaims();
+    public LocalDateTime getExpiration(String token) throws TokenExpirationException {
+        Date expiration = parseClaims(token).getExpiration();
+        if (expiration != null) {
+            log.debug("Parsed token expiration: {}", expiration);
+            return LocalDateTime.ofInstant(expiration.toInstant(), ZoneId.systemDefault());
+        } else {
+            throw new TokenExpirationException();
         }
+    }
+
+    public String getUsername(String token) {
+        return parseClaims(token).getSubject();
+    }
+
+    public MemberRole getRole(String token) {
+        return MemberRole.valueOf(parseClaims(token).get("authorities", String.class));
+    }
+
+    private Claims parseClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }

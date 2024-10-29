@@ -1,12 +1,14 @@
 package com.ssafy.c106.common.security;
 
-import com.ssafy.c106.common.security.jwt.JwtAuthenticationFilter;
-import com.ssafy.c106.common.security.jwt.service.JwtService;
+import com.ssafy.c106.common.security.filter.JwtAuthenticationFilter;
+import com.ssafy.c106.common.security.jwt.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,8 +30,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig implements WebMvcConfigurer {
 
+    private final CustomUserDetailsService customUserDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtService jwtService)
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
             throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
@@ -45,13 +50,13 @@ public class SecurityConfig implements WebMvcConfigurer {
                         // TODO: API에 맞춰 Security 필터 씌우기
                         .requestMatchers(
                                 new AntPathRequestMatcher("/**", HttpMethod.PUT.toString()),
-                                new AntPathRequestMatcher("/**", HttpMethod.POST.toString()),
+//                                new AntPathRequestMatcher("/**", HttpMethod.POST.toString()),
                                 new AntPathRequestMatcher("/**", HttpMethod.PATCH.toString()),
                                 new AntPathRequestMatcher("/**", HttpMethod.DELETE.toString())
                         ).authenticated()
                         .anyRequest().permitAll())
-                .addFilterBefore(new JwtAuthenticationFilter(jwtService),
-                        UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
@@ -64,5 +69,13 @@ public class SecurityConfig implements WebMvcConfigurer {
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(customUserDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
 }
