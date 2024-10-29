@@ -1,6 +1,5 @@
 package ssafy.modo.jamkkaebi.domain.member.entity;
 
-import ssafy.modo.jamkkaebi.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -10,9 +9,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ssafy.modo.jamkkaebi.common.entity.BaseEntity;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -36,6 +38,14 @@ public class Member extends BaseEntity implements UserDetails {
     @NotNull
     @Enumerated(EnumType.STRING)
     private MemberRole role;
+
+    // 매니저가 현재 유저로 설정된 Member 목록을 맵핑 -> 현재 유저가 관리하는 driver 목록
+    @OneToMany(mappedBy = "manager")
+    private Set<ManagerAndDriver> assignedDrivers = new HashSet<>();
+
+    // driver가 현재 유저로 설정된 Member 목록을 맵핑 -> 현재 유저를 관리하는 manager 목록
+    // @OneToMany(mappedBy = "driver")
+    // private Set<AdminAndDriver> assignedManagers = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
