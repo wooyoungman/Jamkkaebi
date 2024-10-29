@@ -60,7 +60,8 @@ public class Member extends BaseEntity implements UserDetails {
         this.role = MemberRole.DRIVER;
     }
 
-    public void updateRole() {
+    public MemberRole updateRole() {
         this.role = this.role == MemberRole.MANAGER ? MemberRole.DRIVER : MemberRole.MANAGER;
+        return this.role;
     }
 }
