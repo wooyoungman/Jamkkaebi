@@ -72,7 +72,7 @@ services:
   mysql:
     container_name: mysql
     environment:
-      MYSQL_DATABASE: goblin
+      MYSQL_DATABASE: jamkkaebi
       MYSQL_USER: 
       MYSQL_PASSWORD: 
       MYSQL_ROOT_PASSWORD: 
