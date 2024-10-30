@@ -4,8 +4,10 @@ const Footer = () => {
   return (
     <FooterWrapper>
       <FooterContent>
-        <ContactInfo>CONATACT US c106ssafy@gmail.com</ContactInfo>
-        <Copyright>JAMKKAEBI © Team MODO 2024. All right reserved</Copyright>
+        <ContactInfo>
+          CONTACT US <ContactEmail>c106ssafy@gmail.com</ContactEmail>
+        </ContactInfo>
+        <Copyright>JAMKKAEBI © Team MODO 2024. All rights reserved.</Copyright>
       </FooterContent>
     </FooterWrapper>
   );
@@ -14,7 +16,7 @@ const Footer = () => {
 const FooterWrapper = styled.footer`
   width: 100%;
   padding: 20px 0;
-  background: #000;
+  background: black;
 `;
 
 const FooterContent = styled.div`
@@ -24,13 +26,20 @@ const FooterContent = styled.div`
   gap: 8px;
 `;
 
-const ContactInfo = styled.p`
-  color: #666;
+const ContactInfo = styled.div`
+  color: white;
   font-size: 14px;
+  display: flex;
+  align-items: center;
+`;
+
+const ContactEmail = styled.span`
+  margin-left: 20px;
+  font-weight: 600;
 `;
 
 const Copyright = styled.p`
-  color: #666;
+  color: white;
   font-size: 14px;
 `;
 

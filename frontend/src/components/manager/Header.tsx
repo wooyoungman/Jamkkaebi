@@ -5,7 +5,7 @@ import LogoImg from "@assets/logo.png";
 
 const Header = () => {
   // 라우터의 현재 경로를 사용하거나 props로
-  const [activeMenu, setActiveMenu] = useState("dashboard");
+  const [activeMenu, setActiveMenu] = useState("undefined");
 
   return (
     <HeaderWrapper>
@@ -26,8 +26,8 @@ const Header = () => {
               레포트
             </NavItem>
             <NavItem
-              isActive={activeMenu === "incident"}
-              onClick={() => setActiveMenu("incident")}
+              isActive={activeMenu === "history"}
+              onClick={() => setActiveMenu("history")}
             >
               사건 기록
             </NavItem>

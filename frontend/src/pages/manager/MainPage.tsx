@@ -5,7 +5,6 @@ import styled from "styled-components";
 import mascotImage from "@assets/character.png";
 import Input from "@components/manager/Input";
 import PurpleButton from "@components/manager/PurpleButton";
-import Footer from "@components/manager/Footer";
 import { useLogin } from "@queries/index";
 import { userAtom } from "@atoms/index";
 import type { LoginRequest } from "@interfaces/manager";
@@ -40,7 +39,7 @@ const MainPage = () => {
     try {
       const user = await loginMutation.mutateAsync(formData);
       setUser(user);
-      navigate("/dashboard");
+      navigate("/manager/dashboard");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -73,7 +72,7 @@ const MainPage = () => {
                 value={formData.id}
                 onChange={handleChange}
                 placeholder="ID"
-                helpText="아이디를 잊어버리셨나요?"
+                helpText="아이디 찾기"
                 helpLink="/forgot-id"
               />
             </InputWrapper>
@@ -84,19 +83,22 @@ const MainPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Password"
-                helpText="비밀번호를 잊어버리셨나요?"
+                helpText="비밀번호 찾기"
                 helpLink="/forgot-password"
               />
             </InputWrapper>
             {error && <ErrorMessage>{error}</ErrorMessage>}
             <PurpleButton type="submit" disabled={loginMutation.isPending}>
-              {loginMutation.isPending ? "Loading..." : "LOGIN"}
+              {loginMutation.isPending ? (
+                "Loading..."
+              ) : (
+                <BoldText>LOGIN</BoldText>
+              )}
             </PurpleButton>
             <SignupLink href="/signup">회원가입</SignupLink>
           </Form>
         </LoginSection>
       </ContentWrapper>
-      <Footer />
     </LoginContainer>
   );
 };
@@ -104,9 +106,8 @@ const MainPage = () => {
 const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 64px);
-  background-color: #fff;
-  padding: 0 20px;
+  min-height: calc(100vh - 40px);
+  padding: 15px;
 `;
 
 const ContentWrapper = styled.div`
@@ -124,13 +125,13 @@ const LogoSection = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 48px;
+  font-size: 60px;
   font-weight: bold;
   margin-bottom: 12px;
 `;
 
 const Subtitle = styled.h2`
-  font-size: 24px;
+  font-size: 32px;
   color: #666;
   margin-bottom: 24px;
 `;
@@ -143,18 +144,18 @@ const Description = styled.p`
 `;
 
 const MascotImage = styled.img`
-  max-width: 300px;
+  max-width: 350px;
 `;
 
 const LoginSection = styled.div`
   width: 400px;
   padding: 40px;
-  background: #fbfbfe;
   border-radius: 16px;
 `;
 
 const LoginTitle = styled.h3`
-  font-size: 24px;
+  font-size: 30px;
+  font-weight: 700;
   margin-bottom: 32px;
   text-align: left;
 `;
@@ -180,14 +181,19 @@ const ErrorMessage = styled.p`
 
 const SignupLink = styled.a`
   text-align: center;
-  color: #666;
+  color: black;
   text-decoration: none;
-  font-size: 14px;
-  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 5px;
 
   &:hover {
     text-decoration: underline;
   }
+`;
+
+const BoldText = styled.span`
+  font-weight: 700;
 `;
 
 export default MainPage;

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 interface InputProps {
   type?: string;
@@ -7,13 +7,16 @@ interface InputProps {
   helpLink?: string;
 }
 
-const Input = ({ type = "text", placeholder, helpText, helpLink }: InputProps) => {
+const Input = ({
+  type = "text",
+  placeholder,
+  helpText,
+  helpLink,
+}: InputProps) => {
   return (
     <InputContainer>
       <StyledInput type={type} placeholder={placeholder} />
-      {helpText && helpLink && (
-        <HelpText href={helpLink}>{helpText}</HelpText>
-      )}
+      {helpText && helpLink && <HelpText href={helpLink}>{helpText}</HelpText>}
     </InputContainer>
   );
 };
@@ -25,13 +28,13 @@ const InputContainer = styled.div`
 const StyledInput = styled.input`
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #f0efff;
   border-radius: 8px;
-  background: #fff;
-  font-size: 16px;
+  background: #f0efff;
+  font-size: 14px;
 
   &:focus {
-    border-color: #7C3AED;
+    border-color: #7c3aed;
     outline: none;
   }
 
@@ -43,10 +46,11 @@ const StyledInput = styled.input`
 const HelpText = styled.a`
   display: block;
   text-align: right;
-  font-size: 12px;
-  color: #666;
+  font-size: 13px;
+  font-weight: 600;
+  color: black;
   text-decoration: none;
-  margin-top: 4px;
+  margin-top: 5px;
 
   &:hover {
     text-decoration: underline;
