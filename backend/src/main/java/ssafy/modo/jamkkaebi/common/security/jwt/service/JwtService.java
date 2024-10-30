@@ -1,9 +1,5 @@
 package ssafy.modo.jamkkaebi.common.security.jwt.service;
 
-import ssafy.modo.jamkkaebi.common.security.jwt.dto.JwtTokenDto;
-import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenExpirationException;
-import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenTypeException;
-import ssafy.modo.jamkkaebi.domain.member.entity.MemberRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -12,17 +8,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import ssafy.modo.jamkkaebi.common.security.jwt.dto.JwtTokenDto;
+import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenExpirationException;
+import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenTypeException;
+import ssafy.modo.jamkkaebi.domain.member.entity.Member;
+import ssafy.modo.jamkkaebi.domain.member.entity.MemberRole;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
@@ -73,22 +70,17 @@ public class JwtService {
                 .build();
     }
 
-    public Authentication getAuthentication(String accessToken) {
+    public Authentication getAuthentication(Member member) {
 
-        Claims claims = parseClaims(accessToken);
+        Collection<? extends GrantedAuthority> authorities = member.getAuthorities();
+        log.info("Authorities: {}", authorities);
 
-        if (claims.get("authorities") == null) {
+        if (authorities != null) {
+            return new UsernamePasswordAuthenticationToken(member, "", member.getAuthorities());
+        } else {
             throw new RuntimeException("Member authority information not found");
         }
 
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get("authorities").toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .toList();
-
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
     public boolean validateToken(String token)
@@ -101,7 +93,7 @@ public class JwtService {
     public String getTokenType(String token) throws TokenTypeException {
         Object tokenType = parseClaims(token).get("type");
         if (tokenType != null) {
-            log.debug("Parsed token type: {}", tokenType);
+            log.info("Parsed token type: {}", tokenType);
             return tokenType.toString();
         } else {
             throw new TokenTypeException();
@@ -115,7 +107,7 @@ public class JwtService {
     public LocalDateTime getExpiration(String token) throws TokenExpirationException {
         Date expiration = parseClaims(token).getExpiration();
         if (expiration != null) {
-            log.debug("Parsed token expiration: {}", expiration);
+            log.info("Parsed token expiration: {}", expiration);
             return LocalDateTime.ofInstant(expiration.toInstant(), ZoneId.systemDefault());
         } else {
             throw new TokenExpirationException();
