@@ -64,7 +64,7 @@ const LogoSection = styled.div`
 `;
 
 const LogoImage = styled.img`
-  height: 40px;
+  height: 50px;
 `;
 
 const NavMenu = styled.nav`
@@ -91,16 +91,9 @@ const NavItem = styled.button<NavItemProps>`
   ${(props) =>
     props.isActive &&
     `
-    background: #7C3AED;
     color: white;
-    
-    &:hover {
-      background: #6D28D9;
-    }
-    
-    &:active {
-      background: #5B21B6;
-    }
+    border-radius: 9px;
+    background: linear-gradient(90deg, #4642FF 0%, #9361FF 100%);
   `}
 
   // 비활성화 상태일 때의 호버 효과
