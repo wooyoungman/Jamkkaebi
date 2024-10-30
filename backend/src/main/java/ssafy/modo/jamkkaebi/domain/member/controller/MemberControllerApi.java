@@ -8,6 +8,7 @@ import ssafy.modo.jamkkaebi.domain.member.dto.request.LoginDto;
 import ssafy.modo.jamkkaebi.domain.member.dto.request.RegisterDto;
 import ssafy.modo.jamkkaebi.domain.member.dto.response.RegisterSuccessDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import ssafy.modo.jamkkaebi.domain.member.entity.MemberRole;
 
 @Tag(name = "회원 컨트롤러", description = "가입, 정보 수정 등 회원과 관련된 작업을 수행하는 API")
 public interface MemberControllerApi {
@@ -17,4 +18,6 @@ public interface MemberControllerApi {
     ApiResponse<JwtTokenDto> login(LoginDto loginDto);
 
     ApiResponse<?> validate(String bearerToken) throws TokenTypeException, TokenExpirationException;
+
+    ApiResponse<MemberRole> updateRole(Long memberId);
 }

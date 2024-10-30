@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ssafy.modo.jamkkaebi.domain.member.entity.Member;
 
 import java.io.IOException;
 
@@ -31,12 +32,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = resolveToken(request);
 
         if (token != null && jwtService.validateToken(token)) {
-            userDetailsService.loadUserByUsername(jwtService.getUsername(token));
-            Authentication authentication = jwtService.getAuthentication(token);
+            Member member = userDetailsService.loadUserByUsername(jwtService.getUsername(token));
+            Authentication authentication = jwtService.getAuthentication(member);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.debug("Passed Token filter for token {}", token);
+            log.info("Passed Token filter for token {}", token);
         } else {
-            log.debug("Cannot validate token {}", token);
+            log.info("Cannot validate token {}", token);
         }
 
         filterChain.doFilter(request, response);

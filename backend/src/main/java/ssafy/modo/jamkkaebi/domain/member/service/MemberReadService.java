@@ -31,6 +31,7 @@ public class MemberReadService {
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManager.authenticate(authToken);
+        log.info("Login Principal instance: {}", authentication.getPrincipal().getClass());
         JwtTokenDto tokenDto = jwtService.generateToken(authentication);
 
         Member member = (Member) authentication.getPrincipal();
@@ -40,7 +41,7 @@ public class MemberReadService {
     }
 
     public ValidateSuccessDto validate(String token) throws TokenTypeException, TokenExpirationException {
-        log.debug("Token to validate: {}", token);
+        log.info("Token to validate: {}", token);
         return ValidateSuccessDto
                 .builder()
                 .tokenType(jwtService.getTokenType(token))
