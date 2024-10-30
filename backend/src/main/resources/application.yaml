@@ -1,23 +1,23 @@
 server:
-  port: ${PORT}
+  port: ${SERVER_PORT}
 
 spring:
   config:
-    import: file:src/main/resources/.env[.properties]
+    import: optional:file:src/main/resources/.env[.properties]
   application:
     name: jamkkaebi
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   data:
     mongodb:
-      host: ${MONGODB_HOST}
-      port: ${MONGODB_PORT}
-      database: ${MONGODB_DB}
-      username: ${MONGODB_USERNAME}
-      password: ${MONGODB_PASSWORD}
+      host: ${SPRING_DATA_MONGODB_HOST}
+      port: ${SPRING_DATA_MONGODB_PORT}
+      database: ${SPRING_DATA_MONGODB_DATABASE}
+      username: ${SPRING_DATA_MONGODB_USERNAME}
+      password: ${SPRING_DATA_MONGODB_PASSWORD}
       authentication-database: admin
     jpa:
       repositories:
@@ -25,7 +25,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: ${JPA_DDL_AUTO}
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDLAUTO}
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
@@ -34,17 +34,15 @@ spring:
         format_sql: true
 
 jwt:
-  secret: ${JWT_SECRET_KEY}
+  secret: ${JWT_SECRET}
   access:
     expiration: ${JWT_ACCESS_EXPIRATION}
-    header: Authorization
   refresh:
     expiration: ${JWT_REFRESH_EXPIRATION}
-    header: Authorization-refresh
 
 logging:
   level:
-    root: ${LOG_LEVEL:INFO}
+    root: ${LOGGING_LEVEL_ROOT:INFO}
     org:
       springframework:
         data:
