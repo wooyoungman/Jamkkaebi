@@ -1,32 +1,33 @@
-import { useState } from 'react';
-import styled from 'styled-components';
+import { useState } from "react";
+import styled from "styled-components";
+import LogoImg from "@assets/logo.png";
 // import { useLocation, Link } from 'react-router-dom';
 
 const Header = () => {
   // 라우터의 현재 경로를 사용하거나 props로
-  const [activeMenu, setActiveMenu] = useState('dashboard');
+  const [activeMenu, setActiveMenu] = useState("dashboard");
 
   return (
     <HeaderWrapper>
       <HeaderContent>
         <LogoSection>
-          <LogoImage src="/logo.png" alt="logo" />
+          <LogoImage src={LogoImg} alt="logo" />
           <NavMenu>
-            <NavItem 
-              isActive={activeMenu === 'dashboard'}
-              onClick={() => setActiveMenu('dashboard')}
+            <NavItem
+              isActive={activeMenu === "dashboard"}
+              onClick={() => setActiveMenu("dashboard")}
             >
               대시보드
             </NavItem>
-            <NavItem 
-              isActive={activeMenu === 'report'}
-              onClick={() => setActiveMenu('report')}
+            <NavItem
+              isActive={activeMenu === "report"}
+              onClick={() => setActiveMenu("report")}
             >
               레포트
             </NavItem>
-            <NavItem 
-              isActive={activeMenu === 'incident'}
-              onClick={() => setActiveMenu('incident')}
+            <NavItem
+              isActive={activeMenu === "incident"}
+              onClick={() => setActiveMenu("incident")}
             >
               사건 기록
             </NavItem>
@@ -63,7 +64,7 @@ const LogoSection = styled.div`
 `;
 
 const LogoImage = styled.img`
-  height: 32px;
+  height: 40px;
 `;
 
 const NavMenu = styled.nav`
@@ -85,9 +86,11 @@ const NavItem = styled.button<NavItemProps>`
   border: none;
   background: none;
   color: white;
-  
+
   // 활성화된 상태일 때 PurpleButton과 동일한 스타일 적용
-  ${props => props.isActive && `
+  ${(props) =>
+    props.isActive &&
+    `
     background: #7C3AED;
     color: white;
     
@@ -99,9 +102,11 @@ const NavItem = styled.button<NavItemProps>`
       background: #5B21B6;
     }
   `}
-  
+
   // 비활성화 상태일 때의 호버 효과
-  ${props => !props.isActive && `
+  ${(props) =>
+    !props.isActive &&
+    `
     &:hover {
       background: rgba(124, 58, 237, 0.1);
     }

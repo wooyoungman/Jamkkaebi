@@ -1,10 +1,10 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Footer = () => {
   return (
     <FooterWrapper>
       <FooterContent>
-        <ContactInfo>CONATACT US    c106ssafy@gmail.com</ContactInfo>
+        <ContactInfo>CONATACT US c106ssafy@gmail.com</ContactInfo>
         <Copyright>JAMKKAEBI © Team MODO 2024. All right reserved</Copyright>
       </FooterContent>
     </FooterWrapper>
@@ -14,6 +14,7 @@ const Footer = () => {
 const FooterWrapper = styled.footer`
   width: 100%;
   padding: 20px 0;
+  background: #000;
 `;
 
 const FooterContent = styled.div`

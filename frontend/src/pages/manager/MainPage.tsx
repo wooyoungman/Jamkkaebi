@@ -1,109 +1,103 @@
-// src/pages/MainPage.tsx
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAtom } from 'jotai';
-import styled from 'styled-components';
-import Layout from '@/components/Layout';
-import Input from '@/components/Input';
-import PurpleButton from '@/components/PurpleButton';
-import Footer from '@/components/Footer';
-import { useLogin } from '@/queries';
-import { userAtom } from '@/atoms/auth';
-import type { LoginRequest } from '@/interfaces/manager';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
+import styled from "styled-components";
+import mascotImage from "@assets/character.png";
+import Input from "@components/manager/Input";
+import PurpleButton from "@components/manager/PurpleButton";
+import Footer from "@components/manager/Footer";
+import { useLogin } from "@queries/index";
+import { userAtom } from "@atoms/index";
+import type { LoginRequest } from "@interfaces/manager";
 
 const MainPage = () => {
   const navigate = useNavigate();
   const [, setUser] = useAtom(userAtom);
   const [formData, setFormData] = useState<LoginRequest>({
-    id: '',
-    password: ''
+    id: "",
+    password: "",
   });
-  const [error, setError] = useState<string>('');
-  
+  const [error, setError] = useState<string>("");
+
   const loginMutation = useLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(_prev => ({
+    setFormData((_prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    setError(''); // 입력 시 에러 메시지 초기화
+    setError(""); // 입력 시 에러 메시지 초기화
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.id || !formData.password) {
-      setError('아이디와 비밀번호를 모두 입력해주세요.');
+      setError("아이디와 비밀번호를 모두 입력해주세요.");
       return;
     }
 
     try {
       const user = await loginMutation.mutateAsync(formData);
       setUser(user);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError('로그인에 실패했습니다.');
+        setError("로그인에 실패했습니다.");
       }
     }
   };
 
   return (
-    <Layout>
-      <LoginContainer>
-        <ContentWrapper>
-          <LogoSection>
-            <Title>잠깨비</Title>
-            <Subtitle>잠을 깨워주는 비밀병기</Subtitle>
-            <Description>
-              누구나 졸릴 수 있습니다.
-              <br />
-              하지만 졸지 않게는 할 수 있습니다.
-            </Description>
-            <MascotImage src="/mascot.png" alt="잠깨비 마스코트" />
-          </LogoSection>
+    <LoginContainer>
+      <ContentWrapper>
+        <LogoSection>
+          <Title>잠깨비</Title>
+          <Subtitle>잠을 깨워주는 비밀병기</Subtitle>
+          <Description>
+            누구나 졸릴 수 있습니다.
+            <br />
+            하지만 졸지 않게는 할 수 있습니다.
+          </Description>
+          <MascotImage src={mascotImage} alt="잠깨비 마스코트" />
+        </LogoSection>
 
-          <LoginSection>
-            <LoginTitle>로그인</LoginTitle>
-            <Form onSubmit={handleSubmit}>
-              <InputWrapper>
-                <Input 
-                  name="id"
-                  value={formData.id}
-                  onChange={handleChange}
-                  placeholder="ID" 
-                  helpText="아이디를 잊어버리셨나요?" 
-                  helpLink="/forgot-id"
-                />
-              </InputWrapper>
-              <InputWrapper>
-                <Input 
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Password" 
-                  helpText="비밀번호를 잊어버리셨나요?" 
-                  helpLink="/forgot-password"
-                />
-              </InputWrapper>
-              {error && <ErrorMessage>{error}</ErrorMessage>}
-              <PurpleButton 
-                type="submit" 
-                disabled={loginMutation.isPending}
-              >
-                {loginMutation.isPending ? 'Loading...' : 'LOGIN'}
-              </PurpleButton>
-              <SignupLink href="/signup">회원가입</SignupLink>
-            </Form>
-          </LoginSection>
-        </ContentWrapper>
-        <Footer />
-      </LoginContainer>
-    </Layout>
+        <LoginSection>
+          <LoginTitle>로그인</LoginTitle>
+          <Form onSubmit={handleSubmit}>
+            <InputWrapper>
+              <Input
+                name="id"
+                value={formData.id}
+                onChange={handleChange}
+                placeholder="ID"
+                helpText="아이디를 잊어버리셨나요?"
+                helpLink="/forgot-id"
+              />
+            </InputWrapper>
+            <InputWrapper>
+              <Input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Password"
+                helpText="비밀번호를 잊어버리셨나요?"
+                helpLink="/forgot-password"
+              />
+            </InputWrapper>
+            {error && <ErrorMessage>{error}</ErrorMessage>}
+            <PurpleButton type="submit" disabled={loginMutation.isPending}>
+              {loginMutation.isPending ? "Loading..." : "LOGIN"}
+            </PurpleButton>
+            <SignupLink href="/signup">회원가입</SignupLink>
+          </Form>
+        </LoginSection>
+      </ContentWrapper>
+      <Footer />
+    </LoginContainer>
   );
 };
 

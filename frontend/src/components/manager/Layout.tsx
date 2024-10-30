@@ -1,15 +1,14 @@
-import styled from 'styled-components';
-import Header from './Header';
+import styled from "styled-components";
+import Header from "./Header";
+import { Outlet } from "react-router-dom";
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-const Layout = ({ children}: LayoutProps) => {
+const Layout = () => {
   return (
     <LayoutWrapper>
-       <Header />
-      <main>{children}</main>
+      <Header />
+      <main>
+        <Outlet />
+      </main>
     </LayoutWrapper>
   );
 };
