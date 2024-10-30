@@ -9,6 +9,23 @@ import { useLogin } from "@queries/index";
 import { userAtom } from "@atoms/index";
 import type { LoginRequest } from "@interfaces/manager";
 
+// Input과 PurpleButton의 props 타입을 정의합니다
+interface InputProps {
+  type?: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+  helpText: string;
+  helpLink: string;
+}
+
+interface PurpleButtonProps {
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  children: React.ReactNode;
+}
+
 const MainPage = () => {
   const navigate = useNavigate();
   const [, setUser] = useAtom(userAtom);
@@ -22,11 +39,12 @@ const MainPage = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((_prev) => ({
+    setFormData((prev) => ({
+      // _prev를 prev로 수정
       ...prev,
       [name]: value,
     }));
-    setError(""); // 입력 시 에러 메시지 초기화
+    setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
