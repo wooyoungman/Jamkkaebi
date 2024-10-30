@@ -18,20 +18,20 @@
     "strict": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true,
+    "noFallthroughCasesInSwitch": true
   },
 
   // 절대 경로 설정
-   "types": ["vite/client"],
-   "baseUrl": ".",
-   "paths": {
-     "@assets/*": ["src/assets/*"],
-     "@components/*": ["src/components/*"],
-     "@features/*": ["src/features/*"],
-     "@hooks/*": ["src/hooks/*"],
-     "@pages/*": ["src/pages/*"],
-     "@store/*": ["src/store/*"],
-     "@styles/*": ["src/styles/*"],
-   },
+  "types": ["vite/client"],
+  "baseUrl": ".",
+  "paths": {
+    "@assets/*": ["src/assets/*"],
+    "@components/*": ["src/components/*"],
+    "@features/*": ["src/features/*"],
+    "@hooks/*": ["src/hooks/*"],
+    "@pages/*": ["src/pages/*"],
+    "@store/*": ["src/store/*"],
+    "@styles/*": ["src/styles/*"]
+  },
   "include": ["src"]
 }
