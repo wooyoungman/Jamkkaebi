@@ -1,7 +1,5 @@
 package ssafy.modo.jamkkaebi.common.security;
 
-import ssafy.modo.jamkkaebi.common.security.filter.JwtAuthenticationFilter;
-import ssafy.modo.jamkkaebi.common.security.jwt.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ssafy.modo.jamkkaebi.common.security.filter.JwtAuthenticationFilter;
+import ssafy.modo.jamkkaebi.common.security.jwt.service.CustomUserDetailsService;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,10 +50,9 @@ public class SecurityConfig implements WebMvcConfigurer {
                         // TODO: API에 맞춰 Security 필터 씌우기
                         .requestMatchers(
                                 new AntPathRequestMatcher("/**", HttpMethod.PUT.toString()),
-//                                new AntPathRequestMatcher("/**", HttpMethod.POST.toString()),
-                                new AntPathRequestMatcher("/**", HttpMethod.PATCH.toString()),
                                 new AntPathRequestMatcher("/**", HttpMethod.DELETE.toString())
                         ).authenticated()
+                        .requestMatchers("/api/v1/member/validate").authenticated()
                         .anyRequest().permitAll())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
