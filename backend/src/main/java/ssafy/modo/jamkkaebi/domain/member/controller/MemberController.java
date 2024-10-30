@@ -7,6 +7,7 @@ import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenTypeException;
 import ssafy.modo.jamkkaebi.domain.member.dto.request.LoginDto;
 import ssafy.modo.jamkkaebi.domain.member.dto.request.RegisterDto;
 import ssafy.modo.jamkkaebi.domain.member.dto.response.RegisterSuccessDto;
+import ssafy.modo.jamkkaebi.domain.member.entity.MemberRole;
 import ssafy.modo.jamkkaebi.domain.member.service.MemberReadService;
 import ssafy.modo.jamkkaebi.domain.member.service.MemberWriteService;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,10 @@ public class MemberController implements MemberControllerApi {
         } else {
             return ApiResponse.error(HttpStatus.BAD_REQUEST.value(), "Empty token header");
         }
+    }
+
+    @PatchMapping("/update/{member_id}")
+    public ApiResponse<MemberRole> updateRole(@PathVariable("member_id") Long memberId) {
+        return ApiResponse.success(memberWriteService.updateRole(memberId));
     }
 }

@@ -53,6 +53,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 new AntPathRequestMatcher("/**", HttpMethod.DELETE.toString())
                         ).authenticated()
                         .requestMatchers("/api/v1/member/validate").authenticated()
+                        .requestMatchers("/api/v1/member/update/").hasRole("ADMIN")
                         .anyRequest().permitAll())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
