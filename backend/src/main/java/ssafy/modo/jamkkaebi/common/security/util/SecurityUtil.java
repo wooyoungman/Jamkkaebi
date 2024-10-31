@@ -28,10 +28,12 @@ public class SecurityUtil {
 
     private Member getAuthentication() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getPrincipal() instanceof Member) {
-            return (Member) auth.getPrincipal();
+        if (auth != null && auth.getPrincipal() instanceof Member member) {
+            return member;
         } else {
-            log.info("Principal instance: {}", auth.getPrincipal().getClass());
+            if (auth != null) {
+                log.info("Principal instance: {}", auth.getPrincipal().getClass());
+            }
             throw new UserNotFoundException();
         }
     }
