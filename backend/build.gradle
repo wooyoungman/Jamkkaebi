@@ -59,6 +59,7 @@ dependencies {
 sonar {
 	properties {
 		property "sonar.projectKey", "Jamkkaebi_backend"
+		property "sonar.projectName", "Jamkkaebi_backend"
 	}
 }
 
