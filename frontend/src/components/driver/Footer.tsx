@@ -9,11 +9,12 @@ import {
   CarSvg,
   PhoneSvg,
   ReportSvg,
-} from "./MenuButton";
+} from "../../styles/driver/MenuButton";
 
 const FooterDiv = styled.div`
   display: flex;
   width: 100%;
+  min-width: 1000px;
   justify-content: center;
   align-items: center;
 `;
@@ -22,8 +23,7 @@ const Menu = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding: 0px 256px;
+  width: 65%;
 `;
 
 // 아이콘 컴포넌트와 경로를 함께 관리하는 배열

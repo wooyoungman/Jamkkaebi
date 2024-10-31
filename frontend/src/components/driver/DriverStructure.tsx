@@ -16,8 +16,10 @@ const Logo = styled.p`
 `;
 
 export const Body = styled.div`
+  display: flex;
   width: 100%;
-  height: 600px;
+  height: 580px;
+  gap: 10px;
 `;
 
 const Header: React.FC = () => {

@@ -22,4 +22,5 @@ export const DriverBackground = styled.div`
   background-image: url(${backgroundPNG});
   background-size: cover;
   background-position: center;
+  box-sizing: border-box;
 `;
