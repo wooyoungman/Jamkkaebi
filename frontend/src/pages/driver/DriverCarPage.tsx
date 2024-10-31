@@ -1,5 +1,13 @@
-const DriverCarPage: React.FC = () => {
-  return <h1 style={{ color: "white" }}>차량 페이지</h1>;
-};
+import { Body } from "@/components/driver/DriverStructure";
+import DriverMainLeft from "@/components/driver/driverMain/DriverMainLeft";
 
+const DriverCarPage: React.FC = () => {
+  return (
+    <>
+      <Body>
+        <DriverMainLeft />
+      </Body>
+    </>
+  );
+};
 export default DriverCarPage;

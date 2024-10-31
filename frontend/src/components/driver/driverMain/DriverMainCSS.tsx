@@ -130,3 +130,9 @@ export const RightBottomWeather = styled(RightBottomDiv)`
   background-repeat: no-repeat;
   background-position: center;
 `;
+
+export const DriverConditionDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`
