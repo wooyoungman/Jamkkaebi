@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { DriverText } from "./driverMain/DriverMainCSS";
+import { DriverText } from "../../components/driver/driverMain/DriverMainCSS";
 
 // LocationDiv 컴포넌트를 이용해 두 SVG를 겹쳐 표시합니다
 const LocationDiv = styled.div`

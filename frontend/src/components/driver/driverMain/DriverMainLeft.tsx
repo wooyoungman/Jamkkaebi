@@ -8,8 +8,9 @@ import {
   DriverText,
   DrivingInfo,
   DrivingTextDiv,
-} from "@/styles/driver/driverMain/DriverMainCSS";
-import DriverImg from "@/assets/driver/DriverImg.png";
+} from "./DriverMainCSS";
+
+import driverImg from "@/assets/driver/driverImg.png";
 
 const DriverMainLeft: React.FC = () => {
   return (
@@ -17,7 +18,7 @@ const DriverMainLeft: React.FC = () => {
       <Left>
         <DriverWrapper>
           <DriverInfo>
-            <DriverImage src={DriverImg} alt="Driver Image" />
+            <DriverImage src={driverImg} alt="Driver Image" />
             <DriverTextDiv>
               <InlineTextDiv>
                 <DriverText>김싸피</DriverText>

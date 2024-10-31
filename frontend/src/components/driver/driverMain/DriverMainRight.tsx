@@ -6,11 +6,11 @@ import {
   RightBottomMain,
   RightBottomImage,
   RightBottomContent,
-  InlineTextDiv,
   RightBottomWeather
-} from "@/styles/driver/driverMain/DriverMainCSS";
+} from "./DriverMainCSS";
+import RestStoreInfo from "../RestStoreInfo";
 import LocationIcon from "@/styles/driver/LocationIcon";
-import RestImg from "@/assets/driver/RestImg.png";
+import restImg from "@/assets/driver/restImg.png";
 import styled from "styled-components";
 
 const CustomRightBottomDiv = styled(RightBottomDiv)`
@@ -20,12 +20,6 @@ const CustomRightBottomDiv = styled(RightBottomDiv)`
 
 const CustomDriverText = styled(DriverText)`
   text-align: start;
-`;
-
-const TextGapDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
 `;
 
 const DriverMainRight: React.FC = () => {
@@ -38,42 +32,9 @@ const DriverMainRight: React.FC = () => {
             근처 휴게시설
           </CustomDriverText>
           <RightBottomMain>
-            <RightBottomImage src={RestImg} alt="Rest Image" />
+            <RightBottomImage src={restImg} alt="Rest Image" />
             <RightBottomContent>
-              <CustomDriverText fontSize="15px" fontWeight={600}>
-                원지 휴게소
-              </CustomDriverText>
-              <TextGapDiv>
-                <InlineTextDiv>
-                  <CustomDriverText fontSize="11px" fontWeight={600}>
-                    970m
-                  </CustomDriverText>
-                  <CustomDriverText
-                    color="#e0e0e0"
-                    fontSize="11px"
-                    fontWeight={500}
-                  >
-                    · 휴게소, 하남대로 154
-                  </CustomDriverText>
-                </InlineTextDiv>
-
-                <InlineTextDiv>
-                  <CustomDriverText
-                    color="#46E900"
-                    fontSize="11px"
-                    fontWeight={500}
-                  >
-                    영업 중
-                  </CustomDriverText>
-                  <CustomDriverText
-                    color="#e0e0e0"
-                    fontSize="11px"
-                    fontWeight={500}
-                  >
-                    · 24시간 영업
-                  </CustomDriverText>
-                </InlineTextDiv>
-              </TextGapDiv>
+              <RestStoreInfo />
               <LocationIcon />
             </RightBottomContent>
           </RightBottomMain>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { GlassDiv } from "../GlassmorphismStyle";
-import NaviImg from "@/assets/driver/NaviImg.png";
-import CloudyImg from '@/assets/driver/CloudyImg.png'
+import { GlassDiv } from "../../../styles/driver/GlassmorphismStyle";
+import naviImg from "@/assets/driver/naviImg.png";
+import cloudyImg from "@/assets/driver/cloudyImg.png";
 
 export const Left = styled(GlassDiv)`
   width: 35%;
@@ -84,7 +84,7 @@ export const RightTop = styled(GlassDiv)`
   width: 100%;
   height: 60%;
   flex-shrink: 0;
-  background-image: url(${NaviImg});
+  background-image: url(${naviImg});
   background-size: cover; // 이미지가 컴포넌트에 맞게 채워지도록 설정
   background-repeat: no-repeat; // 이미지 반복 방지
   background-position: center; // 이미지 가운데 정렬
@@ -125,8 +125,8 @@ export const RightBottomContent = styled.div`
 
 export const RightBottomWeather = styled(RightBottomDiv)`
   flex-shrink: 0;
-  background-image: url(${CloudyImg});
+  background-image: url(${cloudyImg});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-`
+`;
