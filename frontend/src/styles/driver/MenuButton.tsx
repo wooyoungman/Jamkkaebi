@@ -3,12 +3,13 @@ import { GlassDiv } from "./GlassmorphismStyle";
 
 export const CommonButton = styled(GlassDiv)`
   display: flex;
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   padding: 15px;
   justify-content: center;
   align-items: center;
   border-radius: 100px;
+  box-sizing: border-box;
 
   cursor: pointer;
   // 호버 스타일 추가
