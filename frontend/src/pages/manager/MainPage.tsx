@@ -9,22 +9,23 @@ import { useLogin } from "@queries/index";
 import { userAtom } from "@atoms/index";
 import type { LoginRequest } from "@interfaces/manager";
 
-// Input과 PurpleButton의 props 타입을 정의합니다
-interface InputProps {
+// 기존 컴포넌트의 Props 타입을 가져와서 확장
+type ExtendedInputProps = {
   type?: string;
   name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder: string;
-  helpText: string;
-  helpLink: string;
-}
+  placeholder?: string;
+  helpText?: string;
+  helpLink?: string;
+};
 
-interface PurpleButtonProps {
+type ExtendedPurpleButtonProps = {
+  children: React.ReactNode;
+  onClick?: () => void;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
-  children: React.ReactNode;
-}
+};
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -40,7 +41,6 @@ const MainPage = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
-      // _prev를 prev로 수정
       ...prev,
       [name]: value,
     }));
@@ -85,7 +85,7 @@ const MainPage = () => {
           <LoginTitle>로그인</LoginTitle>
           <Form onSubmit={handleSubmit}>
             <InputWrapper>
-              <Input
+              <StyledInput
                 name="id"
                 value={formData.id}
                 onChange={handleChange}
@@ -95,7 +95,7 @@ const MainPage = () => {
               />
             </InputWrapper>
             <InputWrapper>
-              <Input
+              <StyledInput
                 type="password"
                 name="password"
                 value={formData.password}
@@ -106,13 +106,17 @@ const MainPage = () => {
               />
             </InputWrapper>
             {error && <ErrorMessage>{error}</ErrorMessage>}
-            <PurpleButton type="submit" disabled={loginMutation.isPending}>
+            <StyledPurpleButton
+              type="submit"
+              disabled={loginMutation.isPending}
+              onClick={() => {}} // 빈 함수를 추가하여 onClick prop 만족
+            >
               {loginMutation.isPending ? (
                 "Loading..."
               ) : (
                 <BoldText>LOGIN</BoldText>
               )}
-            </PurpleButton>
+            </StyledPurpleButton>
             <SignupLink href="/signup">회원가입</SignupLink>
           </Form>
         </LoginSection>
@@ -120,6 +124,12 @@ const MainPage = () => {
     </LoginContainer>
   );
 };
+
+// 스타일이 적용된 Input 컴포넌트
+const StyledInput = styled(Input)<ExtendedInputProps>``;
+
+// 스타일이 적용된 PurpleButton 컴포넌트
+const StyledPurpleButton = styled(PurpleButton)<ExtendedPurpleButtonProps>``;
 
 const LoginContainer = styled.div`
   display: flex;
