@@ -84,7 +84,7 @@ export interface TMapPolyline {
   _style: VectorMapStyle;
 }
 
-// API 응답 타입 (깃허브 버전)
+// API 응답 타입
 export interface NewAddress {
   centerLat: string;
   centerLon: string;
