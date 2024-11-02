@@ -5,7 +5,11 @@ import {
 } from "./DriverReportCSS";
 import { UpSVG, DownSVG } from "@/styles/driver/driverReport/DriverReportSVG";
 import { DriverText, InlineTextDiv } from "../driverMain/DriverMainCSS";
+import styled from "styled-components";
 
+const CustomInlineTextDiv = styled(InlineTextDiv)`
+  gap: 5px;
+`;
 const DriverSummary: React.FC = () => {
   return (
     <>
@@ -14,7 +18,7 @@ const DriverSummary: React.FC = () => {
           <DriverText fontSize="15px" fontWeight={700}>
             누적 주행거리
           </DriverText>
-          <InlineTextDiv>
+          <CustomInlineTextDiv>
             <DriverText fontSize="25px" fontWeight={800}>
               2,024
             </DriverText>
@@ -25,7 +29,7 @@ const DriverSummary: React.FC = () => {
             <DriverText color="#2AC670" fontSize="12px" fontWeight={400}>
               124
             </DriverText>
-          </InlineTextDiv>
+          </CustomInlineTextDiv>
         </ReportSummaryContent>
       </ReportSummaryBody>
       <HRLine />
@@ -34,18 +38,24 @@ const DriverSummary: React.FC = () => {
           <DriverText fontSize="15px" fontWeight={700}>
             일일 근무 시간
           </DriverText>
-          <InlineTextDiv>
+          <CustomInlineTextDiv>
             <DriverText fontSize="25px" fontWeight={800}>
-              2,024
+              10
             </DriverText>
             <DriverText fontSize="13px" fontWeight={500}>
-              km
+              H
+            </DriverText>
+            <DriverText fontSize="25px" fontWeight={800}>
+              4
+            </DriverText>
+            <DriverText fontSize="13px" fontWeight={500}>
+              M
             </DriverText>
             <UpSVG />
             <DriverText color="#2AC670" fontSize="12px" fontWeight={400}>
               124
             </DriverText>
-          </InlineTextDiv>
+          </CustomInlineTextDiv>
         </ReportSummaryContent>
       </ReportSummaryBody>
       <HRLine />
@@ -54,18 +64,18 @@ const DriverSummary: React.FC = () => {
           <DriverText fontSize="15px" fontWeight={700}>
             평군 집중지수
           </DriverText>
-          <InlineTextDiv>
+          <CustomInlineTextDiv>
             <DriverText fontSize="25px" fontWeight={800}>
-              2,024
+              76
             </DriverText>
             <DriverText fontSize="13px" fontWeight={500}>
-              km
+              점
             </DriverText>
-            <UpSVG />
-            <DriverText color="#2AC670" fontSize="12px" fontWeight={400}>
-              124
+            <DownSVG />
+            <DriverText color="#FF6252" fontSize="12px" fontWeight={400}>
+              12
             </DriverText>
-          </InlineTextDiv>
+          </CustomInlineTextDiv>
         </ReportSummaryContent>
       </ReportSummaryBody>
       <HRLine />
@@ -74,18 +84,18 @@ const DriverSummary: React.FC = () => {
           <DriverText fontSize="15px" fontWeight={700}>
             평균 졸음지수
           </DriverText>
-          <InlineTextDiv>
+          <CustomInlineTextDiv>
             <DriverText fontSize="25px" fontWeight={800}>
-              2,024
+              76
             </DriverText>
             <DriverText fontSize="13px" fontWeight={500}>
-              km
+              점
             </DriverText>
-            <UpSVG />
-            <DriverText color="#2AC670" fontSize="12px" fontWeight={400}>
-              124
+            <DownSVG />
+            <DriverText color="#FF6252" fontSize="12px" fontWeight={400}>
+              12
             </DriverText>
-          </InlineTextDiv>
+          </CustomInlineTextDiv>
         </ReportSummaryContent>
       </ReportSummaryBody>
     </>

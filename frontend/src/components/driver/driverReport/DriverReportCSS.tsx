@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { GlassDiv } from "@/styles/driver/GlassmorphismStyle";
 
+const CustomGlassDiv = styled(GlassDiv)`
+  border-radius: 10px;
+`;
 export const ReportRightDiv = styled.div`
   width: 63.5%;
   min-width: 500px;
@@ -47,7 +50,27 @@ export const DrivingReportDiv = styled(GlassDiv)`
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  justify-content: start;
+  padding: 10px;
+  box-sizing: border-box;
+  gap: 15px;
+`;
+
+export const DateReportDiv = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const DrivingReportList = styled(CustomGlassDiv)`
+  width: 100%;
+  height: 80px;
+  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 `;
 
 export const DrivingGraphWrapper = styled.div`
@@ -61,6 +84,10 @@ export const DrivingGraphWrapper = styled.div`
 export const DrivingGraphDiv = styled(GlassDiv)`
   width: 100%;
   height: 47%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 15px;
 `;
 
 export const HRLine = styled.hr`

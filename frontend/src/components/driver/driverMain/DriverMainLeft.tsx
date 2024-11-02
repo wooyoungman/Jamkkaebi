@@ -8,7 +8,9 @@ import {
   DriverText,
   DrivingInfo,
   DrivingTextDiv,
+  ConditionGraphWrapper,
 } from "./DriverMainCSS";
+import DriverConditionGraph from "./DriverConditionGraph";
 
 import driverImg from "@/assets/driver/driverImg.png";
 
@@ -63,6 +65,10 @@ const DriverMainLeft: React.FC = () => {
             </InlineTextDiv>
           </DrivingTextDiv>
         </DrivingInfo>
+        <ConditionGraphWrapper>
+          <DriverConditionGraph graphType="concentration" score={34} />
+          <DriverConditionGraph graphType="drowsy" score={72} />
+        </ConditionGraphWrapper>
       </Left>
     </>
   );

@@ -4,10 +4,11 @@ import {
   ReportMainDiv,
   DrivingReportDiv,
   DrivingGraphWrapper,
-  DrivingGraphDiv,
 } from "./DriverReportCSS";
-import { DriverText} from "../driverMain/DriverMainCSS";
+import { DriverText } from "../driverMain/DriverMainCSS";
 import DriverSummary from "./DriverSummary";
+import DrivingReport from "./DrivingReport";
+import DrivingGraph from "./DrivingGraph";
 
 const DriverReportRight: React.FC = () => {
   return (
@@ -18,14 +19,19 @@ const DriverReportRight: React.FC = () => {
         </DriverText>
 
         <ReportSummaryDiv>
-         <DriverSummary />
+          <DriverSummary />
         </ReportSummaryDiv>
 
         <ReportMainDiv>
-          <DrivingReportDiv />
+          <DrivingReportDiv>
+            <DriverText fontSize="15px" fontWeight={700}>
+              운행 기록
+            </DriverText>
+            <DrivingReport />
+          </DrivingReportDiv>
           <DrivingGraphWrapper>
-            <DrivingGraphDiv />
-            <DrivingGraphDiv />
+            <DrivingGraph graphType={"concentration"} />
+            <DrivingGraph graphType={"drowsy"} />
           </DrivingGraphWrapper>
         </ReportMainDiv>
       </ReportRightDiv>
