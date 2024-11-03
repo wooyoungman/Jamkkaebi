@@ -30,8 +30,8 @@ const DriverReportRight: React.FC = () => {
             <DrivingReport />
           </DrivingReportDiv>
           <DrivingGraphWrapper>
-            <DrivingGraph graphType={"concentration"} />
-            <DrivingGraph graphType={"drowsy"} />
+            <DrivingGraph />
+            {/* <DrivingGraph graphType={"drowsy"} /> */}
           </DrivingGraphWrapper>
         </ReportMainDiv>
       </ReportRightDiv>

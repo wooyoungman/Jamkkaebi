@@ -55,6 +55,8 @@ const DriverConditionGraph: React.FC<DriverConditionGraphProps> = ({
     },
   };
 
+  const title = graphType === "concentration" ? "집중지수" : "졸음지수";
+
   return (
     <ConditionGraphDiv>
       <div
@@ -86,7 +88,7 @@ const DriverConditionGraph: React.FC<DriverConditionGraphProps> = ({
           fontSize="calc(max(1.1vw, 14px))"
           fontWeight={700}
         >
-          집중지수
+          {title}
         </DriverText>
         <DriverText fontSize="calc(max(1.3vw, 17px))" fontWeight={700}>
           100

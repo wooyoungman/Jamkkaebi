@@ -54,6 +54,15 @@ export const DrivingReportDiv = styled(GlassDiv)`
   padding: 10px;
   box-sizing: border-box;
   gap: 15px;
+  overflow-y: auto; /* 스크롤 기능 추가 */
+  max-height: 366px; /* 고정된 최대 높이 설정 */
+  /* 스크롤바 숨기기 */
+  scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
+  -ms-overflow-style: none; /* IE와 Edge에서 스크롤바 숨기기 */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera에서 스크롤바 숨기기 */
+  }
 `;
 
 export const DateReportDiv = styled.div`
@@ -71,10 +80,24 @@ export const DrivingReportList = styled(CustomGlassDiv)`
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  cursor: pointer;
+  // 호버 스타일 추가
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+    transform: scale(1.05); // 살짝 확대되는 효과
+    transition:
+      background 0.3s ease,
+      transform 0.3s ease;
+  }
 `;
 
 export const DrivingGraphWrapper = styled.div`
-  width: 64%;
+  width: calc(100% - 32% - 20px);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -83,11 +106,12 @@ export const DrivingGraphWrapper = styled.div`
 
 export const DrivingGraphDiv = styled(GlassDiv)`
   width: 100%;
-  height: 47%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 20px 15px;
+  box-sizing: border-box;
 `;
 
 export const HRLine = styled.hr`

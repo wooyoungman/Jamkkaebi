@@ -24,11 +24,11 @@ export const GoodDrivingBadge = () => {
 };
 
 interface BadDrivingProps {
-  drowsy?: number;
+  drowsy: number;
+  focusLoss: number;
 }
 
 const BadDrivingTag = styled.div`
-  width: 50px;
   height: 16px;
   padding: 4px 4px;
   box-sizing: border-box;
@@ -39,12 +39,26 @@ const BadDrivingTag = styled.div`
   border-radius: 4px;
 `;
 
-export const BadDrivingBadge: React.FC<BadDrivingProps> = ({ drowsy }) => {
+export const BadDrivingBadge: React.FC<BadDrivingProps> = ({
+  drowsy,
+  focusLoss,
+}) => {
   return (
-    <BadDrivingTag>
-      <DriverText color="#FF5E5E" fontSize="10px" fontWeight={400}>
-        졸음 {drowsy}회
-      </DriverText>
-    </BadDrivingTag>
+    <>
+      {drowsy > 0 && (
+        <BadDrivingTag>
+          <DriverText color="#FF5E5E" fontSize="10px" fontWeight={400}>
+            졸음 {drowsy}회
+          </DriverText>
+        </BadDrivingTag>
+      )}
+      {focusLoss > 0 && (
+        <BadDrivingTag>
+          <DriverText color="#FF5E5E" fontSize="10px" fontWeight={400}>
+            집중 저하 {focusLoss}회
+          </DriverText>
+        </BadDrivingTag>
+      )}
+    </>
   );
 };
