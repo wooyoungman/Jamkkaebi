@@ -4,7 +4,7 @@ import { atom, useAtom } from "jotai";
 
 import { TMap, TMapLatLng, MapOptions } from "@interfaces/Tmap";
 
-// 지도 인스턴스를 전역으로 관리하기 위한 atom을 파일 최상단으로 이동
+// 지도 인스턴스를 전역으로 관리
 export const mapInstanceAtom = atom<TMap | null>(null);
 
 interface MapContainerProps {
@@ -23,50 +23,68 @@ const MapContainer = ({
   height = "100%",
   initialCenter = { lat: 37.5666805, lng: 126.9784147 }, // 서울 시청
   initialZoom = 16,
+  children,
 }: MapContainerProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [mapInstance, setMapInstance] = useAtom(mapInstanceAtom);
 
-  // Tmap API 스크립트 로드
   useEffect(() => {
-    const TMAP_API_KEY = import.meta.env.VITE_TMAP_API_KEY;
-    const script = document.createElement("script");
-    script.src = `https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=${TMAP_API_KEY}`;
-    script.async = true;
-
-    script.onload = () => {
-      if (!mapRef.current || mapInstance) return;
-
-      // TMap 인스턴스 생성
-      const options: MapOptions = {
-        center: new window.Tmapv2.LatLng(initialCenter.lat, initialCenter.lng),
-        width: "100%",
-        height: "100%",
-        zoom: initialZoom,
-      };
-
-      const map = new window.Tmapv2.Map(mapRef.current, options);
-      setMapInstance(map as unknown as TMap);
+    // Tmapv2 객체가 로드될 때까지 기다리는 함수
+    const waitForTmap = () => {
+      if (window.Tmapv2) {
+        initializeMap();
+      } else {
+        setTimeout(waitForTmap, 100);
+      }
     };
 
-    document.head.appendChild(script);
+    const initializeMap = () => {
+      if (!mapRef.current || mapInstance) return;
+
+      try {
+        console.log("Initializing map...", window.Tmapv2);
+
+        const options: MapOptions = {
+          center: new window.Tmapv2.LatLng(
+            initialCenter.lat,
+            initialCenter.lng
+          ),
+          width: "100%",
+          height: "100%",
+          zoom: initialZoom,
+        };
+
+        const map = new window.Tmapv2.Map(mapRef.current, options);
+        console.log("Map created:", map);
+        setMapInstance(map as unknown as TMap);
+      } catch (error) {
+        console.error("Map initialization error:", error);
+      }
+    };
+
+    waitForTmap();
 
     return () => {
-      document.head.removeChild(script);
       if (mapInstance) {
         mapInstance.destroy();
         setMapInstance(null);
       }
     };
-  }, []);
+  }, [mapInstance, initialCenter, initialZoom]); // dependency array 수정
 
-  return <MapContainer.Root ref={mapRef} width={width} height={height} />;
+  return (
+    <MapContainer.Root ref={mapRef} width={width} height={height}>
+      {children}
+    </MapContainer.Root>
+  );
 };
 
 // 스타일 컴포넌트
 MapContainer.Root = styled.div<{ width: string; height: string }>`
   width: ${({ width }) => width};
   height: ${({ height }) => height};
+  position: relative;
+  z-index: 1;
 `;
 
 export default MapContainer;

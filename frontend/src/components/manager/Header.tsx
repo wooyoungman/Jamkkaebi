@@ -57,21 +57,21 @@ const Header = () => {
             <NavItem
               as={Link}
               to="/manager/dashboard"
-              isActive={activeMenu === "/manager/dashboard"}
+              $isActive={activeMenu === "/manager/dashboard"}
             >
               대시보드
             </NavItem>
             <NavItem
               as={Link}
               to="/manager/report"
-              isActive={activeMenu === "/manager/report"}
+              $isActive={activeMenu === "/manager/report"}
             >
               레포트
             </NavItem>
             <NavItem
               as={Link}
               to="/manager/history"
-              isActive={activeMenu === "/manager/history"}
+              $isActive={activeMenu === "/manager/history"}
             >
               사건 기록
             </NavItem>
@@ -165,7 +165,7 @@ const NavMenu = styled.nav`
   align-items: center;
 `;
 
-const NavItem = styled.button<NavItemProps>`
+const NavItem = styled(Link)<{ $isActive?: boolean }>`
   padding: 8px 16px;
   border-radius: 8px;
   font-size: 16px;
@@ -177,19 +177,11 @@ const NavItem = styled.button<NavItemProps>`
   text-decoration: none;
 
   ${(props) =>
-    props.isActive &&
+    props.$isActive &&
     `
     color: white;
     border-radius: 9px;
     background: linear-gradient(90deg, #4642FF 0%, #9361FF 100%);
-  `}
-
-  ${(props) =>
-    !props.isActive &&
-    `
-    &:hover {
-      background: rgba(124, 58, 237, 0.1);
-    }
   `}
 `;
 

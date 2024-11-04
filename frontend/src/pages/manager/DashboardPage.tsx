@@ -121,11 +121,14 @@ const DashboardPage = () => {
 DashboardPage.Container = styled.div`
   position: relative;
   height: 100vh;
+  margin: 10px;
+  border-radius: 16px;
 `;
 
 DashboardPage.MapSection = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  border-radius: 16px;
 `;
 
 DashboardPage.DriverOverlay = styled.div`
