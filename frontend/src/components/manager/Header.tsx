@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import LogoImg from "@assets/logo.png";
-// import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link } from "react-router-dom";
 import { atom, useAtom } from "jotai";
 import { UserCircle, Bell, LogOut } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface Notification {
   id: number;
@@ -14,6 +14,8 @@ interface Notification {
 
 interface NavItemProps {
   isActive?: boolean;
+  to?: string;
+  as?: React.ElementType;
 }
 
 // atoms
@@ -24,11 +26,17 @@ const userInfoAtom = atom<{
 const notificationsAtom = atom<Notification[]>([]);
 
 const Header = () => {
+  const location = useLocation(); // 현재 경로 가져오기
   const [activeMenu, setActiveMenu] = useState("undefined");
   const [isLoggedIn] = useAtom(isLoggedInAtom);
   const [userInfo] = useAtom(userInfoAtom);
   const [notifications] = useAtom(notificationsAtom);
   const [showNotifications, setShowNotifications] = useState(false);
+
+  // URL이 변경될 때마다 activeMenu 업데이트
+  useEffect(() => {
+    setActiveMenu(location.pathname);
+  }, [location]);
 
   const hasUnreadNotifications = notifications.some(
     (notification) => !notification.isRead
@@ -42,23 +50,28 @@ const Header = () => {
     <HeaderWrapper>
       <HeaderContent>
         <LogoSection>
-          <LogoImage src={LogoImg} alt="logo" />
+          <Link to="/manager">
+            <LogoImage src={LogoImg} alt="logo" />
+          </Link>
           <NavMenu>
             <NavItem
-              isActive={activeMenu === "dashboard"}
-              onClick={() => setActiveMenu("dashboard")}
+              as={Link}
+              to="/manager/dashboard"
+              isActive={activeMenu === "/manager/dashboard"}
             >
               대시보드
             </NavItem>
             <NavItem
-              isActive={activeMenu === "report"}
-              onClick={() => setActiveMenu("report")}
+              as={Link}
+              to="/manager/report"
+              isActive={activeMenu === "/manager/report"}
             >
               레포트
             </NavItem>
             <NavItem
-              isActive={activeMenu === "history"}
-              onClick={() => setActiveMenu("history")}
+              as={Link}
+              to="/manager/history"
+              isActive={activeMenu === "/manager/history"}
             >
               사건 기록
             </NavItem>
@@ -161,6 +174,7 @@ const NavItem = styled.button<NavItemProps>`
   border: none;
   background: none;
   color: white;
+  text-decoration: none;
 
   ${(props) =>
     props.isActive &&

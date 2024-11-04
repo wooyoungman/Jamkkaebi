@@ -7,7 +7,6 @@ import DriverMarker from "@components/manager/DriverMarker";
 import RoutePolyline from "@components/manager/RoutePolyline";
 import DriverInfoModal from "@components/manager/DriverInfoModal";
 import AlertModal from "@components/manager/AlertModal";
-import DriverDetailCard from "@components/manager/DriverDetailCard";
 
 // API 응답 타입
 interface Driver {
@@ -19,6 +18,7 @@ interface Driver {
     lat: number;
     lng: number;
   };
+  lastLocation: string; // 실시간 위치 추적을 위해 필요
   route: Array<{
     lat: number;
     lng: number;
@@ -48,7 +48,7 @@ const DashboardPage = () => {
 
   // 졸음운전 이벤트 실시간 구독
   useEffect(() => {
-    // TODO: WebSocket 연결 및 이벤트 구독
+    // WebSocket 연결 시 졸음 이벤트 발생하면 AlertModal 표시
     const handleSleepEvent = (event: any) => {
       setAlertInfo({
         driverName: event.driverName,
@@ -58,6 +58,8 @@ const DashboardPage = () => {
       setShowAlert(true);
     };
 
+    // TODO: WebSocket으로 실시간 위치 업데이트도 처리
+
     return () => {
       // WebSocket 연결 해제
     };
@@ -65,26 +67,13 @@ const DashboardPage = () => {
 
   return (
     <DashboardPage.Container>
-      <DashboardPage.Sidebar>
-        <h2>실시간 차량 현황</h2>
-        <DashboardPage.DriverList>
-          {drivers.map((driver) => (
-            <DriverDetailCard
-              key={driver.id}
-              driver={driver}
-              onClick={() => setSelectedDriver(driver.id)}
-              isSelected={selectedDriver === driver.id}
-            />
-          ))}
-        </DashboardPage.DriverList>
-      </DashboardPage.Sidebar>
-
       <DashboardPage.MapSection>
         <MapContainer
           width="100%"
           height="100%"
           initialCenter={{ lat: 37.5666805, lng: 126.9784147 }}
         >
+          {/* 운전자 마커들 */}
           {drivers.map((driver) => (
             <DriverMarker
               key={driver.id}
@@ -96,6 +85,7 @@ const DashboardPage = () => {
               }}
             />
           ))}
+          {/* 선택된 운전자의 경로 */}
           {selectedDriver && (
             <RoutePolyline
               path={drivers.find((d) => d.id === selectedDriver)?.route || []}
@@ -104,17 +94,20 @@ const DashboardPage = () => {
             />
           )}
         </MapContainer>
+
+        {/* 선택된 운전자 정보 카드 (맵 위에 오버레이) */}
+        {showDriverInfo && selectedDriver && (
+          <DashboardPage.DriverOverlay>
+            <DriverInfoModal
+              isOpen={showDriverInfo}
+              onClose={() => setShowDriverInfo(false)}
+              driver={drivers.find((d) => d.id === selectedDriver)!}
+            />
+          </DashboardPage.DriverOverlay>
+        )}
       </DashboardPage.MapSection>
 
-      {/* 모달 */}
-      {showDriverInfo && selectedDriver && (
-        <DriverInfoModal
-          isOpen={showDriverInfo}
-          onClose={() => setShowDriverInfo(false)}
-          driver={drivers.find((d) => d.id === selectedDriver)!}
-        />
-      )}
-
+      {/* 졸음 이벤트 발생 시 나타나는 알림 모달 */}
       <AlertModal
         isOpen={showAlert}
         onClose={() => setShowAlert(false)}
@@ -126,30 +119,20 @@ const DashboardPage = () => {
 
 // 스타일 컴포넌트
 DashboardPage.Container = styled.div`
-  display: flex;
+  position: relative;
   height: 100vh;
 `;
 
-DashboardPage.Sidebar = styled.div`
-  width: 400px;
-  padding: 20px;
-  background: #f5f5f5;
-  overflow-y: auto;
-
-  h2 {
-    margin-bottom: 20px;
-  }
-`;
-
-DashboardPage.DriverList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
 DashboardPage.MapSection = styled.div`
-  flex: 1;
-  position: relative;
+  width: 100%;
+  height: 100%;
+`;
+
+DashboardPage.DriverOverlay = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
 `;
 
 export default DashboardPage;

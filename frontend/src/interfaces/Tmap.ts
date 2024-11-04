@@ -174,3 +174,14 @@ export interface TMapLatLngBounds {
   _sw: TMapLatLng; // 남서쪽 경계
   _ne: TMapLatLng; // 북동쪽 경계
 }
+
+// global 설정
+declare global {
+  interface Window {
+    Tmapv2: {
+      Map: new (element: HTMLElement, options: MapOptions) => TMap;
+      LatLng: new (lat: number, lng: number) => TMapLatLng;
+      apiKey: string;
+    };
+  }
+}

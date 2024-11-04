@@ -6,7 +6,11 @@ interface DriverInfo {
   name: string;
   vehicleNumber: string;
   status: string;
-  location: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  sleepEvents: number;
   lastUpdate: string;
 }
 
