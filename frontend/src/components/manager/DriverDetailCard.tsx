@@ -1,99 +1,162 @@
-import { styled } from "styled-components";
-
-interface DriverDetail {
-  id: string;
-  name: string;
-  vehicleNumber: string;
-  status: string;
-  sleepEvents: number;
-  lastLocation: string;
-  lastUpdate: string;
-}
+import { styled } from 'styled-components';
+import {DrowsyEvent} from '@interfaces/manager'
 
 interface DriverDetailCardProps {
-  driver: DriverDetail;
+  event: DrowsyEvent;
+  isSelected: boolean;
   onClick: () => void;
-  isSelected?: boolean;
 }
 
-const DriverDetailCard = ({
-  driver,
-  onClick,
-  isSelected = false,
-}: DriverDetailCardProps) => {
+const DriverDetailCard = ({ event, isSelected, onClick }: DriverDetailCardProps) => {
   return (
-    <DriverDetailCard.Container onClick={onClick} isSelected={isSelected}>
-      <DriverDetailCard.Header>
-        <h3>{driver.name}</h3>
-        <span>{driver.vehicleNumber}</span>
-      </DriverDetailCard.Header>
-      <DriverDetailCard.Body>
-        <div>
-          <label>상태:</label>
-          <span>{driver.status}</span>
-        </div>
-        <div>
-          <label>졸음운전 감지:</label>
-          <span>{driver.sleepEvents}회</span>
-        </div>
-        <div>
-          <label>최근위치:</label>
-          <span>{driver.lastLocation}</span>
-        </div>
-        <div>
-          <label>최종업데이트:</label>
-          <span>{driver.lastUpdate}</span>
-        </div>
-      </DriverDetailCard.Body>
-    </DriverDetailCard.Container>
+    <CardWrapper isSelected={isSelected} onClick={onClick}>
+      <ProfileSection>
+        <ProfileImage src={event.profileImage} alt={event.driverName} />
+        <UserInfo>
+          <NameText>{event.driverName}</NameText>
+          <SubInfo>{event.age} / {event.gender}</SubInfo>
+        </UserInfo>
+        <TimeStamp>{event.timestamp}</TimeStamp>
+      </ProfileSection>
+      
+      <StatsList>
+        <StatItem>
+          <StatLabel>졸음 횟수</StatLabel>
+          <ProgressBarWrapper>
+            <ProgressBar count={event.drowsyCount} color="#4A47D6" />
+            <CountText blue>{event.drowsyCount}회</CountText>
+          </ProgressBarWrapper>
+          <RangeText>5회 이상</RangeText>
+        </StatItem>
+        
+        <StatItem>
+          <StatLabel>졸음 시간</StatLabel>
+          <ProgressBarWrapper>
+            <ProgressBar count={event.drowsyTime / 2} color="#FF4141" />
+            <CountText red>{event.drowsyTime}초 이상</CountText>
+          </ProgressBarWrapper>
+          <RangeText>10초 이상</RangeText>
+        </StatItem>
+        
+        <StatItem>
+          <StatLabel>피로도</StatLabel>
+          <ProgressBarWrapper>
+            <ProgressBar 
+              count={event.fatigueLevel === '강함' ? 5 : event.fatigueLevel === '보통' ? 3 : 1} 
+              color={event.fatigueLevel === '강함' ? '#FF4141' : '#FFA927'}
+            />
+            <CountText red={event.fatigueLevel === '강함'} orange={event.fatigueLevel === '보통'}>
+              {event.fatigueLevel}
+            </CountText>
+          </ProgressBarWrapper>
+          <RangeText>강함</RangeText>
+        </StatItem>
+      </StatsList>
+    </CardWrapper>
   );
 };
 
-// 스타일 컴포넌트
-DriverDetailCard.Container = styled.div<{ isSelected: boolean }>`
-  background: ${({ isSelected }) => (isSelected ? "#f0f0f0" : "white")};
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 10px;
+const CardWrapper = styled.div<{ isSelected: boolean }>`
+  padding: 20px;
+  border-radius: 16px;
+  background: ${({ isSelected }) => isSelected ? '#F0EFFF' : '#FFFFFF'};
+  border: ${({ isSelected }) => 
+    isSelected ? '7px solid rgba(97, 74, 211, 0.80)' : '1px solid #E8E8E8'};
+  margin-bottom: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+  transition: all 0.2s ease;
 `;
 
-DriverDetailCard.Header = styled.div`
+const ProfileSection = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 24px;
+`;
 
-  h3 {
-    margin: 0;
-    font-size: 18px;
-  }
+const ProfileImage = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background: #E8E8E8;
+  margin-right: 12px;
+`;
 
-  span {
-    color: #666;
+const UserInfo = styled.div`
+  flex: 1;
+`;
+
+const NameText = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 4px;
+`;
+
+const SubInfo = styled.div`
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.60);
+`;
+
+const TimeStamp = styled.div`
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.60);
+`;
+
+const StatsList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const StatItem = styled.div``;
+
+const StatLabel = styled.div`
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.80);
+  margin-bottom: 8px;
+`;
+
+const ProgressBarWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+`;
+
+const ProgressBar = styled.div<{ count: number; color: string }>`
+  height: 8px;
+  flex: 1;
+  background: #E8E8E8;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: ${({ count }) => Math.min(count * 20, 100)}%;
+    background: ${({ color }) => color};
+    border-radius: 4px;
   }
 `;
 
-DriverDetailCard.Body = styled.div`
-  div {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
+const CountText = styled.span<{ blue?: boolean; red?: boolean; orange?: boolean }>`
+  font-size: 14px;
+  font-weight: 600;
+  color: ${({ blue, red, orange }) => 
+    blue ? '#4A47D6' : 
+    red ? '#FF4141' : 
+    orange ? '#FFA927' : '#000000'};
+  min-width: 60px;
+`;
 
-    label {
-      color: #666;
-    }
-
-    span {
-      font-weight: 500;
-    }
-  }
+const RangeText = styled.div`
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.40);
+  text-align: right;
 `;
 
 export default DriverDetailCard;
