@@ -9,6 +9,7 @@ import ssafy.modo.jamkkaebi.domain.member.dto.request.RegisterDto;
 import ssafy.modo.jamkkaebi.domain.member.dto.response.RegisterSuccessDto;
 import ssafy.modo.jamkkaebi.domain.member.entity.Member;
 import ssafy.modo.jamkkaebi.domain.member.entity.MemberRole;
+import ssafy.modo.jamkkaebi.domain.member.exception.DuplicatedNameException;
 import ssafy.modo.jamkkaebi.domain.member.exception.UserNotFoundException;
 import ssafy.modo.jamkkaebi.domain.member.repository.MemberRepository;
 
@@ -22,6 +23,11 @@ public class MemberWriteService {
     private final PasswordEncoder passwordEncoder;
 
     public RegisterSuccessDto register(RegisterDto registerDto) {
+
+        if (memberRepository.findByUsername(registerDto.getUsername()).isPresent()) {
+            throw new DuplicatedNameException();
+        }
+
         Member member = memberRepository.save(
                 Member.builder()
                         .username(registerDto.getUsername())
