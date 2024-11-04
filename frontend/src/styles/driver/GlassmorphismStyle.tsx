@@ -42,8 +42,8 @@ export const Card = styled.div<SizeProps>`
 
 export const GrayLine = styled.hr<LineProps>`
   width: ${(props) => props.cardWidth || "289px"};
-  opacity: ${(props) => props.opacity || 0.5};
-  background-color: linear-gradient(
+  opacity: ${(props) => props.opacity || 0.6};
+  background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0) 0%,
     rgba(255, 255, 255, 0.6) 50%,

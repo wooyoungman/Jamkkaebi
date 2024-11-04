@@ -152,13 +152,33 @@ export const ReportDetailTextDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
-`
+`;
 
 export const ReportDetailJourneyDiv = styled.div`
   display: flex;
   gap: 20px;
   align-items: center;
-`
+`;
+
+export const AccidentCountDiv = styled(GlassDiv)`
+  width: 100%;
+  padding: 12px 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+`;
+
+export const AccidentCountList = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 19px;
+`;
+
+export const AccidentCountData = styled.div`
+  display: flex;
+  gap: 10px;
+`;
 
 export const ButtonDiv = styled.div`
   width: 58%;

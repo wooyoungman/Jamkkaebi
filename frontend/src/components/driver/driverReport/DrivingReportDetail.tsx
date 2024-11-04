@@ -10,6 +10,9 @@ import {
 } from "@/styles/driver/GlassmorphismStyle";
 import { DriverText, InlineTextDiv } from "../driverMain/DriverMainCSS";
 import {
+  AccidentCountData,
+  AccidentCountDiv,
+  AccidentCountList,
   ButtonDiv,
   ReportDetailJourneyDiv,
   ReportDetailMain,
@@ -161,14 +164,20 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
                       {reportData.departureLocation}
                     </CustomDriverText>
                   </ReportDetailJourneyDiv>
-                  <div style={{ marginLeft: "49px" }}>
+                  {/* <div style={{ marginLeft: "49px" }}>
                     <DottedLineSVG />
-                  </div>
+                  </div> */}
+                  <ReportDetailJourneyDiv>
+                    <CustomDriverText fontSize="13px" fontWeight={300}>
+                      00:00
+                    </CustomDriverText>
+                    <DottedLineSVG />
+                  </ReportDetailJourneyDiv>
                   <ReportDetailJourneyDiv>
                     <CustomDriverText fontSize="13px" fontWeight={300}>
                       {reportData.arrivalTime}
                     </CustomDriverText>
-                    <WhiteCircleSVG>{/* <DottedLineSVG /> */}</WhiteCircleSVG>
+                    <WhiteCircleSVG />
                     <CustomDriverText fontSize="13px" fontWeight={500}>
                       {reportData.arrivalLocation}
                     </CustomDriverText>
@@ -194,8 +203,40 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
                   </CustomInlineTextDiv>
                 </div>
               </ReportDetailTextDiv>
-
-              
+              <AccidentCountDiv>
+                {reportData.drowsinessCount === 0 &&
+                reportData.focusLossCount === 0 ? (
+                  <AccidentCountList>
+                    <AccidentCountData>
+                      <GreenCircleSVG />
+                      <CustomDriverText fontSize="12px" fontWeight={600}>
+                        안전운행
+                      </CustomDriverText>
+                    </AccidentCountData>
+                  </AccidentCountList>
+                ) : (
+                  <>
+                    <AccidentCountList>
+                      {reportData.drowsinessCount > 0 && (
+                        <AccidentCountData>
+                          <RedCircleSVG />
+                          <CustomDriverText fontSize="12px" fontWeight={600}>
+                            졸음 {reportData.drowsinessCount}회
+                          </CustomDriverText>
+                        </AccidentCountData>
+                      )}
+                      {reportData.focusLossCount > 0 && (
+                        <AccidentCountData>
+                          <MandarineCircleSVG />
+                          <CustomDriverText fontSize="12px" fontWeight={600}>
+                            집중 저하 {reportData.focusLossCount}회
+                          </CustomDriverText>
+                        </AccidentCountData>
+                      )}
+                    </AccidentCountList>
+                  </>
+                )}
+              </AccidentCountDiv>
             </ReportDetailRightDiv>
           </ReportDetailMain>
 
