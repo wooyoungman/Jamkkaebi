@@ -14,21 +14,34 @@ export const GlassDiv = styled.div`
   backdrop-filter: blur(10px);
 `;
 
-interface SizeProps {
+export interface SizeProps {
   cardWidth?: string;
   cardHeight?: string;
   opacity?: number;
 }
 
-const Card = styled.div<SizeProps>`
+export interface LineProps extends SizeProps {
+  position?: "top" | "bottom";
+  offsetLeft?: string;
+  offsetRight?: string;
+  centered?: boolean;
+}
+
+export interface EclipseDivProps extends SizeProps {
+  top?: string;
+  bottom?: string;
+}
+
+export const Card = styled.div<SizeProps>`
   width: ${(props) => props.cardWidth || "420px"};
-  height: ${(props) => props.cardHeight || "900px"};
+  min-width: 650px;
+  height: ${(props) => props.cardHeight || "600px"};
   position: relative;
+  border-radius: 30px;
 `;
 
-const GrayTopLine = styled.hr<SizeProps>`
+export const GrayLine = styled.hr<LineProps>`
   width: ${(props) => props.cardWidth || "289px"};
-  /* height: ${(props) => props.cardHeight || "1px"}; */
   opacity: ${(props) => props.opacity || 0.5};
   background-color: linear-gradient(
     90deg,
@@ -37,38 +50,37 @@ const GrayTopLine = styled.hr<SizeProps>`
     rgba(255, 255, 255, 0) 100%
   );
   position: absolute;
-  top: 0;
-  left: 35px;
+  ${(props) => (props.position === "top" ? "top: 0;" : "bottom: 0;")}
+  ${(props) =>
+    props.centered
+      ? `
+        left: 50%;
+        transform: translateX(-50%);
+      `
+      : `
+        ${props.offsetLeft ? `left: ${props.offsetLeft};` : ""}
+        ${props.offsetRight ? `right: ${props.offsetRight};` : ""}
+      `}
+  margin: 0;
 `;
 
-const GrayBottomLine = styled.hr<SizeProps>`
-  width: ${(props) => props.cardWidth || "289px"};
-  /* height: ${(props) => props.cardHeight || "1px"}; */
-  opacity: ${(props) => props.opacity || 0.5};
-  background-color: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.6) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  position: absolute;
-  bottom: 0;
-  right: 25px;
-`;
-
-const BlueEclipseDiv = styled.div<SizeProps>`
+export const EclipseDiv = styled.div<EclipseDivProps>`
   width: ${(props) => props.cardWidth || "247px"};
   height: ${(props) => props.cardHeight || "77px"};
   flex-shrink: 0;
-  /* fill: #3055e3; */
   opacity: 0.6;
   position: absolute;
-  bottom: 15px;
+  ${(props) => (props.top ? `top: ${props.top};` : "")}
+  ${(props) => (props.bottom ? `bottom: ${props.bottom};` : "")}
+
   left: 50%;
   transform: translateX(-50%);
 `;
 
-const BlueEclipseSVG: React.FC<SizeProps> = ({ cardWidth, cardHeight }) => (
+export const BlueEclipseSVG: React.FC<SizeProps> = ({
+  cardWidth,
+  cardHeight,
+}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={cardWidth || "247px"}
@@ -87,19 +99,10 @@ const BlueEclipseSVG: React.FC<SizeProps> = ({ cardWidth, cardHeight }) => (
   </svg>
 );
 
-const GrayEclipseDiv = styled.div<SizeProps>`
-  width: ${(props) => props.cardWidth || "247px"};
-  height: ${(props) => props.cardHeight || "77px"};
-  flex-shrink: 0;
-  /* fill: #727272; */
-  opacity: 0.6;
-  position: absolute;
-  top: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-`;
-
-const GrayEclipseSVG: React.FC<SizeProps> = ({ cardWidth, cardHeight }) => (
+export const GrayEclipseSVG: React.FC<SizeProps> = ({
+  cardWidth,
+  cardHeight,
+}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={cardWidth || "247px"}
@@ -118,25 +121,45 @@ const GrayEclipseSVG: React.FC<SizeProps> = ({ cardWidth, cardHeight }) => (
   </svg>
 );
 
-const ModalGlassDiv = styled.div`
+export const ModalGlassDiv = styled.div<SizeProps>`
+  width: ${(props) => props.cardWidth || "420px"};
+  height: ${(props) => props.cardHeight || "600px"};
   border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.09);
   background: rgba(137, 137, 137, 0.05);
   backdrop-filter: blur(75px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
 `;
 
-export const ReportModalGlassDiv = () => {
-  return (
-    <Card>
-      <GrayTopLine cardWidth="197px" opacity={0.6} />
-      <GrayEclipseDiv cardWidth="247px" cardHeight="77px">
-        <GrayEclipseSVG cardWidth="247px" cardHeight="77px" />
-      </GrayEclipseDiv>
-      <BlueEclipseDiv cardWidth="247px" cardHeight="77px">
-        <BlueEclipseSVG cardWidth="247px" cardHeight="77px" />
-      </BlueEclipseDiv>
-      <GrayBottomLine cardWidth="289px" opacity={0.6} />
-      <ModalGlassDiv />
-    </Card>
-  );
-};
+// export const ReportModalGlassDiv: React.FC = () => {
+//   return (
+//     <Card>
+//       <GrayLine
+//         cardWidth="197px"
+//         opacity={0.6}
+//         position="top"
+//         offsetLeft="35px"
+//       />
+//       <EclipseDiv cardWidth="247px" cardHeight="77px" top="5px">
+//         <GrayEclipseSVG cardWidth="247px" cardHeight="77px" />
+//       </EclipseDiv>
+//       <EclipseDiv cardWidth="247px" cardHeight="77px" bottom="15px">
+//         <BlueEclipseSVG cardWidth="247px" cardHeight="77px" />
+//       </EclipseDiv>
+//       <GrayLine
+//         cardWidth="289px"
+//         opacity={0.6}
+//         position="bottom"
+//         offsetRight="25px"
+//       />
+//       <ModalGlassDiv />
+//     </Card>
+//   );
+// };
+
+// export default ReportModalGlassDiv;

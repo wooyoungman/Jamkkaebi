@@ -85,7 +85,7 @@ const DrivingReportItem: React.FC<DrivingReportItemProps> = ({
 
       {isModalOpen && (
         <DrivingReportDetail
-          // reportData={reportData}
+          reportData={reportData}
           onClose={handleCloseModal}
         />
       )}

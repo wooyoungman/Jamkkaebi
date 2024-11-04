@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { GlassDiv } from "@/styles/driver/GlassmorphismStyle";
+import mapImg from "@/assets/driver/reportMapImg.png";
 
 const CustomGlassDiv = styled(GlassDiv)`
   border-radius: 10px;
@@ -118,4 +119,70 @@ export const HRLine = styled.hr`
   height: 70px;
   background-color: #fff;
   margin: 0;
+`;
+
+export const ReportDetailMain = styled.div`
+  width: 100%;
+  height: 81%;
+  display: flex;
+  gap: 20px;
+`;
+
+export const ReportMapDiv = styled.div`
+  width: 40%;
+  height: 100%;
+  flex-shrink: 0;
+  background-image: url(${mapImg});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+`;
+
+// 1
+export const ReportDetailRightDiv = styled.div`
+  width: calc(60% - 20px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+export const ReportDetailTextDiv = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`
+
+export const ReportDetailJourneyDiv = styled.div`
+  display: flex;
+  gap: 20px;
+  align-items: center;
+`
+
+export const ButtonDiv = styled.div`
+  width: 58%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 11px;
+  background: linear-gradient(
+    90deg,
+    #113be1 0%,
+    #4268ff 50.48%,
+    #4062e3 72.41%,
+    #113be1 100%
+  );
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+    background: linear-gradient(
+      90deg,
+      #0e34c4 0%,
+      #3b5dde 50.48%,
+      #3754ca 72.41%,
+      #0e34c4 100%
+    ); /* 배경색을 살짝 어둡게 변경 */
+  }
 `;

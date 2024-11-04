@@ -1,3 +1,4 @@
+import React from "react";
 import { DriverText } from "../driverMain/DriverMainCSS";
 import { DrivingGraphDiv } from "./DriverReportCSS";
 import DriverGraphDetail from "./DriverGraphDetail";
