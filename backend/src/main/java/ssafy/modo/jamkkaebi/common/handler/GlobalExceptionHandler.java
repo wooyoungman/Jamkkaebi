@@ -3,6 +3,7 @@ package ssafy.modo.jamkkaebi.common.handler;
 import ssafy.modo.jamkkaebi.common.ApiResponse;
 import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenExpirationException;
 import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenTypeException;
+import ssafy.modo.jamkkaebi.domain.member.exception.DuplicatedNameException;
 import ssafy.modo.jamkkaebi.domain.member.exception.UserNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
@@ -59,6 +60,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(TokenExpirationException.class)
     public ResponseEntity<ApiResponse<Void>> handleTokenExpirationException(TokenExpirationException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(DuplicatedNameException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicatedNameException(DuplicatedNameException e) {
         ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
         return ResponseEntity.status(e.getStatus()).body(response);
     }
