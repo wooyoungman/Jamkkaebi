@@ -7,6 +7,8 @@ import {
   GrayEclipseSVG,
   BlueEclipseSVG,
   ModalGlassDiv,
+  ModalGlassDiv2,
+  GlassDiv,
 } from "@/styles/driver/GlassmorphismStyle";
 import { DriverText, InlineTextDiv } from "../driverMain/DriverMainCSS";
 import {
@@ -31,6 +33,18 @@ import {
 } from "@/styles/driver/driverReport/DriverReportSVG";
 import { HRLine } from "./DriverReportCSS";
 import DrivingDetailGraphCarousel from "./DrivingDetailGraphCarousel";
+
+// const CustomModalGlassDiv = styled(ModalGlassDiv2)`
+//   width: 800px;
+//   height: 630px;
+//   border-radius: 30px;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   gap: 20px;
+//   padding: 20px;
+//   box-sizing: border-box;
+// `;
 
 const CustomHRLine = styled(HRLine)`
   height: 12px;
@@ -140,6 +154,7 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
           cardWidth="100%"
           cardHeight="100%"
         >
+          {/* <CustomModalGlassDiv onClick={(e) => e.stopPropagation()}> */}
           <CloseButton onClick={onClose}>✕</CloseButton>
           <DriverText fontSize="20px" color="#E0E0E0" fontWeight={700}>
             운행 상세 기록
@@ -165,9 +180,6 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
                       {reportData.departureLocation}
                     </CustomDriverText>
                   </ReportDetailJourneyDiv>
-                  {/* <div style={{ marginLeft: "49px" }}>
-                    <DottedLineSVG />
-                  </div> */}
                   <ReportDetailJourneyDiv>
                     <CustomDriverText
                       fontSize="12px"
@@ -269,6 +281,7 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
               Continue
             </DriverText>
           </ButtonDiv>
+          {/* </CustomModalGlassDiv> */}
         </ModalGlassDiv>
       </Card>
     </ModalOverlay>,

@@ -1,10 +1,12 @@
 import { NavigationBody, NaviRightDiv } from "./DriverNaviCSS";
+import DriverMap from "../driverMap";
 
 const DriverNaviRight: React.FC = () => {
   return (
     <>
       <NaviRightDiv>
-        <NavigationBody />
+        {/* <NavigationBody /> */}
+        <DriverMap />
       </NaviRightDiv>
     </>
   );

@@ -14,6 +14,20 @@ export const GlassDiv = styled.div`
   backdrop-filter: blur(10px);
 `;
 
+export const ModalGlassDiv2 = styled.div`
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+  box-shadow:
+    -5px -5px 4px 0px rgba(255, 255, 255, 0.04) inset,
+    5px 5px 4px 0px rgba(255, 255, 255, 0.08) inset;
+  backdrop-filter: blur(10px);
+`;
+
 export interface SizeProps {
   cardWidth?: string;
   cardHeight?: string;
@@ -85,17 +99,10 @@ export const BlueEclipseSVG: React.FC<SizeProps> = ({
     xmlns="http://www.w3.org/2000/svg"
     width={cardWidth || "247px"}
     height={cardHeight || "77px"}
-    viewBox="0 0 247 77"
+    viewBox="0 0 528 88"
     fill="none"
   >
-    <ellipse
-      opacity="0.6"
-      cx="123.5"
-      cy="38.5"
-      rx="123.5"
-      ry="38.5"
-      fill="#3055E3"
-    />
+    <ellipse opacity="0.6" cx="50%" cy="50%" rx="50%" ry="50%" fill="#3055E3" />
   </svg>
 );
 
@@ -107,17 +114,10 @@ export const GrayEclipseSVG: React.FC<SizeProps> = ({
     xmlns="http://www.w3.org/2000/svg"
     width={cardWidth || "247px"}
     height={cardHeight || "77px"}
-    viewBox="0 0 247 77"
+    viewBox="0 0 528 88"
     fill="none"
   >
-    <ellipse
-      opacity="0.6"
-      cx="123.5"
-      cy="38.5"
-      rx="123.5"
-      ry="38.5"
-      fill="#727272"
-    />
+    <ellipse opacity="0.6" cx="50%" cy="50%" rx="50%" ry="50%" fill="#727272" />
   </svg>
 );
 
