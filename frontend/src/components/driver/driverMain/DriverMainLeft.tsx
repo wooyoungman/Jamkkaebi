@@ -13,7 +13,7 @@ import {
 } from "./DriverMainCSS";
 import DriverConditionGraph from "./DriverConditionGraph";
 
-import driverImg from "@/assets/driver/driverImg.png";
+import driverImg from "@/assets/driverImg.png";
 
 const DriverMainLeft: React.FC = () => {
   return (

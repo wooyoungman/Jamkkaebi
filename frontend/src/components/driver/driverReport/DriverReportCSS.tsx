@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { GlassDiv } from "@/styles/driver/GlassmorphismStyle";
-import mapImg from "@/assets/driver/reportMapImg.png";
+import mapImg from "@/assets/reportMapImg.png";
 
 export const CustomGlassDiv = styled(GlassDiv)`
   border-radius: 10px;

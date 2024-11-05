@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { GlassDiv } from "@/styles/driver/GlassmorphismStyle";
-import navigationImg from "@/assets/driver/navigationImg.png";
+import navigationImg from "@/assets/navigationImg.png";
 
 export const DriverNaviDiv = styled(GlassDiv)`
   width: 100%;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { GlassDiv } from "../../../styles/driver/GlassmorphismStyle";
-import naviImg from "@/assets/driver/naviImg.png";
-import cloudyImg from "@/assets/driver/cloudyImg.png";
+import naviImg from "@/assets/naviImg.png";
+import cloudyImg from "@/assets/cloudyImg.png";
 
 export const Left = styled(GlassDiv)`
   width: 35%;
