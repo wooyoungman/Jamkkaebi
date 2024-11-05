@@ -204,4 +204,20 @@ ReportPage.MapSection = styled.div`
   position: relative;
 `;
 
+ReportPage.DriverInfo = styled.div`
+  margin-top: 10px;
+  color: #333;
+
+  div {
+    margin-bottom: 5px;
+  }
+`;
+
+ReportPage.NoEvents = styled.div`
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 20px;
+`;
+
 export default ReportPage;

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-
 import MapContainer from "@components/manager/MapContainer";
 import DriverMarker from "@components/manager/DriverMarker";
 import RoutePolyline from "@components/manager/RoutePolyline";
@@ -46,7 +45,7 @@ const DashboardPage = () => {
     },
   });
 
-  // 졸음운전 이벤트 실시간 구독
+  // 졸음운전 이벤트 실시간
   useEffect(() => {
     // WebSocket 연결 시 졸음 이벤트 발생하면 AlertModal 표시
     const handleSleepEvent = (event: any) => {
