@@ -90,8 +90,8 @@ const MainPage = () => {
                 value={formData.id}
                 onChange={handleChange}
                 placeholder="ID"
-                helpText="아이디 찾기"
-                helpLink="/forgot-id"
+                // helpText="아이디 찾기"
+                // helpLink="/forgot-id"
               />
             </InputWrapper>
             <InputWrapper>
@@ -101,8 +101,8 @@ const MainPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Password"
-                helpText="비밀번호 찾기"
-                helpLink="/forgot-password"
+                // helpText="비밀번호 찾기"
+                // helpLink="/forgot-password"
               />
             </InputWrapper>
             {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -191,13 +191,13 @@ const LoginTitle = styled.h3`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 40px;
 `;
 
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 15px;
 `;
 
 const ErrorMessage = styled.p`

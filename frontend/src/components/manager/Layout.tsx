@@ -4,8 +4,6 @@ import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 
 const GlobalStyle = createGlobalStyle`
-  @import url('https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/static/woff2/SUIT.css');
-
   * {
     margin: 0;
     padding: 0;
