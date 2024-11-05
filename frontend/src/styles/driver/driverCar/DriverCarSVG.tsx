@@ -24,9 +24,9 @@ export const SoundSVG = () => (
     <path
       d="M18.0026 9.209C19.4467 11.1352 19.4467 14.8662 18.0026 16.7923M21.2526 5.41733C25.5729 9.54267 25.5989 16.4857 21.2526 20.584M2.83594 16.2062V9.794C2.83594 9.17217 3.32127 8.66733 3.91927 8.66733H7.8041C7.94747 8.66682 8.08924 8.63728 8.22087 8.5805C8.35251 8.52371 8.47128 8.44085 8.57002 8.33692L11.82 4.66658C12.5025 3.95592 13.6693 4.45967 13.6693 5.46392V20.5374C13.6693 21.5492 12.4884 22.0487 11.8103 21.3239L8.5711 17.6742C8.47208 17.5673 8.35211 17.4819 8.21866 17.4234C8.08522 17.3649 7.94115 17.3344 7.79544 17.334H3.91927C3.32127 17.334 2.83594 16.8292 2.83594 16.2062Z"
       stroke="#E0E0E0"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
@@ -57,37 +57,37 @@ export const AlarmSVG = () => (
     <path
       d="M13 3.25V5.41667"
       stroke="#E0E0E0"
-      stroke-width="2.16667"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2.16667"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M12.9987 5.41602C9.41286 5.41602 6.4987 8.33018 6.4987 11.916V18.416C5.41536 18.416 4.33203 19.4993 4.33203 20.5827H12.9987M12.9987 5.41602C16.5845 5.41602 19.4987 8.33018 19.4987 11.916V18.416C20.582 18.416 21.6654 19.4993 21.6654 20.5827H12.9987"
       stroke="#E0E0E0"
-      stroke-width="2.16667"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2.16667"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M10.832 21.666C10.832 22.8577 11.807 23.8327 12.9987 23.8327C14.1904 23.8327 15.1654 22.8577 15.1654 21.666"
       stroke="#E0E0E0"
-      stroke-width="2.16667"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2.16667"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M23.832 6.5V10.8333"
       stroke="#E0E0E0"
-      stroke-width="2.16667"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2.16667"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M23.832 15.166V15.176"
       stroke="#E0E0E0"
-      stroke-width="2.16667"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2.16667"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

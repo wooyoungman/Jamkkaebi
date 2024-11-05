@@ -30,6 +30,7 @@ import {
   DottedLineSVG,
 } from "@/styles/driver/driverReport/DriverReportSVG";
 import { HRLine } from "./DriverReportCSS";
+import DrivingDetailGraphCarousel from "./DrivingDetailGraphCarousel";
 
 const CustomHRLine = styled(HRLine)`
   height: 12px;
@@ -168,7 +169,11 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
                     <DottedLineSVG />
                   </div> */}
                   <ReportDetailJourneyDiv>
-                    <CustomDriverText fontSize="13px" fontWeight={300}>
+                    <CustomDriverText
+                      fontSize="12px"
+                      fontWeight={300}
+                      style={{ opacity: 0 }}
+                    >
                       00:00
                     </CustomDriverText>
                     <DottedLineSVG />
@@ -237,6 +242,25 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
                   </>
                 )}
               </AccidentCountDiv>
+
+              {/* 그래프 */}
+              {/* <DrivingDetailGraphDiv>
+                <DriverText fontSize="15px" fontWeight={700}>
+                  당일 평균 집중/졸음 지수
+                </DriverText>
+                <ConditionGraphWrapper>
+                  <ConditionGraphDiv>
+                    <DriverConditionGraph
+                      graphType="concentration"
+                      score={34}
+                    />
+                  </ConditionGraphDiv>
+                  <ConditionGraphDiv>
+                    <DriverConditionGraph graphType="drowsy" score={72} />
+                  </ConditionGraphDiv>
+                </ConditionGraphWrapper>
+              </DrivingDetailGraphDiv> */}
+              <DrivingDetailGraphCarousel />
             </ReportDetailRightDiv>
           </ReportDetailMain>
 

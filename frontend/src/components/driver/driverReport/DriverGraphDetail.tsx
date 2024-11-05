@@ -25,8 +25,20 @@ ChartJS.register(
   Filler
 );
 
-const DriverGraphDetail: React.FC = () => {
-  const labels = Array.from({ length: 25 }, (_, i) => `${i}:00`);
+interface DriverGraphDetailProps {
+  xFontSize: number;
+  xTickSize: number;
+  yFontSize: number;
+  yTickSize: number;
+}
+
+const DriverGraphDetail: React.FC<DriverGraphDetailProps> = ({
+  xFontSize,
+  xTickSize,
+  yFontSize,
+  yTickSize,
+}) => {
+  const labels = Array.from({ length: 25 }, (_, i) => `${i}`);
   const concentrateValues = Array.from({ length: 25 }, () =>
     Math.floor(Math.random() * 101)
   );
@@ -70,6 +82,9 @@ const DriverGraphDetail: React.FC = () => {
         position: "bottom" as const,
         labels: {
           color: "#e0e0e0",
+          font: {
+            size: xTickSize, // 객체로 감싸서 전달
+          },
         },
       },
     },
@@ -80,13 +95,13 @@ const DriverGraphDetail: React.FC = () => {
           text: "시간대",
           color: "#e0e0e0",
           font: {
-            size: 12,
+            size: xFontSize,
           },
         },
         ticks: {
           color: "#e0e0e0",
           font: {
-            size: 11,
+            size: xTickSize,
           },
         },
         grid: {
@@ -102,13 +117,13 @@ const DriverGraphDetail: React.FC = () => {
           text: "수치",
           color: "#e0e0e0",
           font: {
-            size: 12,
+            size: yFontSize,
           },
         },
         ticks: {
           color: "#e0e0e0",
           font: {
-            size: 11,
+            size: yTickSize,
           },
         },
         grid: {

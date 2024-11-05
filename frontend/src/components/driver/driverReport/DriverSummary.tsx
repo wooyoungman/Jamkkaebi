@@ -62,7 +62,7 @@ const DriverSummary: React.FC = () => {
       <ReportSummaryBody>
         <ReportSummaryContent>
           <DriverText fontSize="15px" fontWeight={700}>
-            평군 집중지수
+            평균 집중지수
           </DriverText>
           <CustomInlineTextDiv>
             <DriverText fontSize="25px" fontWeight={800}>

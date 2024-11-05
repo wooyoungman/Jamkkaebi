@@ -1,4 +1,4 @@
-import { ConditionGraphDiv, GraphText } from "./DriverMainCSS";
+import { GraphText } from "./DriverMainCSS";
 import { DriverText } from "./DriverMainCSS";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
@@ -47,7 +47,7 @@ const DriverConditionGraph: React.FC<DriverConditionGraphProps> = ({
   };
 
   const options = {
-    responsive: true,
+    // responsive: true,
     plugins: {
       tooltip: {
         enabled: false,
@@ -58,7 +58,8 @@ const DriverConditionGraph: React.FC<DriverConditionGraphProps> = ({
   const title = graphType === "concentration" ? "집중지수" : "졸음지수";
 
   return (
-    <ConditionGraphDiv>
+    // <ConditionGraphDiv>
+    <>
       <div
         style={{
           position: "absolute",
@@ -66,6 +67,7 @@ const DriverConditionGraph: React.FC<DriverConditionGraphProps> = ({
           left: 0,
           width: "100%",
           height: "100%",
+          // backgroundColor: "white",
         }}
       >
         <Doughnut data={outerData} options={options} />
@@ -102,23 +104,8 @@ const DriverConditionGraph: React.FC<DriverConditionGraphProps> = ({
           {score}
         </DriverText>
       </GraphText>
-      {/* <GraphText>
-        <DriverText color="#9BF62D" fontSize="18px" fontWeight={700}>
-          집중지수
-        </DriverText>
-        <DriverText fontSize="21px" fontWeight={700}>
-          100
-        </DriverText>
-        <DriverText
-          color="#9BF62D"
-          fontSize="74px"
-          fontWeight={700}
-          style={{ marginTop: "-10px" }} // 84 텍스트를 위로 이동
-        >
-          84
-        </DriverText>
-      </GraphText> */}
-    </ConditionGraphDiv>
+    </>
+    // </ConditionGraphDiv>
   );
 };
 

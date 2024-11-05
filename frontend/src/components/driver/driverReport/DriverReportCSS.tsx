@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { GlassDiv } from "@/styles/driver/GlassmorphismStyle";
 import mapImg from "@/assets/driver/reportMapImg.png";
 
-const CustomGlassDiv = styled(GlassDiv)`
+export const CustomGlassDiv = styled(GlassDiv)`
   border-radius: 10px;
 `;
+
 export const ReportRightDiv = styled.div`
   width: 63.5%;
   min-width: 500px;
@@ -160,7 +161,7 @@ export const ReportDetailJourneyDiv = styled.div`
   align-items: center;
 `;
 
-export const AccidentCountDiv = styled(GlassDiv)`
+export const AccidentCountDiv = styled(CustomGlassDiv)`
   width: 100%;
   padding: 12px 56px;
   display: flex;
@@ -171,13 +172,15 @@ export const AccidentCountDiv = styled(GlassDiv)`
 
 export const AccidentCountList = styled.div`
   display: flex;
-  justify-content: space-between;
+  width: 100%;
+  justify-content: space-around;
   padding: 0px 19px;
 `;
 
 export const AccidentCountData = styled.div`
   display: flex;
   gap: 10px;
+  align-items: center;
 `;
 
 export const ButtonDiv = styled.div`
@@ -205,4 +208,31 @@ export const ButtonDiv = styled.div`
       #0e34c4 100%
     ); /* 배경색을 살짝 어둡게 변경 */
   }
+`;
+
+export const DrivingDetailGraphDiv = styled(CustomGlassDiv)`
+  width: 100%;
+  height: 64%;
+  /* height: 60%; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 15px;
+  box-sizing: border-box;
+  gap: 15px;
+`;
+
+export const ConditionGraphWrapper = styled.div`
+  width: 100%;
+  height: calc(100% - 40px);
+  display: flex;
+  align-items: center;
+  /* background-color: white; */
+`;
+
+export const ConditionGraphDiv = styled.div`
+  width: 50%;
+  height: 95%;
+  position: relative;
+  /* background-color: gray; */
 `;
