@@ -28,13 +28,13 @@ const RoutePolyline = ({
       (pos) => new window.Tmapv2.LatLng(pos.lat, pos.lng)
     );
 
-    const newPolyline = mapInstance.addPolyline({
-      path: positions as unknown as TMapLatLng[],
-      style: {
-        strokeColor: color,
-        strokeWidth: width,
-        strokeOpacity: 0.8,
-      },
+    // TMap API의 Polyline 생성 메서드 수정
+    const newPolyline = new window.Tmapv2.Polyline({
+      path: positions,
+      strokeColor: color,
+      strokeWidth: width,
+      strokeOpacity: 0.8,
+      map: mapInstance,
     });
 
     setPolyline(newPolyline);
