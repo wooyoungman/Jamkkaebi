@@ -1,15 +1,13 @@
+import { User } from "./manager";
+
 export const DUMMY_USERS: User[] = [
   {
     id: "1",
     name: "이정준",
     role: "driver",
-    company: "Microsoft",
     phone: "(225) 555-0118",
     employeeId: "80번 4721",
-    location: {
-      lat: 37.566535,
-      lng: 126.977969,
-    }, // 서울
+    region: "서울",
     status: "운행 중",
     profileImage:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeJungJun&backgroundColor=b6e3f4",
@@ -18,13 +16,9 @@ export const DUMMY_USERS: User[] = [
     id: "2",
     name: "이예지",
     role: "driver",
-    company: "Yahoo",
     phone: "(205) 555-0100",
     employeeId: "70번 9234",
-    location: {
-      lat: 35.179554,
-      lng: 129.075642,
-    }, // 부산
+    region: "부산",
     status: "휴일",
     profileImage:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeYeJi&backgroundColor=c0aede",
@@ -33,13 +27,9 @@ export const DUMMY_USERS: User[] = [
     id: "3",
     name: "송준혁",
     role: "driver",
-    company: "Adobe",
     phone: "(302) 555-0107",
     employeeId: "75번 3561",
-    location: {
-      lat: 35.871435,
-      lng: 128.601445,
-    }, // 대구
+    region: "대구",
     status: "휴일",
     profileImage:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=SongJunHyeok&backgroundColor=b6e3f4",
@@ -48,13 +38,9 @@ export const DUMMY_USERS: User[] = [
     id: "4",
     name: "조정훈",
     role: "driver",
-    company: "Tesla",
     phone: "(252) 555-0126",
     employeeId: "77번 1892",
-    location: {
-      lat: 37.456255,
-      lng: 126.705206,
-    }, // 인천
+    region: "인천",
     status: "운행 중",
     profileImage:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=JoJungHun&backgroundColor=c0aede",
@@ -63,13 +49,9 @@ export const DUMMY_USERS: User[] = [
     id: "5",
     name: "박건국",
     role: "driver",
-    company: "Google",
     phone: "(629) 555-0129",
     employeeId: "82번 7456",
-    location: {
-      lat: 35.160032,
-      lng: 126.851338,
-    }, // 광주
+    region: "광주",
     status: "운행 중",
     profileImage:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=ParkGunKuk&backgroundColor=ffd5dc",
@@ -78,13 +60,9 @@ export const DUMMY_USERS: User[] = [
     id: "6",
     name: "정우영",
     role: "driver",
-    company: "Microsoft",
     phone: "(406) 555-0120",
     employeeId: "83번 2398",
-    location: {
-      lat: 36.350412,
-      lng: 127.384548,
-    }, // 대전
+    region: "대전",
     status: "운행 중",
     profileImage:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=JungWooYoung&backgroundColor=b6e3f4",
@@ -93,13 +71,9 @@ export const DUMMY_USERS: User[] = [
     id: "7",
     name: "김현지",
     role: "driver",
-    company: "Yahoo",
     phone: "(208) 555-0112",
     employeeId: "85번 6743",
-    location: {
-      lat: 35.538376,
-      lng: 129.311563,
-    }, // 울산
+    region: "울산",
     status: "운행 중",
     profileImage:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=KimHyunJi&backgroundColor=c0aede",
@@ -108,15 +82,198 @@ export const DUMMY_USERS: User[] = [
     id: "8",
     name: "이도훈",
     role: "driver",
-    company: "Facebook",
     phone: "(704) 555-0127",
     employeeId: "87번 5127",
-    location: {
-      lat: 37.263573,
-      lng: 127.028601,
-    }, // 경기(수원)
+    region: "경기(수원)",
     status: "휴일",
     profileImage:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeDooHoon&backgroundColor=d1d4f9",
+  },
+  {
+    id: "9",
+    name: "서정빈",
+    role: "driver",
+    phone: "(509) 555-0133",
+    employeeId: "90번 8234",
+    region: "강릉",
+    status: "운행 중",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=KangMinSeo&backgroundColor=ffd5dc",
+  },
+  {
+    id: "10",
+    name: "김한주",
+    role: "driver",
+    phone: "(603) 555-0123",
+    employeeId: "92번 1459",
+    region: "구미",
+    status: "휴일",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=ChoiSeoYeon&backgroundColor=b6e3f4",
+  },
+  {
+    id: "11",
+    name: "오형남",
+    role: "driver",
+    phone: "(701) 555-0183",
+    employeeId: "95번 3672",
+    region: "전주",
+    status: "운행 중",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=HanJiWon&backgroundColor=c0aede",
+  },
+  {
+    id: "12",
+    name: "박성민",
+    role: "driver",
+    phone: "(503) 555-0137",
+    employeeId: "98번 7890",
+    region: "제주",
+    status: "휴일",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=ParkSungMin&backgroundColor=d1d4f9",
+  },
+  {
+    id: "13",
+    name: "김태호",
+    role: "driver",
+    phone: "(208) 555-0114",
+    employeeId: "99번 4567",
+    region: "천안",
+    status: "운행 중",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=KimTaeHo&backgroundColor=ffd5dc",
+  },
+  {
+    id: "14",
+    name: "윤하진",
+    role: "driver",
+    phone: "(435) 555-0198",
+    employeeId: "100번 2345",
+    region: "춘천",
+    status: "운행 중",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=YoonHaJin&backgroundColor=b6e3f4",
+  },
+  {
+    id: "15",
+    name: "임수진",
+    role: "driver",
+    phone: "(582) 555-0144",
+    employeeId: "102번 6789",
+    region: "안동",
+    status: "휴일",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=ImSuJin&backgroundColor=c0aede",
+  },
+  {
+    id: "16",
+    name: "강동원",
+    role: "driver",
+    phone: "(582) 555-0155",
+    employeeId: "103번 1234",
+    region: "포항",
+    status: "운행 중",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=KangDongWon&backgroundColor=b6e3f4",
+  },
+  {
+    id: "17",
+    name: "한소희",
+    role: "driver",
+    phone: "(582) 555-0166",
+    employeeId: "104번 5678",
+    region: "창원",
+    status: "휴일",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=HanSoHee&backgroundColor=ffd5dc",
+  },
+  {
+    id: "18",
+    name: "장민석",
+    role: "driver",
+    phone: "(582) 555-0177",
+    employeeId: "105번 9012",
+    region: "용인",
+    status: "운행 중",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=JangMinSeok&backgroundColor=c0aede",
+  },
+  {
+    id: "19",
+    name: "정유미",
+    role: "driver",
+    phone: "(582) 555-0188",
+    employeeId: "106번 3456",
+    region: "청주",
+    status: "운행 중",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=JungYouMi&backgroundColor=d1d4f9",
+  },
+  {
+    id: "20",
+    name: "이승훈",
+    role: "driver",
+    phone: "(582) 555-0199",
+    employeeId: "107번 7890",
+    region: "김해",
+    status: "휴일",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeSeungHoon&backgroundColor=b6e3f4",
+  },
+  {
+    id: "21",
+    name: "백지민",
+    role: "driver",
+    phone: "(582) 555-0200",
+    employeeId: "108번 1234",
+    region: "경기(성남)",
+    status: "운행 중",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=BaekJiMin&backgroundColor=ffd5dc",
+  },
+  {
+    id: "22",
+    name: "최우진",
+    role: "driver",
+    phone: "(582) 555-0211",
+    employeeId: "109번 5678",
+    region: "서울",
+    status: "운행 중",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=ChoiWooJin&backgroundColor=c0aede",
+  },
+  {
+    id: "23",
+    name: "김태리",
+    role: "driver",
+    phone: "(582) 555-0222",
+    employeeId: "110번 9012",
+    region: "부산",
+    status: "휴일",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=KimTaeRi&backgroundColor=d1d4f9",
+  },
+  {
+    id: "24",
+    name: "박보검",
+    role: "driver",
+    phone: "(582) 555-0233",
+    employeeId: "111번 3456",
+    region: "대구",
+    status: "운행 중",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=ParkBoGum&backgroundColor=b6e3f4",
+  },
+  {
+    id: "25",
+    name: "송혜교",
+    role: "driver",
+    phone: "(582) 555-0244",
+    employeeId: "112번 7890",
+    region: "인천",
+    status: "휴일",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=SongHyeKyo&backgroundColor=ffd5dc",
   },
 ];

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAtomValue } from "jotai";
 import { mapInstanceAtom } from "./MapContainer";
-import { TMapMarker, TMapLatLng } from "@interfaces/Tmap";
+import { TMapMarker, TMapLatLng, TMapSize } from "@interfaces/Tmap";
 import circlechr from "@assets/circlechr.png";
 
 interface DriverMarkerProps {

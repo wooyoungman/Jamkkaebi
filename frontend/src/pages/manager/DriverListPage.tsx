@@ -1,3 +1,4 @@
+import { useState, useMemo } from "react";
 import styled from "styled-components";
 import { useAtom } from "jotai";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -12,9 +13,20 @@ const usersAtom = atomWithQuery(() => ({
   queryFn: async () => DUMMY_USERS,
 }));
 
+const ITEMS_PER_PAGE = 8; // 한 페이지당 8명 표시
+
 const DriverListContent = () => {
   const [usersQuery] = useAtom(usersAtom);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const users = usersQuery.data || [];
+
+  // 페이지네이션 계산
+  const totalPages = Math.ceil(users.length / ITEMS_PER_PAGE);
+  const paginatedUsers = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return users.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [users, currentPage]);
 
   if (usersQuery.isLoading) {
     return <Container>Loading...</Container>;
@@ -61,42 +73,64 @@ const DriverListContent = () => {
         </SearchSection>
       </Header>
 
-      <Table>
-        <thead>
-          <TR>
-            <TH>운전자 이름</TH>
-            <TH>회사</TH>
-            <TH>전화 번호</TH>
-            <TH>차량 번호</TH>
-            <TH>지역</TH>
-            <TH>운행 중</TH>
-          </TR>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <TR key={user.id}>
-              <TD>{user.name}</TD>
-              <TD>{user.company}</TD>
-              <TD>{user.phone}</TD>
-              <TD>{user.employeeId}</TD>
-              <TD>{user.location}</TD>
-              <TD>
-                <StatusBadge status={user.status}>{user.status}</StatusBadge>
-              </TD>
+      <TableWrapper>
+        <Table>
+          <thead>
+            <TR>
+              <TH>프로필</TH>
+              <TH>운전자 이름</TH>
+              <TH>전화 번호</TH>
+              <TH>차량 번호</TH>
+              <TH>지역</TH>
+              <TH>운행 중</TH>
             </TR>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {paginatedUsers.map((user) => (
+              <TR key={user.id}>
+                <TD>
+                  <ProfileImage
+                    src={user.profileImage}
+                    alt={`${user.name} 프로필`}
+                  />
+                </TD>
+                <TD>{user.name}</TD>
+                <TD>{user.phone}</TD>
+                <TD>{user.employeeId}</TD>
+                <TD>{user.region}</TD>
+                <TD>
+                  <StatusBadge status={user.status}>{user.status}</StatusBadge>
+                </TD>
+              </TR>
+            ))}
+          </tbody>
+        </Table>
+      </TableWrapper>
 
       <Pagination>
-        <PaginationButton>&lt;</PaginationButton>
-        <PaginationButton active>1</PaginationButton>
-        <PaginationButton>2</PaginationButton>
-        <PaginationButton>3</PaginationButton>
-        <PaginationButton>4</PaginationButton>
-        <PaginationButton>...</PaginationButton>
-        <PaginationButton>10</PaginationButton>
-        <PaginationButton>&gt;</PaginationButton>
+        <PaginationButton
+          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+          disabled={currentPage === 1}
+        >
+          &lt;
+        </PaginationButton>
+
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <PaginationButton
+            key={page}
+            active={currentPage === page}
+            onClick={() => setCurrentPage(page)}
+          >
+            {page}
+          </PaginationButton>
+        ))}
+
+        <PaginationButton
+          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+          disabled={currentPage === totalPages}
+        >
+          &gt;
+        </PaginationButton>
       </Pagination>
     </Container>
   );
@@ -110,17 +144,21 @@ const DriverList = () => {
   );
 };
 
+// Styled Components
 const Container = styled.div`
-  padding: 24px;
+  padding: 32px;
   background: white;
   border-radius: 16px;
+  min-height: calc(100vh - 100px);
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 `;
 
 const TitleSection = styled.div`
@@ -170,13 +208,13 @@ const SearchIcon = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 24px;
+  font-size: 26px;
   font-weight: bold;
   margin-bottom: 8px;
 `;
 
 const SubTitle = styled.h2`
-  font-size: 14px;
+  font-size: 16px;
   color: #22c55e;
 `;
 
@@ -205,6 +243,12 @@ const StyledSelect = styled.select`
   padding-right: 40px;
 `;
 
+const TableWrapper = styled.div`
+  margin: 20px 0;
+  overflow-x: auto;
+  flex: 1;
+`;
+
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
@@ -212,17 +256,32 @@ const Table = styled.table`
 
 const TR = styled.tr`
   border-bottom: 1px solid #e5e7eb;
+  height: 72px;
+
+  &:hover {
+    background-color: #f9fafb;
+  }
 `;
 
 const TH = styled.th`
   text-align: left;
-  padding: 12px 8px;
+  padding: 16px;
   color: #6b7280;
-  font-weight: normal;
+  font-weight: 500;
+  font-size: 20px;
 `;
 
 const TD = styled.td`
-  padding: 12px 8px;
+  font-size: 18px;
+  padding: 16px;
+  vertical-align: middle;
+`;
+
+const ProfileImage = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 `;
 
 const StatusBadge = styled.span<{ status: "운행 중" | "휴일" }>`
@@ -246,16 +305,28 @@ const Pagination = styled.div`
   margin-top: 24px;
 `;
 
-const PaginationButton = styled.button<{ active?: boolean }>`
+const PaginationButton = styled.button<{
+  active?: boolean;
+  disabled?: boolean;
+}>`
   padding: 8px 12px;
-  border: none;
+  border: 1px solid ${(props) => (props.active ? "#4f46e5" : "#e5e7eb")};
   border-radius: 8px;
-  background: ${(props) => (props.active ? "#4f46e5" : "transparent")};
-  color: ${(props) => (props.active ? "white" : "#6b7280")};
-  cursor: pointer;
+  background: ${(props) => (props.active ? "#4f46e5" : "white")};
+  color: ${(props) => {
+    if (props.disabled) return "#9ca3af";
+    return props.active ? "white" : "#6b7280";
+  }};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  min-width: 40px;
+  margin: 0 4px;
 
-  &:hover {
-    background: ${(props) => (props.active ? "#4f46e5" : "#f3f4f6")};
+  &:hover:not(:disabled) {
+    background: ${(props) => (props.active ? "#4338ca" : "#f3f4f6")};
+  }
+
+  &:disabled {
+    opacity: 0.5;
   }
 `;
 

@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { User, DUMMY_USERS } from "@interfaces/driveruser";
+import { User } from "@interfaces/manager";
+import { DUMMY_USERS } from "@interfaces/driveruser";
 
 import MapContainer from "@components/manager/MapContainer";
 import RoutePolyline from "@components/manager/RoutePolyline";
@@ -97,10 +98,9 @@ const ReportPage = () => {
           <h2>{driver.name}</h2>
           <span>{driver.employeeId}</span>
           <ReportPage.DriverInfo>
-            <div>소속: {driver.company}</div>
             <div>연락처: {driver.phone}</div>
             <div>현재 상태: {driver.status}</div>
-            <div>지역: {driver.location}</div>
+            <div>지역: {driver.region}</div>
           </ReportPage.DriverInfo>
         </ReportPage.Header>
 

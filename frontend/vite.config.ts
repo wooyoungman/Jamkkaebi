@@ -1,16 +1,16 @@
-import { defineConfig, loadEnv } from "vite"; // loadEnv 추가
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-// mode 파라미터 추가
 export default defineConfig(({ mode }) => {
-  // 환경변수 로드
   const env = loadEnv(mode, process.cwd(), "");
 
   return {
     plugins: [react()],
     define: {
-      "%VITE_TMAP_API_KEY%": JSON.stringify(env.VITE_TMAP_API_KEY),
+      "import.meta.env.VITE_TMAP_API_KEY": JSON.stringify(
+        env.VITE_TMAP_API_KEY
+      ),
     },
     resolve: {
       alias: {

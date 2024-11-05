@@ -7,10 +7,13 @@ export interface User {
   id: string;
   name: string;
   role: "manager" | "driver";
-  company: string;
   phone: string;
   employeeId: string;
-  location: string;
+  // location: {
+  //   lat: number;
+  //   lng: number;
+  // };
+  region: string;
   status: "운행 중" | "휴일";
   profileImage: string;
 }
@@ -29,5 +32,5 @@ export interface DrowsyEvent {
   // 졸음 횟수, 시간, 피로도 데이터
   drowsyCount: number; // 1회
   drowsyTime: number; // 초 단위
-  fatigueLevel: '양호' | '보통' | '강함';
+  fatigueLevel: "양호" | "보통" | "강함";
 }

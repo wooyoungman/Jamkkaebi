@@ -1,5 +1,6 @@
 // 운전자 정보 모달(in 지도)
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 
 interface DriverInfo {
   id: string;
@@ -21,6 +22,28 @@ interface DriverInfoModalProps {
 }
 
 const DriverInfoModal = ({ isOpen, onClose, driver }: DriverInfoModalProps) => {
+  const [address, setAddress] = useState<string>("");
+
+  useEffect(() => {
+    // 여기서 Tmap API를 사용하여 위도/경도를 주소로 변환
+    const fetchAddress = async () => {
+      try {
+        // Tmap 역지오코딩 API 호출
+        // 예: const response = await tmapAPI.reverseGeocode(driver.location);
+        // setAddress(response.address);
+
+        // 임시로 "주소 로딩 중..." 표시
+        setAddress("서울시 강남구 삼성동 123-45");
+      } catch (error) {
+        setAddress("주소를 불러올 수 없습니다");
+      }
+    };
+
+    if (isOpen) {
+      fetchAddress();
+    }
+  }, [isOpen, driver.location]);
+
   if (!isOpen) return null;
 
   return (
@@ -45,7 +68,7 @@ const DriverInfoModal = ({ isOpen, onClose, driver }: DriverInfoModalProps) => {
           </div>
           <div>
             <label>현재위치:</label>
-            <span>{driver.location}</span>
+            <span>{address}</span>
           </div>
           <div>
             <label>최종업데이트:</label>
@@ -57,7 +80,7 @@ const DriverInfoModal = ({ isOpen, onClose, driver }: DriverInfoModalProps) => {
   );
 };
 
-// 스타일 컴포넌트
+// 스타일 컴포넌트 부분은 동일하게 유지
 DriverInfoModal.Overlay = styled.div`
   position: fixed;
   top: 0;
