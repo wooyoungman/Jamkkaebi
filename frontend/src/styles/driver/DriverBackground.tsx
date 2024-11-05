@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import backgroundPNG from "@/assets/driver/backgroundPNG.png";
+import backgroundPNG from "@/assets/backgroundPNG.png";
 
 export const DriverContainer = styled.div`
   display: flex;

@@ -6,11 +6,11 @@ import {
   RightBottomMain,
   RightBottomImage,
   RightBottomContent,
-  RightBottomWeather
+  RightBottomWeather,
 } from "./DriverMainCSS";
 import RestStoreInfo from "../RestStoreInfo";
 import LocationIcon from "@/styles/driver/LocationIcon";
-import restImg from "@/assets/driver/restImg.png";
+import restImg from "@/assets/restImg.png";
 import styled from "styled-components";
 
 const CustomRightBottomDiv = styled(RightBottomDiv)`

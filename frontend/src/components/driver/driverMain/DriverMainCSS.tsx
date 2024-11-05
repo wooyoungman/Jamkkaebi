@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { GlassDiv } from "../../../styles/driver/GlassmorphismStyle";
-import naviImg from "@/assets/driver/naviImg.png";
-import cloudyImg from "@/assets/driver/cloudyImg.png";
+import naviImg from "@/assets/naviImg.png";
+import cloudyImg from "@/assets/cloudyImg.png";
 
 export const Left = styled(GlassDiv)`
   width: 35%;
@@ -129,4 +129,32 @@ export const RightBottomWeather = styled(RightBottomDiv)`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+`;
+
+export const ConditionGraphWrapper = styled.div`
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  padding: 0px 10px;
+  /* background-color: white; */
+  box-sizing: border-box;
+`;
+
+export const ConditionGraphDiv = styled.div`
+  width: 50%;
+  height: 80%;
+  position: relative;
+  /* background-color: gray; */
+`;
+
+export const GraphText = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
