@@ -87,6 +87,7 @@ const ProfileSection = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 24px;
+  gap: 16px;
 `;
 
 const ProfileImage = styled.img`
@@ -98,7 +99,7 @@ const ProfileImage = styled.img`
 `;
 
 const UserInfo = styled.div`
-  flex: 1;
+  flex: 2;
 `;
 
 const NameText = styled.div`
