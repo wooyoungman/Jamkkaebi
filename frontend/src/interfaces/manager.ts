@@ -34,3 +34,21 @@ export interface DrowsyEvent {
   drowsyTime: number; // 초 단위
   fatigueLevel: "양호" | "보통" | "강함";
 }
+
+export interface MapDriver {
+  id: string;
+  name: string;
+  vehicleNumber: string;
+  status: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  lastLocation: string;
+  route: Array<{
+    lat: number;
+    lng: number;
+  }>;
+  sleepEvents: number;
+  lastUpdate: string;
+}
