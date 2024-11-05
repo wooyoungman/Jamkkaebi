@@ -7,6 +7,7 @@ import DriverLayout from "./components/driver/DriverLayout";
 import DriverNaviPage from "./pages/driver/DriverNaviPage";
 import DriverCarPage from "./pages/driver/DriverCarPage";
 import DriverReportPage from "./pages/driver/DriverReportPage";
+import DriverTempPage from "./pages/driver/DriverTempPage";
 
 // Manager
 import Layout from "@components/manager/Layout";
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       { path: "navigation", element: <DriverNaviPage /> },
       { path: "car-control", element: <DriverCarPage /> },
       { path: "report", element: <DriverReportPage /> },
+      { path: "temp", element: <DriverTempPage />}
     ],
   },
 ]);

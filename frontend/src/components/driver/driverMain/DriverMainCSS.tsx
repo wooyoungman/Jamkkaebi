@@ -130,3 +130,31 @@ export const RightBottomWeather = styled(RightBottomDiv)`
   background-repeat: no-repeat;
   background-position: center;
 `;
+
+export const ConditionGraphWrapper = styled.div`
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  padding: 0px 10px;
+  /* background-color: white; */
+  box-sizing: border-box;
+`;
+
+export const ConditionGraphDiv = styled.div`
+  width: 50%;
+  height: 80%;
+  position: relative;
+  /* background-color: gray; */
+`;
+
+export const GraphText = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
