@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import PurpleButton from "@/components/manager/PurpleButton";
+import { Share } from "lucide-react";
 import { User } from "@/interfaces/manager";
 import { DUMMY_USERS } from "@interfaces/driveruser";
 import { Line, Bar, Radar } from "react-chartjs-2";
@@ -283,8 +284,35 @@ export const ReportPage = () => {
             <ReportTitle>운전 보고서</ReportTitle>
           </div>
         </DriverProfile>
+        <WorkLogCard>
+          <WorkLogTitle>근무 일지</WorkLogTitle>
+          <LogGrid>
+            <LogItem>
+              <LogLabel>주행거리</LogLabel>
+              <LogValue>2924km</LogValue>
+            </LogItem>
+            <LogItem>
+              <LogLabel>시간당 주행거리</LogLabel>
+              <LogValue>324.8km</LogValue>
+            </LogItem>
+            <LogItem>
+              <LogLabel>출근시간</LogLabel>
+              <LogValue>AM 3시 10분</LogValue>
+            </LogItem>
+            <LogItem>
+              <LogLabel>퇴근시간</LogLabel>
+              <LogValue>PM 2시 34분</LogValue>
+            </LogItem>
+            <LogItem>
+              <LogLabel>휴식시간</LogLabel>
+              <LogValue>2시간 20분</LogValue>
+            </LogItem>
+          </LogGrid>
+        </WorkLogCard>
         <ButtonWrapper>
-          <PurpleButton>Export</PurpleButton>
+          <PurpleButton>
+            <Share size={16} className="mr-2" /> Export
+          </PurpleButton>
         </ButtonWrapper>
       </HeaderSection>
 
@@ -336,32 +364,6 @@ export const ReportPage = () => {
         </LeftStats>
 
         <MainContent>
-          <WorkLogCard>
-            <WorkLogTitle>근무 일지</WorkLogTitle>
-            <LogGrid>
-              <LogItem>
-                <LogLabel>주행거리</LogLabel>
-                <LogValue>2924km</LogValue>
-              </LogItem>
-              <LogItem>
-                <LogLabel>시간당 주행거리</LogLabel>
-                <LogValue>324.8km</LogValue>
-              </LogItem>
-              <LogItem>
-                <LogLabel>출근시간</LogLabel>
-                <LogValue>AM 3시 10분</LogValue>
-              </LogItem>
-              <LogItem>
-                <LogLabel>퇴근시간</LogLabel>
-                <LogValue>PM 2시 34분</LogValue>
-              </LogItem>
-              <LogItem>
-                <LogLabel>휴식시간</LogLabel>
-                <LogValue>2시간 20분</LogValue>
-              </LogItem>
-            </LogGrid>
-          </WorkLogCard>
-
           <ChartsGrid>
             <ChartCard>
               <ChartHeader>
@@ -430,16 +432,15 @@ const HeaderSection = styled.div`
   margin-bottom: 1.5rem;
 `;
 
+// PurpleButton의 스타일을 덮어씌우기
 const ButtonWrapper = styled.div`
-  width: 100px; // Export 버튼의 너비 지정
-  height: 36px; // Export 버튼의 높이 지정
-
-  // PurpleButton의 스타일을 덮어씌우기
+  width: 150px;
+  height: 50px;
   button {
     width: 100%;
     height: 100%;
     padding: 0;
-    font-size: 14px;
+    font-size: 20px;
   }
 `;
 const DriverProfile = styled.div`
@@ -498,6 +499,7 @@ const StatCard = styled.div`
 const WorkLogCard = styled(StatCard)`
   padding: 1.5rem;
   margin-bottom: 0;
+  box-shadow: none;
 `;
 
 const IconWrapper = styled.div`
@@ -609,7 +611,7 @@ const Tab = styled.button<{ active?: boolean }>`
 `;
 
 const RadarWrapper = styled.div`
-  width: 80%;
+  width: 70%;
   margin: 0 auto;
   padding: 1rem 0;
 `;
