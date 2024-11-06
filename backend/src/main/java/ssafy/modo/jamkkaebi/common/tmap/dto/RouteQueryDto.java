@@ -7,8 +7,8 @@ import lombok.Data;
 @Builder
 public class RouteQueryDto {
 
-    private Float startX;
-    private Float startY;
-    private Float endX;
-    private Float endY;
+    private Double startX;
+    private Double startY;
+    private Double endX;
+    private Double endY;
 }

@@ -65,9 +65,9 @@ public class TmapService {
         return builder.toUriString();
     }
 
-    public Map<String, Float> getGeoCoordinate(String address) throws JsonProcessingException {
+    public Map<String, Double> getGeoCoordinate(String address) throws JsonProcessingException {
 
-        Map<String, Float> geoCoordinate = new HashMap<>();
+        Map<String, Double> geoCoordinate = new HashMap<>();
 
         String requestUrl = buildUrlWithParams(baseUrl + "/geo/fullAddrGeo", address);
         ResponseEntity<String> response = requestUtil.sendRequest(HttpMethod.GET, requestUrl, String.class, null);
@@ -78,13 +78,13 @@ public class TmapService {
                 .getAsJsonArray("coordinate")
                 .get(0).getAsJsonObject();
 
-        geoCoordinate.put("lat", jsonBody.getAsJsonPrimitive("newLat").getAsFloat());
-        geoCoordinate.put("lon", jsonBody.getAsJsonPrimitive("newLon").getAsFloat());
+        geoCoordinate.put("lat", jsonBody.getAsJsonPrimitive("newLat").getAsDouble());
+        geoCoordinate.put("lon", jsonBody.getAsJsonPrimitive("newLon").getAsDouble());
 
         return geoCoordinate;
     }
 
-    public GeoJsonDto getRoute(Map<String, Float> originCoordinate, Map<String, Float> destinationCoordinate)
+    public GeoJsonDto getRoute(Map<String, Double> originCoordinate, Map<String, Double> destinationCoordinate)
             throws JsonProcessingException {
 
         String requestUrl = baseUrl + "/routes?version=" + version;
