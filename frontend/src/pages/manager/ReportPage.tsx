@@ -524,9 +524,13 @@ const Unit = styled.span`
   color: #64748b;
 `;
 
-const Change = styled.div<{ positive?: boolean }>`
+const Change = styled.div<{ positive?: boolean; negative?: boolean }>`
   font-size: 0.875rem;
-  color: ${(props) => (props.positive ? "#10B981" : "#EF4444")};
+  color: ${(props) => {
+    if (props.positive) return "#10B981";
+    if (props.negative) return "#EF4444";
+    return "#64748B";
+  }};
   margin-top: 0.25rem;
 `;
 
