@@ -140,7 +140,7 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
         <EclipseDiv cardwidth="66%" cardheight="14%" top="1%">
           <GrayEclipseSVG cardwidth="100%" cardheight="100%" />
         </EclipseDiv>
-        <EclipseDiv cardwidth="66%" cardheight="14%" bottom="3%">
+        <EclipseDiv cardwidth="66%" cardheight="14%" bottom="1%">
           <BlueEclipseSVG cardwidth="100%" cardheight="100%" />
         </EclipseDiv>
         <GrayLine

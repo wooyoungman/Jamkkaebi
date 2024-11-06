@@ -97,7 +97,7 @@ const DriverConditionGraph: React.FC<DriverConditionGraphProps> = ({
         </DriverText>
         <DriverText
           color={graphType === "concentration" ? "#9BF62D" : "#FF5172"}
-          fontSize="calc(max(4.5vw, 65px))"
+          fontSize="calc(max(4vw, 65px))"
           fontWeight={700}
           style={{ marginTop: "-0.6vw" }}
         >

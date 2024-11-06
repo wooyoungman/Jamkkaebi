@@ -56,7 +56,9 @@ export const Card = styled.div<SizeProps>`
 
 export const GrayLine = styled.hr<LineProps>`
   width: ${(props) => props.cardwidth || "289px"};
+  height: 1px;
   opacity: ${(props) => props.opacity || 0.6};
+  border: 0;
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0) 0%,
@@ -126,8 +128,17 @@ export const ModalGlassDiv = styled.div<SizeProps>`
   height: ${(props) => props.cardheight || "600px"};
   border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.09);
-  background: rgba(137, 137, 137, 0.05);
+  background-color: rgba(137, 137, 137, 0.05);
   backdrop-filter: blur(75px);
+  /* border: 1px solid rgba(255, 255, 255, 0.5);
+  background: linear-gradient(
+    86deg,
+    rgba(255, 255, 255, 0.2) 11.14%,
+    rgba(255, 255, 255, 0.04) 113.29%
+  );
+  box-shadow: 0px 1.197px 29.915px 0px rgba(69, 42, 124, 0.1);
+  backdrop-filter: blur(35px); */
+
   display: flex;
   flex-direction: column;
   align-items: center;
