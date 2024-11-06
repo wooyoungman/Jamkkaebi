@@ -1,0 +1,109 @@
+services:
+  caddy:
+    container_name: caddy
+    environment:
+      - CADDY_INGRESS_NETWORKS=caddy
+    image: lucaslorentz/caddy-docker-proxy:2.9.1-alpine
+    networks:
+      - caddy
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy_data:/data
+  portainer:
+    container_name: portainer
+    expose:
+      - 9000
+    image: portainer/portainer-ce:latest
+    labels:
+      caddy: k11c106.p.ssafy.io
+      caddy.handle_path: /portainer/*
+      caddy.handle_path.0_reverse_proxy: "{{ upstreams 9000 }}"
+      caddy.redir: /portainer /portainer/
+    networks:
+      - caddy
+    pull_policy: always
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+  jenkins:
+    container_name: jenkins
+    environment:
+      - JENKINS_OPTS="--prefix=/jenkins"
+    expose:
+      - 8080
+    image: jenkins/jenkins:latest
+    labels:
+      caddy: k11c106.p.ssafy.io
+      caddy.handle: /jenkins*
+      caddy.handle.reverse_proxy: "{{ upstreams 8080 }}"
+    networks:
+      - caddy
+    pull_policy: always
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins_data:/var/jenkins_home
+  mongodb:
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 
+      MONGO_INITDB_ROOT_PASSWORD: 
+    image: mongodb/mongodb-community-server:7.0.15-ubuntu2204
+    labels:
+      caddy: localhost:31061
+      caddy.reverse_proxy: "{{ upstreams 27017 }}"
+    networks:
+      - caddy
+    ports:
+      - 31061:27017
+    pull_policy: always
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+  mysql:
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: jamkkaebi
+      MYSQL_USER: 
+      MYSQL_PASSWORD: 
+      MYSQL_ROOT_PASSWORD: 
+    image: mysql:8.0-debian
+    labels:
+      caddy: localhost:31060
+      caddy.reverse_proxy: "{{ upstreams 3306 }}"
+    networks:
+      - caddy
+    ports:
+      - 31060:3306
+    pull_policy: always
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  caddy_data:
+    name: caddy_data
+  portainer_data:
+    name: portainer_data
+  jenkins_data:
+    name: jenkins_data
+  mysql_data:
+    name: mysql_data
+  mongodb_data:
+    name: mongodb_data
+  mongodb_config:
+    name: mongodb_config
+
+networks:
+  caddy:
+    name: caddy
