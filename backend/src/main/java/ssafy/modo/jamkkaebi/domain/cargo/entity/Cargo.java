@@ -23,7 +23,7 @@ public class Cargo extends BaseEntity {
     private Long id;
 
     @NotNull
-    private String cargo;
+    private String cargoInfo;
 
     @NotNull
     private String origin;
@@ -52,9 +52,9 @@ public class Cargo extends BaseEntity {
     private String routeId;
 
     @Builder
-    public Cargo(String cargo, String origin, String destination, LocalDateTime dueDate, Integer distance,
+    public Cargo(String cargoInfo, String origin, String destination, LocalDateTime dueDate, Integer distance,
                  String originLat, String originLon, String destinationLat, String destinationLon) {
-        this.cargo = cargo;
+        this.cargoInfo = cargoInfo;
         this.origin = origin;
         this.originLat = originLat;
         this.originLon = originLon;

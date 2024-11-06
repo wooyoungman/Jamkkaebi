@@ -38,7 +38,7 @@ public class CargoWriteService {
         return CargoCreateResponseDto.builder()
                 .cargoId(cargo.getId())
                 .routeId(cargo.getRouteId())
-                .cargo(cargo.getCargo())
+                .cargo(cargo.getCargoInfo())
                 .origin(cargo.getOrigin())
                 .destination(cargo.getDestination())
                 .distance(cargo.getDistance())
@@ -58,7 +58,7 @@ public class CargoWriteService {
         int distance = geoDto.getFeatures().get(0).getProperties().getTotalDistance();
 
         Cargo cargo = cargoRepository.save(Cargo.builder()
-                .cargo(cargoDto.getCargo())
+                .cargoInfo(cargoDto.getCargo())
                 .origin(cargoDto.getOrigin())
                 .originLat(originCoordinate.get("lat").toString())
                 .originLon(originCoordinate.get("lon").toString())
