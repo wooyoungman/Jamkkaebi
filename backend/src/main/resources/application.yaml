@@ -77,3 +77,7 @@ springdoc:
   writer-with-default-pretty-printer: true
   model-and-view-allowed: true
   paths-to-match: /api/v1/**
+
+tmap:
+  base-url: https://apis.openapi.sk.com/tmap
+  app-key: ${TMAP_APPKEY}
