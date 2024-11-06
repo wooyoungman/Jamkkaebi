@@ -1,17 +1,22 @@
 package ssafy.modo.jamkkaebi.common.handler;
 
-import ssafy.modo.jamkkaebi.common.ApiResponse;
-import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenExpirationException;
-import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenTypeException;
-import ssafy.modo.jamkkaebi.domain.member.exception.DuplicatedNameException;
-import ssafy.modo.jamkkaebi.domain.member.exception.UserNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ssafy.modo.jamkkaebi.common.ApiResponse;
+import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenExpirationException;
+import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenTypeException;
+import ssafy.modo.jamkkaebi.domain.member.exception.DuplicatedNameException;
+import ssafy.modo.jamkkaebi.domain.member.exception.UserNotFoundException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -68,5 +73,22 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleDuplicatedNameException(DuplicatedNameException e) {
         ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
         return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException e) {
+
+        Map<String, String> errors = new HashMap<>();
+
+        e.getBindingResult().getAllErrors().forEach(error -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+
+        ApiResponse<Map<String, String>> response = ApiResponse.error(
+                HttpStatus.BAD_REQUEST.value(), "Request body validation error", errors);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }
