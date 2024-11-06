@@ -1,4 +1,4 @@
-package ssafy.modo.jamkkaebi.common.service;
+package ssafy.modo.jamkkaebi.common.tmap.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
@@ -11,7 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
-import ssafy.modo.jamkkaebi.common.dto.AddressQueryDto;
+import ssafy.modo.jamkkaebi.common.tmap.dto.AddressQueryDto;
 import ssafy.modo.jamkkaebi.common.util.RequestUtil;
 
 import java.lang.reflect.Field;

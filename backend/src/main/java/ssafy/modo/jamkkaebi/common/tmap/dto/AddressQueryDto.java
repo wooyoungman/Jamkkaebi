@@ -1,4 +1,4 @@
-package ssafy.modo.jamkkaebi.common.dto;
+package ssafy.modo.jamkkaebi.common.tmap.dto;
 
 import lombok.Data;
 
