@@ -53,6 +53,9 @@ dependencies {
 
 	// DotEnv Support
 	implementation "me.paulschwarz:spring-dotenv:4.0.0"
+
+	// Gson
+	implementation 'com.google.code.gson:gson:2.11.0'
 }
 
 // Sonarqube Analysis
