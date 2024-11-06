@@ -13,6 +13,11 @@ export const dummyDrowsyEvents: DrowsyEvent[] = [
       lat: 37.551111,
       lng: 126.988333,
     },
+    route: [
+      { lat: 37.5514, lng: 126.9622 }, // 졸음 발생 직전 위치
+      { lat: 37.551111, lng: 126.988333 }, // 졸음운전 발생 지점
+      { lat: 37.5422, lng: 126.9517 }, // 졸음 발생 직후 위치
+    ],
     drowsyCount: 3,
     drowsyTime: 8,
     fatigueLevel: "강함",
@@ -29,6 +34,11 @@ export const dummyDrowsyEvents: DrowsyEvent[] = [
       lat: 35.158333,
       lng: 129.160556,
     },
+    route: [
+      { lat: 35.1468, lng: 129.0592 }, // 졸음 발생 직전 위치
+      { lat: 35.158333, lng: 129.160556 }, // 졸음운전 발생 지점
+      { lat: 35.1557, lng: 129.1562 }, // 졸음 발생 직후 위치
+    ],
     drowsyCount: 2,
     drowsyTime: 5,
     fatigueLevel: "보통",
@@ -45,6 +55,11 @@ export const dummyDrowsyEvents: DrowsyEvent[] = [
       lat: 33.458333,
       lng: 126.942778,
     },
+    route: [
+      { lat: 33.489, lng: 126.5338 }, // 졸음 발생 직전 위치
+      { lat: 33.458333, lng: 126.942778 }, // 졸음운전 발생 지점
+      { lat: 33.4634, lng: 126.9401 }, // 졸음 발생 직후 위치
+    ],
     drowsyCount: 4,
     drowsyTime: 12,
     fatigueLevel: "강함",

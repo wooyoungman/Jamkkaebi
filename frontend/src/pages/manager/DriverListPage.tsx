@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { atomWithQuery } from "jotai-tanstack-query";
 import { DUMMY_USERS } from "@interfaces/driveruser";
-import type { User } from "@interfaces/manager";
+import type { User } from "@/interfaces/manager";
 
 const queryClient = new QueryClient();
 

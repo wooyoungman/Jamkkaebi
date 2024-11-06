@@ -130,29 +130,29 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
 
   return ReactDOM.createPortal(
     <ModalOverlay onClick={onClose}>
-      <Card cardWidth="800px" cardHeight="630px">
+      <Card cardwidth="800px" cardheight="630px">
         <GrayLine
-          cardWidth="56%"
+          cardwidth="56%"
           opacity={0.6}
           position="top"
-          offsetLeft="7%"
+          offsetleft="7%"
         />
-        <EclipseDiv cardWidth="66%" cardHeight="14%" top="1%">
-          <GrayEclipseSVG cardWidth="100%" cardHeight="100%" />
+        <EclipseDiv cardwidth="66%" cardheight="14%" top="1%">
+          <GrayEclipseSVG cardwidth="100%" cardheight="100%" />
         </EclipseDiv>
-        <EclipseDiv cardWidth="66%" cardHeight="14%" bottom="3%">
-          <BlueEclipseSVG cardWidth="100%" cardHeight="100%" />
+        <EclipseDiv cardwidth="66%" cardheight="14%" bottom="3%">
+          <BlueEclipseSVG cardwidth="100%" cardheight="100%" />
         </EclipseDiv>
         <GrayLine
-          cardWidth="289px"
+          cardwidth="289px"
           opacity={0.6}
           position="bottom"
           centered={true}
         />
         <ModalGlassDiv
           onClick={(e) => e.stopPropagation()}
-          cardWidth="100%"
-          cardHeight="100%"
+          cardwidth="100%"
+          cardheight="100%"
         >
           {/* <CustomModalGlassDiv onClick={(e) => e.stopPropagation()}> */}
           <CloseButton onClick={onClose}>✕</CloseButton>

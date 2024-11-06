@@ -7,7 +7,7 @@ import Input from "@components/manager/Input";
 import PurpleButton from "@components/manager/PurpleButton";
 import { useLogin } from "@queries/index";
 import { userAtom } from "@atoms/index";
-import type { LoginRequest } from "@interfaces/manager";
+import type { LoginRequest } from "@/interfaces/manager";
 
 // 기존 컴포넌트의 Props 타입을 가져와서 확장
 type ExtendedInputProps = {

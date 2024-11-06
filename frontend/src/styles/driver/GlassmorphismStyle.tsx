@@ -29,14 +29,14 @@ export const ModalGlassDiv2 = styled.div`
 `;
 
 export interface SizeProps {
-  cardWidth?: string;
-  cardHeight?: string;
+  cardwidth?: string;
+  cardheight?: string;
   opacity?: number;
 }
 
 export interface LineProps extends SizeProps {
   position?: "top" | "bottom";
-  offsetLeft?: string;
+  offsetleft?: string;
   offsetRight?: string;
   centered?: boolean;
 }
@@ -47,15 +47,15 @@ export interface EclipseDivProps extends SizeProps {
 }
 
 export const Card = styled.div<SizeProps>`
-  width: ${(props) => props.cardWidth || "420px"};
+  width: ${(props) => props.cardwidth || "420px"};
   min-width: 650px;
-  height: ${(props) => props.cardHeight || "600px"};
+  height: ${(props) => props.cardheight || "600px"};
   position: relative;
   border-radius: 30px;
 `;
 
 export const GrayLine = styled.hr<LineProps>`
-  width: ${(props) => props.cardWidth || "289px"};
+  width: ${(props) => props.cardwidth || "289px"};
   opacity: ${(props) => props.opacity || 0.6};
   background: linear-gradient(
     90deg,
@@ -72,15 +72,15 @@ export const GrayLine = styled.hr<LineProps>`
         transform: translateX(-50%);
       `
       : `
-        ${props.offsetLeft ? `left: ${props.offsetLeft};` : ""}
+        ${props.offsetleft ? `left: ${props.offsetleft};` : ""}
         ${props.offsetRight ? `right: ${props.offsetRight};` : ""}
       `}
   margin: 0;
 `;
 
 export const EclipseDiv = styled.div<EclipseDivProps>`
-  width: ${(props) => props.cardWidth || "247px"};
-  height: ${(props) => props.cardHeight || "77px"};
+  width: ${(props) => props.cardwidth || "247px"};
+  height: ${(props) => props.cardheight || "77px"};
   flex-shrink: 0;
   opacity: 0.6;
   position: absolute;
@@ -92,13 +92,13 @@ export const EclipseDiv = styled.div<EclipseDivProps>`
 `;
 
 export const BlueEclipseSVG: React.FC<SizeProps> = ({
-  cardWidth,
-  cardHeight,
+  cardwidth,
+  cardheight,
 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={cardWidth || "247px"}
-    height={cardHeight || "77px"}
+    width={cardwidth || "247px"}
+    height={cardheight || "77px"}
     viewBox="0 0 528 88"
     fill="none"
   >
@@ -107,13 +107,13 @@ export const BlueEclipseSVG: React.FC<SizeProps> = ({
 );
 
 export const GrayEclipseSVG: React.FC<SizeProps> = ({
-  cardWidth,
-  cardHeight,
+  cardwidth,
+  cardheight,
 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={cardWidth || "247px"}
-    height={cardHeight || "77px"}
+    width={cardwidth || "247px"}
+    height={cardheight || "77px"}
     viewBox="0 0 528 88"
     fill="none"
   >
@@ -122,8 +122,8 @@ export const GrayEclipseSVG: React.FC<SizeProps> = ({
 );
 
 export const ModalGlassDiv = styled.div<SizeProps>`
-  width: ${(props) => props.cardWidth || "420px"};
-  height: ${(props) => props.cardHeight || "600px"};
+  width: ${(props) => props.cardwidth || "420px"};
+  height: ${(props) => props.cardheight || "600px"};
   border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.09);
   background: rgba(137, 137, 137, 0.05);
@@ -140,19 +140,19 @@ export const ModalGlassDiv = styled.div<SizeProps>`
 //   return (
 //     <Card>
 //       <GrayLine
-//         cardWidth="197px"
+//         cardwidth="197px"
 //         opacity={0.6}
 //         position="top"
-//         offsetLeft="35px"
+//         offsetleft="35px"
 //       />
-//       <EclipseDiv cardWidth="247px" cardHeight="77px" top="5px">
-//         <GrayEclipseSVG cardWidth="247px" cardHeight="77px" />
+//       <EclipseDiv cardwidth="247px" cardheight="77px" top="5px">
+//         <GrayEclipseSVG cardwidth="247px" cardheight="77px" />
 //       </EclipseDiv>
-//       <EclipseDiv cardWidth="247px" cardHeight="77px" bottom="15px">
-//         <BlueEclipseSVG cardWidth="247px" cardHeight="77px" />
+//       <EclipseDiv cardwidth="247px" cardheight="77px" bottom="15px">
+//         <BlueEclipseSVG cardwidth="247px" cardheight="77px" />
 //       </EclipseDiv>
 //       <GrayLine
-//         cardWidth="289px"
+//         cardwidth="289px"
 //         opacity={0.6}
 //         position="bottom"
 //         offsetRight="25px"
