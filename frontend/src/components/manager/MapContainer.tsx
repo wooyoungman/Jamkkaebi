@@ -67,7 +67,7 @@ const MapContainer = ({
         };
 
         const map = new window.Tmapv2.Map(mapRef.current, options);
-        
+
         // 지도 인스턴스 저장
         mapInstanceRef.current = map as unknown as TMap;
         setMapInstance(map as unknown as TMap);
@@ -90,12 +90,12 @@ const MapContainer = ({
       if (mapInstanceRef.current) {
         try {
           // 모든 오버레이 제거
-          if (typeof mapInstanceRef.current.removeAllOverlays === 'function') {
+          if (typeof mapInstanceRef.current.removeAllOverlays === "function") {
             mapInstanceRef.current.removeAllOverlays();
           }
 
           // 모든 마커 제거
-          if (typeof mapInstanceRef.current.destroy === 'function') {
+          if (typeof mapInstanceRef.current.destroy === "function") {
             mapInstanceRef.current.destroy();
           }
         } catch (error) {
@@ -133,8 +133,8 @@ MapContainer.Root = styled.div<{ width: string; height: string }>`
   height: ${({ height }) => height};
   position: relative;
   z-index: 1;
-  display: block; // 추가
-  min-height: 400px; // 추가
+  display: block;
+  min-height: 400px;
 `;
 
 export default MapContainer;

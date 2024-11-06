@@ -10,7 +10,8 @@ export const dummyUsers: User[] = [
     employeeId: "EMP001",
     region: "서울",
     status: "운행 중",
-    profileImage: "/images/profile1.jpg",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=KimDriving&backgroundColor=b6e3f4",
   },
   {
     id: "DRV002",
@@ -20,7 +21,8 @@ export const dummyUsers: User[] = [
     employeeId: "EMP002",
     region: "경기",
     status: "휴일",
-    profileImage: "/images/profile2.jpg",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeSafety&backgroundColor=b6e3f4",
   },
 ];
 
@@ -28,7 +30,8 @@ export const dummyUsers: User[] = [
 export const dummyDrowsyEvents: DrowsyEvent[] = [
   {
     id: "EVENT001",
-    profileImage: "/images/profile1.jpg",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=KimDriving&backgroundColor=b6e3f4",
     driverName: "김운전",
     age: 45,
     gender: "남성",
@@ -37,13 +40,21 @@ export const dummyDrowsyEvents: DrowsyEvent[] = [
       lat: 37.5666805,
       lng: 126.9784147,
     },
+    route: [
+      { lat: 37.5666805, lng: 126.9784147 }, // 시청
+      { lat: 37.5558077, lng: 126.9866485 }, // 남산
+      { lat: 37.5449731, lng: 126.9891452 }, // 용산
+      { lat: 37.5311008, lng: 126.9810742 }, // 강남역
+      { lat: 37.5206427, lng: 127.0058008 }, // 신사
+    ],
     drowsyCount: 1,
     drowsyTime: 3,
     fatigueLevel: "보통",
   },
   {
     id: "EVENT002",
-    profileImage: "/images/profile2.jpg",
+    profileImage:
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeSafety&backgroundColor=b6e3f4",
     driverName: "이안전",
     age: 38,
     gender: "남성",
@@ -52,6 +63,13 @@ export const dummyDrowsyEvents: DrowsyEvent[] = [
       lat: 37.5208085,
       lng: 127.1076804,
     },
+    route: [
+      { lat: 37.5208085, lng: 127.1076804 }, // 잠실
+      { lat: 37.5273311, lng: 127.0276311 }, // 삼성중앙
+      { lat: 37.5311008, lng: 126.9810742 }, // 강남역
+      { lat: 37.5344831, lng: 127.0947313 }, // 올림픽공원
+      { lat: 37.5154897, lng: 127.1027275 }, // 방이동
+    ],
     drowsyCount: 1,
     drowsyTime: 2,
     fatigueLevel: "양호",
@@ -71,10 +89,11 @@ export const dummyMapDrivers: MapDriver[] = [
     },
     lastLocation: "서울시 중구 세종대로 110",
     route: [
-      { lat: 37.5666805, lng: 126.9784147 },
-      { lat: 37.5668805, lng: 126.9786147 },
-      { lat: 37.5670805, lng: 126.9788147 },
-      { lat: 37.5672805, lng: 126.9790147 },
+      { lat: 37.5666805, lng: 126.9784147 }, // 시청
+      { lat: 37.5558077, lng: 126.9866485 }, // 남산
+      { lat: 37.5449731, lng: 126.9891452 }, // 용산
+      { lat: 37.5311008, lng: 126.9810742 }, // 강남역
+      { lat: 37.5206427, lng: 127.0058008 }, // 신사
     ],
     sleepEvents: 2,
     lastUpdate: "2024-03-05 14:30:00",
@@ -90,10 +109,11 @@ export const dummyMapDrivers: MapDriver[] = [
     },
     lastLocation: "서울시 송파구 올림픽로 300",
     route: [
-      { lat: 37.5208085, lng: 127.1076804 },
-      { lat: 37.5210085, lng: 127.1078804 },
-      { lat: 37.5212085, lng: 127.1080804 },
-      { lat: 37.5214085, lng: 127.1082804 },
+      { lat: 37.5208085, lng: 127.1076804 }, // 잠실
+      { lat: 37.5273311, lng: 127.0276311 }, // 삼성중앙
+      { lat: 37.5311008, lng: 126.9810742 }, // 강남역
+      { lat: 37.5344831, lng: 127.0947313 }, // 올림픽공원
+      { lat: 37.5154897, lng: 127.1027275 }, // 방이동
     ],
     sleepEvents: 1,
     lastUpdate: "2024-03-05 14:28:00",
