@@ -1,5 +1,6 @@
 package ssafy.modo.jamkkaebi.common.tmap.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
@@ -10,7 +11,8 @@ public class AddressQueryDto {
 
     private String fullAddr;
 
-    private static final String addressFlag = "F02";
+    @JsonProperty("addressFlag")
+    private static final String ADDRESS_FLAG = "F02";
 
     public AddressQueryDto(String address, Integer version, String appKey) {
         this.fullAddr = address;

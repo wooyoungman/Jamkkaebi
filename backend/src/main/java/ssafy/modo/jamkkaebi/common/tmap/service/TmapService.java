@@ -37,7 +37,7 @@ public class TmapService {
     @Value("${tmap.app-key}")
     private String appKey;
 
-    private static final Integer version = 1;
+    private static final Integer VERSION = 1;
 
     private Map<String, String> appendToHeader() {
         Map<String, String> header = new HashMap<>();
@@ -48,7 +48,7 @@ public class TmapService {
     private String buildUrlWithParams(String url, String address) {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
-        AddressQueryDto queryDto = new AddressQueryDto(address, version, appKey);
+        AddressQueryDto queryDto = new AddressQueryDto(address, VERSION, appKey);
 
         for (Field field : AddressQueryDto.class.getDeclaredFields()) {
             field.setAccessible(true);
@@ -87,7 +87,7 @@ public class TmapService {
     public GeoJsonDto getRoute(Map<String, Double> originCoordinate, Map<String, Double> destinationCoordinate)
             throws JsonProcessingException {
 
-        String requestUrl = baseUrl + "/routes?version=" + version;
+        String requestUrl = baseUrl + "/routes?version=" + VERSION;
 
         RouteQueryDto routeDto = RouteQueryDto.builder()
                 .startX(originCoordinate.get("lon"))
