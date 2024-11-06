@@ -2,6 +2,7 @@ package ssafy.modo.jamkkaebi.domain.member.exception;
 
 public class DuplicatedNameException extends RuntimeException {
 
+    @Override
     public String getMessage() {
         return MemberExceptionMessage.DUPLICATED_NAME.getMessage();
     }
