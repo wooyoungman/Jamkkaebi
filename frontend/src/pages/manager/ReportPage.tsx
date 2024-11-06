@@ -277,13 +277,68 @@ export const ReportPage = () => {
   return (
     <Container>
       <HeaderSection>
-        <DriverProfile>
-          <ProfileImage src={driver.profileImage} alt={driver.name} />
-          <div>
-            <DriverName>{driver.name} 기사님</DriverName>
-            <ReportTitle>운전 보고서</ReportTitle>
-          </div>
-        </DriverProfile>
+        <div>
+          <DriverProfile>
+            <ProfileImage src={driver.profileImage} alt={driver.name} />
+            <div>
+              <DriverName>{driver.name} 기사님</DriverName>
+              <ReportTitle>운전 보고서</ReportTitle>
+            </div>
+          </DriverProfile>
+          <TopStats>
+            <StatCard>
+              <IconWrapper>👤</IconWrapper>
+              <div>
+                <Label>총 주행거리</Label>
+                <Value>
+                  2,924<Unit>km</Unit>
+                </Value>
+                <Change positive>▲ 124km</Change>
+              </div>
+            </StatCard>
+
+            <StatCard>
+              <IconWrapper>⏰</IconWrapper>
+              <div>
+                <Label>일일 근무 시간</Label>
+                <Value>
+                  9<Unit>H</Unit> 4<Unit>M</Unit>
+                </Value>
+                <Change negative>▼ 10%</Change>
+              </div>
+            </StatCard>
+
+            <StatCard>
+              <IconWrapper>📊</IconWrapper>
+              <div>
+                <Label>평균 집중지수</Label>
+                <Value>
+                  86<Unit>점</Unit>
+                </Value>
+                <Change positive>▲ 10점</Change>
+              </div>
+            </StatCard>
+
+            <StatCard>
+              <IconWrapper>🔒</IconWrapper>
+              <div>
+                <Label>평균 졸음지수</Label>
+                <Value>
+                  65<Unit>점</Unit>
+                </Value>
+                <Change negative>▼ 10점</Change>
+              </div>
+            </StatCard>
+          </TopStats>
+        </div>
+        <ButtonWrapper>
+          <PurpleButton>
+            <Share size={18} className="mr-2" /> Export
+          </PurpleButton>
+        </ButtonWrapper>
+      </HeaderSection>
+
+      <StatsContainer>
         <WorkLogCard>
           <WorkLogTitle>근무 일지</WorkLogTitle>
           <LogGrid>
@@ -309,60 +364,6 @@ export const ReportPage = () => {
             </LogItem>
           </LogGrid>
         </WorkLogCard>
-        <ButtonWrapper>
-          <PurpleButton>
-            <Share size={16} className="mr-2" /> Export
-          </PurpleButton>
-        </ButtonWrapper>
-      </HeaderSection>
-
-      <StatsContainer>
-        <LeftStats>
-          <StatCard>
-            <IconWrapper>👤</IconWrapper>
-            <div>
-              <Label>총 주행거리</Label>
-              <Value>
-                2,924<Unit>km</Unit>
-              </Value>
-              <Change positive>▲ 124km</Change>
-            </div>
-          </StatCard>
-
-          <StatCard>
-            <IconWrapper>⏰</IconWrapper>
-            <div>
-              <Label>일일 근무 시간</Label>
-              <Value>
-                9<Unit>H</Unit> 4<Unit>M</Unit>
-              </Value>
-              <Change negative>▼ 10%</Change>
-            </div>
-          </StatCard>
-
-          <StatCard>
-            <IconWrapper>📊</IconWrapper>
-            <div>
-              <Label>평균 집중지수</Label>
-              <Value>
-                86<Unit>점</Unit>
-              </Value>
-              <Change positive>▲ 10점</Change>
-            </div>
-          </StatCard>
-
-          <StatCard>
-            <IconWrapper>🔒</IconWrapper>
-            <div>
-              <Label>평균 졸음지수</Label>
-              <Value>
-                65<Unit>점</Unit>
-              </Value>
-              <Change negative>▼ 10점</Change>
-            </div>
-          </StatCard>
-        </LeftStats>
-
         <MainContent>
           <ChartsGrid>
             <ChartCard>
@@ -425,7 +426,7 @@ const HeaderSection = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white;
+  background: #f0efff;
   padding: 1rem 1.5rem;
   border-radius: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -441,6 +442,7 @@ const ButtonWrapper = styled.div`
     height: 100%;
     padding: 0;
     font-size: 20px;
+    box-shadow: none;
   }
 `;
 const DriverProfile = styled.div`
@@ -450,56 +452,62 @@ const DriverProfile = styled.div`
 `;
 
 const ProfileImage = styled.img`
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
 `;
 
 const DriverName = styled.h2`
-  font-size: 1.25rem;
+  font-size: 20px;
   font-weight: 600;
   margin: 0;
 `;
 
 const ReportTitle = styled.h3`
-  font-size: 1rem;
-  color: #64748b;
+  font-size: 35px;
+  font-weight: semibold;
   margin: 0;
 `;
 
 const StatsContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 300px 1fr; // 300px 고정 + 나머지 공간
   gap: 1.5rem;
+  align-items: start;
 `;
 
-const LeftStats = styled.div`
-  flex: 0 0 300px;
+const TopStats = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row; // 가로 배치
   gap: 1rem;
+  margin-top: 1.5rem; // DriverProfile과의 간격
+  flex-wrap: wrap; // 필요시 줄바꿈
 `;
 
 const MainContent = styled.div`
-  flex: 1;
+  flex: 1; // 남은 공간을 모두 차지하도록 설정
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  min-width: 0; // 필요한 경우 축소될 수 있도록 설정
 `;
 
 const StatCard = styled.div`
-  background: white;
   padding: 1.25rem;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   display: flex;
   gap: 1rem;
   align-items: flex-start;
+  border-radius: 0.5rem;
+  flex: 1; // 동일한 너비로 분배
+  min-width: 250px; // 최소 너비 설정
 `;
 
-const WorkLogCard = styled(StatCard)`
-  padding: 1.5rem;
-  margin-bottom: 0;
-  box-shadow: none;
+const WorkLogCard = styled.div`
+  background: #f0efff;
+  padding: 2rem; // 패딩 좀 더 여유있게
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  height: 100%; // 세로로 꽉 차게
 `;
 
 const IconWrapper = styled.div`
@@ -537,21 +545,22 @@ const Change = styled.div<{ positive?: boolean; negative?: boolean }>`
 `;
 
 const WorkLogTitle = styled.h4`
-  font-size: 0.875rem;
-  color: #64748b;
-  margin: 0 0 1rem 0;
+  font-size: 1.25rem; // 제목 크기 증가
+  color: #1e293b;
+  font-weight: 600;
+  margin: 0 0 2rem 0; // 아래 여백 증가
 `;
 
 const LogGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 `;
 
 const LogItem = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; // 세로로 배치
+  gap: 0.5rem; // 라벨과 값 사이 간격
 `;
 
 const LogLabel = styled.span`
@@ -560,7 +569,9 @@ const LogLabel = styled.span`
 `;
 
 const LogValue = styled.span`
-  font-weight: 500;
+  font-weight: 600; // 좀 더 굵게
+  font-size: 1.25rem; // 크기 증가
+  color: #1e293b; // 진한 색상
 `;
 
 const ChartsGrid = styled.div`
@@ -579,12 +590,12 @@ const ChartCard = styled.div`
 const ChartHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
   margin-bottom: 1.5rem;
 `;
 
 const ChartTitle = styled.h4`
-  font-size: 1rem;
+  font-size: 1.25rem;
   color: #1e293b;
   margin: 0;
   font-weight: 600;
