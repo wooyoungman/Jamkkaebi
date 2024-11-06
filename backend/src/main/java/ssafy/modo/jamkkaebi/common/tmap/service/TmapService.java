@@ -1,6 +1,8 @@
 package ssafy.modo.jamkkaebi.common.tmap.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -12,7 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 import ssafy.modo.jamkkaebi.common.tmap.dto.AddressQueryDto;
+import ssafy.modo.jamkkaebi.common.tmap.dto.RouteQueryDto;
+import ssafy.modo.jamkkaebi.common.tmap.exception.RouteSerializationException;
 import ssafy.modo.jamkkaebi.common.util.RequestUtil;
+import ssafy.modo.jamkkaebi.domain.route.dto.GeoJsonDto;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -24,6 +29,7 @@ import java.util.Map;
 public class TmapService {
 
     private final RequestUtil requestUtil;
+    private final ObjectMapper objectMapper;
 
     @Value("${tmap.base-url}")
     private String baseUrl;
@@ -33,7 +39,7 @@ public class TmapService {
 
     private static final Integer version = 1;
 
-    private Map<String, String> buildHeader() {
+    private Map<String, String> appendToHeader() {
         Map<String, String> header = new HashMap<>();
         header.put("appKey", appKey);
         return header;
@@ -76,5 +82,28 @@ public class TmapService {
         geoCoordinate.put("lon", jsonBody.getAsJsonPrimitive("newLon").getAsFloat());
 
         return geoCoordinate;
+    }
+
+    public GeoJsonDto getRoute(Map<String, Float> originCoordinate, Map<String, Float> destinationCoordinate)
+            throws JsonProcessingException {
+
+        String requestUrl = baseUrl + "/routes?version=" + version;
+
+        RouteQueryDto routeDto = RouteQueryDto.builder()
+                .startX(originCoordinate.get("lon"))
+                .startY(originCoordinate.get("lat"))
+                .endX(destinationCoordinate.get("lon"))
+                .endY(destinationCoordinate.get("lat"))
+                .build();
+
+        ResponseEntity<String> response = requestUtil.sendRequest(
+                HttpMethod.POST, requestUrl, routeDto, String.class, appendToHeader());
+
+        try {
+            return objectMapper.readValue(response.getBody(), GeoJsonDto.class);
+        } catch (MismatchedInputException e) {
+            log.error("Error parsing geojson: {}", response.getBody(), e);
+            throw new RouteSerializationException();
+        }
     }
 }
