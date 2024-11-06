@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAtomValue } from "jotai";
 import { mapInstanceAtom } from "./MapContainer";
-import { TMapPolyline, TMapLatLng } from "@interfaces/Tmap";
+import { TMapPolyline } from "@interfaces/Tmap";
 
 interface RoutePolylineProps {
   path: Array<{
@@ -15,7 +15,7 @@ interface RoutePolylineProps {
 const RoutePolyline = ({
   path,
   color = "#FF0000",
-  width = 3,
+  width = 50,
 }: RoutePolylineProps) => {
   const mapInstance = useAtomValue(mapInstanceAtom);
   const [polyline, setPolyline] = useState<TMapPolyline | null>(null);
@@ -28,33 +28,32 @@ const RoutePolyline = ({
 
     // 기존 폴리라인 제거
     if (polyline) {
-      polyline.setMap(null);
+      try {
+        polyline.setMap(null);
+      } catch (e) {
+        console.warn("폴리라인 제거 중 에러:", e);
+      }
     }
 
     const drawRoute = async () => {
       try {
-        console.log("Starting route calculation");
+        console.log("경로 계산 시작");
 
-        // API Key 확인
-        const apiKey = process.env.VITE_TMAP_API_KEY;
-        console.log("API Key exists:", !!apiKey);
+        const apiKey = import.meta.env.VITE_TMAP_API_KEY;
 
-        const passList = path.slice(1, -1).map((point, index) => ({
-          viaPointId: `via${index}`,
-          viaPointName: `경유지${index}`,
-          viaX: point.lng.toString(),
-          viaY: point.lat.toString(),
-        }));
-
-        console.log("Request data:", {
+        const requestData = {
+          appKey: apiKey,
           startX: path[0].lng.toString(),
           startY: path[0].lat.toString(),
           endX: path[path.length - 1].lng.toString(),
           endY: path[path.length - 1].lat.toString(),
-          passList,
-        });
+          reqCoordType: "WGS84GEO",
+          resCoordType: "WGS84GEO",
+          angle: "172",
+          searchOption: "0",
+          trafficInfo: "Y",
+        };
 
-        // 자동차 경로로 변경 (pedestrian -> driving)
         const response = await fetch(
           "https://apis.openapi.sk.com/tmap/routes?version=1&format=json",
           {
@@ -62,60 +61,62 @@ const RoutePolyline = ({
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
-              appKey: apiKey || "",
+              appKey: apiKey,
             },
-            body: JSON.stringify({
-              startX: path[0].lng.toString(),
-              startY: path[0].lat.toString(),
-              endX: path[path.length - 1].lng.toString(),
-              endY: path[path.length - 1].lat.toString(),
-              passList: passList,
-              reqCoordType: "WGS84GEO",
-              resCoordType: "WGS84GEO",
-              startName: "출발",
-              endName: "도착",
-            }),
+            body: JSON.stringify(requestData),
           }
         );
 
-        const routeData = await response.json();
-        console.log("Route API response:", routeData);
+        const responseData = await response.json();
 
-        // 응답 구조 변경
-        let coordinates: any[] = [];
+        if (!response.ok) {
+          throw new Error(`API request failed: ${response.status}`);
+        }
 
-        // features 배열의 각 요소에서 coordinates 추출
-        routeData.features.forEach((feature: any) => {
-          if (feature.geometry.type === "LineString") {
-            // LineString 타입인 경우 coordinates 배열을 바로 사용
-            coordinates = coordinates.concat(
-              feature.geometry.coordinates.map(
-                (coord: [number, number]) =>
-                  new window.Tmapv2.LatLng(coord[1], coord[0])
-              )
-            );
-          }
-        });
+        if (responseData && responseData.features) {
+          let coordinates: any[] = [];
 
-        console.log("Extracted coordinates:", coordinates);
-
-        if (coordinates.length > 0) {
-          const newPolyline = new window.Tmapv2.Polyline({
-            path: coordinates,
-            strokeColor: color,
-            strokeWidth: width,
-            strokeStyle: "solid",
-            strokeOpacity: 0.8,
-            map: mapInstance,
+          responseData.features.forEach((feature: any) => {
+            if (feature.geometry.type === "LineString") {
+              coordinates = coordinates.concat(
+                feature.geometry.coordinates.map(
+                  (coord: [number, number]) =>
+                    new window.Tmapv2.LatLng(coord[1], coord[0])
+                )
+              );
+            }
           });
 
-          console.log("Created new polyline:", newPolyline);
-          setPolyline(newPolyline);
-        } else {
-          console.error("No coordinates found in the response");
+          if (coordinates.length > 0) {
+            const newPolyline = new window.Tmapv2.Polyline({
+              path: coordinates,
+              strokeColor: color,
+              strokeWidth: width,
+              strokeStyle: "solid",
+              strokeOpacity: 0.8,
+              map: mapInstance,
+            });
+
+            setPolyline(newPolyline);
+          }
         }
       } catch (error) {
         console.error("Error fetching route:", error);
+        // API 호출 실패 시 직선으로 연결
+        const fallbackPath = path.map(
+          (point) => new window.Tmapv2.LatLng(point.lat, point.lng)
+        );
+
+        const fallbackPolyline = new window.Tmapv2.Polyline({
+          path: fallbackPath,
+          strokeColor: color,
+          strokeWidth: width,
+          strokeStyle: "solid",
+          strokeOpacity: 0.8,
+          map: mapInstance,
+        });
+
+        setPolyline(fallbackPolyline);
       }
     };
 
@@ -123,7 +124,11 @@ const RoutePolyline = ({
 
     return () => {
       if (polyline) {
-        polyline.setMap(null);
+        try {
+          polyline.setMap(null);
+        } catch (e) {
+          console.warn("Cleanup - 폴리라인 제거 중 에러:", e);
+        }
       }
     };
   }, [mapInstance, path, color, width]);

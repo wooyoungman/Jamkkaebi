@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { MapDriver } from "@interfaces/manager";
+import { MapDriver } from "@/interfaces/manager";
 
 interface DriverInfoModalProps {
   isOpen: boolean;

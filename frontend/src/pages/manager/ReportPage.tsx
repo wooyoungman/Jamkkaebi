@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { User } from "@interfaces/manager";
+import { User } from "@/interfaces/manager";
 import { DUMMY_USERS } from "@interfaces/driveruser";
 
 import MapContainer from "@components/manager/MapContainer";
