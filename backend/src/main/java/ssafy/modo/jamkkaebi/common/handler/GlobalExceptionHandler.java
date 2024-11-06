@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ssafy.modo.jamkkaebi.common.ApiResponse;
 import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenExpirationException;
 import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenTypeException;
+import ssafy.modo.jamkkaebi.common.tmap.exception.RouteSerializationException;
 import ssafy.modo.jamkkaebi.domain.member.exception.DuplicatedNameException;
 import ssafy.modo.jamkkaebi.domain.member.exception.UserNotFoundException;
 
@@ -90,5 +91,11 @@ public class GlobalExceptionHandler {
         ApiResponse<Map<String, String>> response = ApiResponse.error(
                 HttpStatus.BAD_REQUEST.value(), "Request body validation error", errors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(RouteSerializationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleRouteSerializationException(RouteSerializationException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
     }
 }
