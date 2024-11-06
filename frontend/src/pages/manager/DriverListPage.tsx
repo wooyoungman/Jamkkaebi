@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAtom } from "jotai";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -16,6 +17,7 @@ const usersAtom = atomWithQuery(() => ({
 const ITEMS_PER_PAGE = 8; // 한 페이지당 8명 표시
 
 const DriverListContent = () => {
+  const nav = useNavigate();
   const [usersQuery] = useAtom(usersAtom);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -35,6 +37,10 @@ const DriverListContent = () => {
   if (usersQuery.isError) {
     return <Container>Error loading users</Container>;
   }
+
+  const handleRowClick = (userId: string) => {
+    nav(`/manager/report/${userId}`);
+  };
 
   return (
     <Container>
@@ -87,7 +93,11 @@ const DriverListContent = () => {
           </thead>
           <tbody>
             {paginatedUsers.map((user) => (
-              <TR key={user.id}>
+              <TR
+                key={user.id}
+                onClick={() => handleRowClick(user.id)}
+                style={{ cursor: "pointer" }}
+              >
                 <TD>
                   <ProfileImage
                     src={user.profileImage}
@@ -260,6 +270,16 @@ const TR = styled.tr`
 
   &:hover {
     background-color: #f9fafb;
+  }
+
+  // 테이블 행에 호버 효과 추가
+  &:not(:first-child) {
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: #f3f4f6;
+      transform: scale(1.001);
+    }
   }
 `;
 
