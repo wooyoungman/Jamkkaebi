@@ -33,4 +33,8 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> error(int status, String message) {
         return new ApiResponse<>(status, message, LocalDateTime.now(), null);
     }
+
+    public static <T> ApiResponse<T> error(int status, String message, T data) {
+        return new ApiResponse<>(status, message, LocalDateTime.now(), data);
+    }
 }
