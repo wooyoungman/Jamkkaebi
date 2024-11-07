@@ -1,9 +1,12 @@
 package ssafy.modo.jamkkaebi.domain.cargo.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssafy.modo.jamkkaebi.common.ApiResponse;
@@ -17,9 +20,14 @@ import ssafy.modo.jamkkaebi.domain.cargo.service.CargoWriteService;
 public class CargoController {
 
     private final CargoWriteService cargoWriteService;
+    private final ObjectMapper objectMapper;
 
-    @PostMapping("/create")
-    public ApiResponse<CargoCreateResponseDto> createCargo(@Valid CargoCreateDto dto) throws JsonProcessingException {
+    @PostMapping(path = "/create",
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<CargoCreateResponseDto> createCargo(@Valid @RequestBody String request)
+            throws JsonProcessingException {
+
+        CargoCreateDto dto = objectMapper.readValue(request, CargoCreateDto.class);
         return ApiResponse.success(cargoWriteService.createCargo(dto));
     }
 }
