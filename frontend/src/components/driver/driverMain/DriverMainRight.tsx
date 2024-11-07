@@ -31,7 +31,7 @@ const DriverMainRight: React.FC = () => {
       </RightTop>
       <RightBottom>
         <CustomRightBottomDiv>
-          <CustomDriverText fontSize="23px" fontWeight={700}>
+          <CustomDriverText fontSize="20px" fontWeight={700}>
             근처 휴게시설
           </CustomDriverText>
           <RightBottomMain>
