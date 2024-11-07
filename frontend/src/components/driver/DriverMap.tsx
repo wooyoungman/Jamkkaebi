@@ -58,7 +58,8 @@ const DriverMap: React.FC = () => {
             }
             const polyline = new window.Tmapv2.Polyline({
               path: ar_line,
-              strokeColor: "#ff0000",
+              // strokeColor: "#ff0000",
+              strokeColor: "#A5FF32",
               strokeWeight: 6,
               map: map,
             });
