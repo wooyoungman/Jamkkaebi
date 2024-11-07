@@ -133,10 +133,11 @@ export const ReportMapDiv = styled.div`
   width: 40%;
   height: 100%;
   flex-shrink: 0;
-  background-image: url(${mapImg});
+  /* background-image: url(${mapImg}); */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  overflow: hidden;
 `;
 
 // 1

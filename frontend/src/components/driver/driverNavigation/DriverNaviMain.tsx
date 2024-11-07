@@ -1,5 +1,5 @@
 import DriverNaviLeft from "./DriverNaviLeft";
-import { DriverNaviDiv, NavigationBody } from "./DriverNaviCSS";
+import { DriverNaviDiv} from "./DriverNaviCSS";
 import DriverNaviRight from "./DriverNaviRight";
 
 const DriverNaviMain: React.FC = () => {
@@ -8,7 +8,6 @@ const DriverNaviMain: React.FC = () => {
       <DriverNaviDiv>
         <DriverNaviLeft />
         <DriverNaviRight />
-        {/* <NavigationBody /> */}
       </DriverNaviDiv>
     </>
   );

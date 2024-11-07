@@ -12,6 +12,7 @@ import RestStoreInfo from "../RestStoreInfo";
 import LocationIcon from "@/styles/driver/LocationIcon";
 import restImg from "@/assets/restImg.png";
 import styled from "styled-components";
+import DriverMap from "../DriverMap";
 
 const CustomRightBottomDiv = styled(RightBottomDiv)`
   padding: 20px;
@@ -25,7 +26,9 @@ const CustomDriverText = styled(DriverText)`
 const DriverMainRight: React.FC = () => {
   return (
     <>
-      <RightTop />
+      <RightTop>
+        <DriverMap />
+      </RightTop>
       <RightBottom>
         <CustomRightBottomDiv>
           <CustomDriverText fontSize="23px" fontWeight={700}>
