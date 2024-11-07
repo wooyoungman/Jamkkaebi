@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ssafy.modo.jamkkaebi.common.ApiResponse;
@@ -42,19 +43,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiResponse<Void>> handleBadCredentialsException(BadCredentialsException e) {
         ApiResponse<Void> response = ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(response);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<ApiResponse<Void>> handleExpiredJwtException(ExpiredJwtException e) {
         ApiResponse<Void> response = ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(response);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(io.jsonwebtoken.security.SignatureException.class)
     public ResponseEntity<ApiResponse<Void>> handleSignatureException(io.jsonwebtoken.security.SignatureException e) {
         ApiResponse<Void> response = ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(response);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -92,7 +93,15 @@ public class GlobalExceptionHandler {
         ApiResponse<Void> response = ApiResponse.error(
                 HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(),
                 "Unsupported Media Type: " + Objects.requireNonNull(e.getContentType()).getSubtype());
-        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()).body(response);
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(response);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ApiResponse<Void>> RequestParameterException(MissingServletRequestParameterException e) {
+        ApiResponse<Void> response = ApiResponse.error(
+                HttpStatus.BAD_REQUEST.value(),
+                "Missing required parameter: " + e.getParameterName());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     // Custom Exception
