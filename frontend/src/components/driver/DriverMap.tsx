@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import destinationImg from "@/assets/destinationImg.png";
 import locationImg from "@/assets/locationImg.png";
+import { TMapInstance, MapOptions, TMapLatLng, TMapMarker, PolylineOptions, TMapPolyline } from "@/interfaces/Tmap"; // 타입 가져오기
+
 
 const DriverMap: React.FC = () => {
   const API_KEY = import.meta.env.VITE_TMAP_API_KEY;
@@ -37,15 +39,18 @@ const DriverMap: React.FC = () => {
       const new_polyLine = [];
       const new_Click_polyLine = [];
 
+      let routeData: any;
+      // let geoData: any[];
+
       const drawData = (data) => {
         routeData = data;
         const resultStr = "";
         const distance = 0;
         const idx = 1;
         const newData = [];
-        const equalData = [];
-        const pointId1 = "-1234567";
-        const ar_line = [];
+        let equalData = [];
+        let pointId1 = "-1234567";
+        let ar_line = [];
 
         for (let i = 0; i < data.features.length; i++) {
           const feature = data.features[i];
@@ -78,7 +83,7 @@ const DriverMap: React.FC = () => {
           }
         }
         const geoData = newData;
-        const markerCnt = 1;
+        let markerCnt = 1;
         for (let i = 0; i < newData.length; i++) {
           const mData = newData[i];
           const type = mData[0].geometry.type;
