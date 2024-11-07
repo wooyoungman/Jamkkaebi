@@ -1,18 +1,32 @@
 import { useEffect } from "react";
+import { useAtom } from "jotai";
+import {
+  mapAtom,
+  routeDataAtom,
+  mapInitializedAtom,
+} from "@/atoms/driver/mapStore";
 import axios from "axios";
 import destinationImg from "@/assets/destinationImg.png";
 import locationImg from "@/assets/locationImg.png";
-import { TMapInstance, MapOptions, TMapLatLng, TMapMarker, PolylineOptions, TMapPolyline } from "@/interfaces/Tmap"; // 타입 가져오기
+import { TMapMarker } from "@/interfaces/Tmap";
 
+interface CustomTMapMarker extends TMapMarker {
+  tag: number;
+}
 
 const DriverMap: React.FC = () => {
   const API_KEY = import.meta.env.VITE_TMAP_API_KEY;
+  const [map, setMap] = useAtom(mapAtom);
+  const [routeData, setRouteData] = useAtom(routeDataAtom);
+  const [mapInitialized, setMapInitialized] = useAtom(mapInitializedAtom);
 
   useEffect(() => {
     const initTmap = () => {
       // 1. 지도 띄우기
-      const map = new Tmapv2.Map("map_div", {
-        center: new Tmapv2.LatLng(37.52084364186228, 127.058908811749),
+      const mapDiv = document.getElementById("map_div") as HTMLElement;
+
+      const map = new window.Tmapv2.Map(mapDiv, {
+        center: new window.Tmapv2.LatLng(37.52084364186228, 127.058908811749),
         width: "100%",
         height: "100%",
         zoom: 14,
@@ -20,33 +34,11 @@ const DriverMap: React.FC = () => {
         scrollwheel: true,
       });
 
-      // // 2. 출발지, 도착지 심볼 찍기
-      // // 출발지
-      // const marker_s = new Tmapv2.Marker({
-      //   position: new Tmapv2.LatLng(37.534066, 126.958973),
-      //   icon: locationImg,
-      //   iconSize: new Tmapv2.Size(15, 15),
-      //   map: map,
-      // });
-      // // 도착지
-      // const marker_e = new Tmapv2.Marker({
-      //   position: new Tmapv2.LatLng(37.520287, 126.932661),
-      //   icon: destinationImg,
-      //   iconSize: new Tmapv2.Size(24, 24),
-      //   map: map,
-      // });
+      setMap(map);
+      setMapInitialized(true);
 
-      const new_polyLine = [];
-      const new_Click_polyLine = [];
-
-      let routeData: any;
-      // let geoData: any[];
-
-      const drawData = (data) => {
-        routeData = data;
-        const resultStr = "";
-        const distance = 0;
-        const idx = 1;
+      const drawData = (data: any) => {
+        const new_polyLine = [];
         const newData = [];
         let equalData = [];
         let pointId1 = "-1234567";
@@ -57,14 +49,14 @@ const DriverMap: React.FC = () => {
           if (feature.geometry.type == "LineString") {
             ar_line = [];
             for (let j = 0; j < feature.geometry.coordinates.length; j++) {
-              const startPt = new Tmapv2.LatLng(
+              const startPt = new window.Tmapv2.LatLng(
                 feature.geometry.coordinates[j][1],
                 feature.geometry.coordinates[j][0]
               );
               ar_line.push(startPt);
               pointArray.push(feature.geometry.coordinates[j]);
             }
-            const polyline = new Tmapv2.Polyline({
+            const polyline = new window.Tmapv2.Polyline({
               path: ar_line,
               strokeColor: "#ff0000",
               strokeWeight: 6,
@@ -82,30 +74,28 @@ const DriverMap: React.FC = () => {
             equalData.push(feature);
           }
         }
-        const geoData = newData;
-        let markerCnt = 1;
-        for (let i = 0; i < newData.length; i++) {
-          const mData = newData[i];
-          const type = mData[0].geometry.type;
-          const pointType = mData[0].properties.pointType;
-          const pointTypeCheck = false;
-          if (mData[0].properties.pointType == "S") {
-            const img = locationImg;
-            const lon = mData[0].geometry.coordinates[0];
-            const lat = mData[0].geometry.coordinates[1];
-          } else if (mData[0].properties.pointType == "E") {
-            const img = destinationImg;
-            const lon = mData[0].geometry.coordinates[0];
-            const lat = mData[0].geometry.coordinates[1];
-          } else {
-            markerCnt = i;
-            const lon = mData[0].geometry.coordinates[0];
-            const lat = mData[0].geometry.coordinates[1];
-          }
-        }
+        // let markerCnt = 1;
+        // for (let i = 0; i < newData.length; i++) {
+        //   const mData = newData[i];
+        //   const type = mData[0].geometry.type;
+        //   const pointType = mData[0].properties.pointType;
+        //   if (pointType == "S") {
+        //     const img = locationImg;
+        //     const lon = mData[0].geometry.coordinates[0];
+        //     const lat = mData[0].geometry.coordinates[1];
+        //   } else if (pointType == "E") {
+        //     const img = destinationImg;
+        //     const lon = mData[0].geometry.coordinates[0];
+        //     const lat = mData[0].geometry.coordinates[1];
+        //   } else {
+        //     markerCnt = i;
+        //     const lon = mData[0].geometry.coordinates[0];
+        //     const lat = mData[0].geometry.coordinates[1];
+        //   }
+        // }
       };
 
-      const markerList = [];
+      const markerList: CustomTMapMarker[] = [];
       const pointArray = [];
 
       const addMarker = (
@@ -114,7 +104,6 @@ const DriverMap: React.FC = () => {
         lat: number,
         tag: number
       ) => {
-        let markerLayer;
         let imgURL: string | undefined;
         switch (status) {
           case "llStart":
@@ -130,23 +119,23 @@ const DriverMap: React.FC = () => {
             imgURL = undefined;
         }
 
-        const marker = new Tmapv2.Marker({
-          position: new Tmapv2.LatLng(lat, lon),
+        const marker = new window.Tmapv2.Marker({
+          position: new window.Tmapv2.LatLng(lat, lon),
           icon: imgURL,
           iconSize:
             imgURL === locationImg
-              ? new Tmapv2.Size(15, 15)
-              : new Tmapv2.Size(24, 24),
+              ? new window.Tmapv2.Size(15, 15)
+              : new window.Tmapv2.Size(24, 24),
           map: map,
-        });
+        }) as CustomTMapMarker;
 
         marker.tag = tag;
-        marker.addListener("dragend", (evt) => {
-          markerListenerEvent(evt);
-        });
-        marker.addListener("drag", (evt) => {
-          markerObject = markerList[tag];
-        });
+        // marker.addListener("dragend", (evt:any) => {
+        //   markerListenerEvent(evt);
+        // });
+        // marker.addListener("drag", (evt:any) => {
+        //   markerObject = markerList[tag];
+        // });
         markerList[tag] = marker;
         return marker;
       };
@@ -159,7 +148,6 @@ const DriverMap: React.FC = () => {
       const endX = 127.11971717230388;
       const endY = 37.49288934463672;
       const passList = "";
-      let prtcl;
 
       const fetchRouteData = async () => {
         try {
@@ -184,27 +172,26 @@ const DriverMap: React.FC = () => {
               },
             }
           );
-          const prtcl = response.data;
-          console.log(prtcl);
+          setRouteData(response.data);
+          drawData(response.data);
 
-          const trafficColors = {
-            extractStyles: true,
-            /* 실제 교통정보가 표출되면 아래와 같은 Color로 Line이 생성됩니다. */
-            trafficDefaultColor: "#636f63", //Default
-            trafficType1Color: "#19b95f", //원할
-            trafficType2Color: "#f15426", //지체
-            trafficType3Color: "#ff970e", //정체
-          };
-          const styled_red = {
-            fillColor: "#FF0000",
-            fillOpacity: 0.2,
-            strokeColor: "#FF0000",
-            strokeWidth: 3,
-            strokeDashstyle: "solid",
-            pointRadius: 2,
-            title: "this is a red line",
-          };
-          drawData(prtcl);
+          // const trafficColors = {
+          //   extractStyles: true,
+          //   /* 실제 교통정보가 표출되면 아래와 같은 Color로 Line이 생성됩니다. */
+          //   trafficDefaultColor: "#636f63", //Default
+          //   trafficType1Color: "#19b95f", //원할
+          //   trafficType2Color: "#f15426", //지체
+          //   trafficType3Color: "#ff970e", //정체
+          // };
+          // const styled_red = {
+          //   fillColor: "#FF0000",
+          //   fillOpacity: 0.2,
+          //   strokeColor: "#FF0000",
+          //   strokeWidth: 3,
+          //   strokeDashstyle: "solid",
+          //   pointRadius: 2,
+          //   title: "this is a red line",
+          // };
         } catch (error) {
           console.error("Error fetching route data: ", error);
         }

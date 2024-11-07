@@ -84,10 +84,11 @@ export const RightTop = styled(GlassDiv)`
   width: 100%;
   height: 60%;
   flex-shrink: 0;
-  background-image: url(${naviImg});
+  /* background-image: url(${naviImg}); */
   background-size: cover; // 이미지가 컴포넌트에 맞게 채워지도록 설정
   background-repeat: no-repeat; // 이미지 반복 방지
   background-position: center; // 이미지 가운데 정렬
+  overflow: hidden;
 `;
 
 export const RightBottom = styled.div`
