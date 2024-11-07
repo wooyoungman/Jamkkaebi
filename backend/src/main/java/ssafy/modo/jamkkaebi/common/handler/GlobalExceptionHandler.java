@@ -21,6 +21,7 @@ import ssafy.modo.jamkkaebi.domain.member.exception.UserNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -103,14 +104,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ApiResponse<List>> handleConstraintViolationException(ConstraintViolationException e) {
+    public ResponseEntity<ApiResponse<List<String>>> handleConstraintViolationException(ConstraintViolationException e) {
 
         List<String> violations = e.getConstraintViolations()
                 .stream()
                 .map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
                 .toList();
 
-        ApiResponse<List> response = ApiResponse.error(
+        ApiResponse<List<String>> response = ApiResponse.error(
                 HttpStatus.BAD_REQUEST.value(), "Request body validation error", violations);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
@@ -118,7 +119,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<ApiResponse<Void>> handleMediaTypeException(HttpMediaTypeNotSupportedException e) {
         ApiResponse<Void> response = ApiResponse.error(
-                HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), "Unsupported Media Type");
+                HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(),
+                "Unsupported Media Type: " + Objects.requireNonNull(e.getContentType()).getSubtype());
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()).body(response);
     }
 }

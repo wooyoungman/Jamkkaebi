@@ -1,5 +1,13 @@
 package ssafy.modo.jamkkaebi.domain.member.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import ssafy.modo.jamkkaebi.common.ApiResponse;
 import ssafy.modo.jamkkaebi.common.security.jwt.dto.JwtTokenDto;
 import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenExpirationException;
@@ -10,10 +18,6 @@ import ssafy.modo.jamkkaebi.domain.member.dto.response.RegisterSuccessDto;
 import ssafy.modo.jamkkaebi.domain.member.entity.MemberRole;
 import ssafy.modo.jamkkaebi.domain.member.service.MemberReadService;
 import ssafy.modo.jamkkaebi.domain.member.service.MemberWriteService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,14 +26,21 @@ public class MemberController implements MemberControllerApi {
 
     private final MemberWriteService memberWriteService;
     private final MemberReadService memberReadService;
+    private final ObjectMapper objectMapper;
 
-    @PostMapping("/register")
-    public ApiResponse<RegisterSuccessDto> register(RegisterDto registerDto) {
+    @PostMapping(path = "/register",
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<RegisterSuccessDto> register(@Valid @RequestBody String payload) throws JsonProcessingException {
+
+        RegisterDto registerDto = objectMapper.readValue(payload, RegisterDto.class);
         return ApiResponse.success(memberWriteService.register(registerDto));
     }
 
-    @PostMapping("/login")
-    public ApiResponse<JwtTokenDto> login(LoginDto loginDto) {
+    @PostMapping(path = "/login",
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<JwtTokenDto> login(@Valid @RequestBody String payload) throws JsonProcessingException {
+
+        LoginDto loginDto = objectMapper.readValue(payload, LoginDto.class);
         return ApiResponse.success(memberReadService.login(loginDto));
     }
 
