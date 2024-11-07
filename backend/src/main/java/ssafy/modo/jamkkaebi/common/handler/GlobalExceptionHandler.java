@@ -26,6 +26,7 @@ import java.util.Objects;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Spring Exception
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponse<Void>> handleRuntimeException(RuntimeException e) {
         ApiResponse<Void> response = ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
@@ -36,12 +37,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleUsernameNotFoundException(UsernameNotFoundException e) {
         ApiResponse<Void> response = ApiResponse.error(HttpStatus.NOT_FOUND.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleUserNotFoundException(UserNotFoundException e) {
-        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
-        return ResponseEntity.status(e.getStatus()).body(response);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -62,24 +57,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(response);
     }
 
-    @ExceptionHandler(TokenTypeException.class)
-    public ResponseEntity<ApiResponse<Void>> handleTokenTypeException(TokenTypeException e) {
-        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
-        return ResponseEntity.status(e.getStatus()).body(response);
-    }
-
-    @ExceptionHandler(TokenExpirationException.class)
-    public ResponseEntity<ApiResponse<Void>> handleTokenExpirationException(TokenExpirationException e) {
-        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
-        return ResponseEntity.status(e.getStatus()).body(response);
-    }
-
-    @ExceptionHandler(DuplicatedNameException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDuplicatedNameException(DuplicatedNameException e) {
-        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
-        return ResponseEntity.status(e.getStatus()).body(response);
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException e) {
@@ -95,12 +72,6 @@ public class GlobalExceptionHandler {
         ApiResponse<Map<String, String>> response = ApiResponse.error(
                 HttpStatus.BAD_REQUEST.value(), "Request body validation error", errors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-    }
-
-    @ExceptionHandler(RouteSerializationException.class)
-    public ResponseEntity<ApiResponse<Void>> handleRouteSerializationException(RouteSerializationException e) {
-        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
-        return ResponseEntity.status(e.getStatus()).body(response);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -122,5 +93,36 @@ public class GlobalExceptionHandler {
                 HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(),
                 "Unsupported Media Type: " + Objects.requireNonNull(e.getContentType()).getSubtype());
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()).body(response);
+    }
+
+    // Custom Exception
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUserNotFoundException(UserNotFoundException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(TokenTypeException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTokenTypeException(TokenTypeException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(TokenExpirationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTokenExpirationException(TokenExpirationException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(DuplicatedNameException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicatedNameException(DuplicatedNameException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(RouteSerializationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleRouteSerializationException(RouteSerializationException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
     }
 }
