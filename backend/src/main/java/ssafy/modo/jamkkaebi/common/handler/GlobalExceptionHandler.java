@@ -97,7 +97,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<ApiResponse<Void>> RequestParameterException(MissingServletRequestParameterException e) {
+    public ResponseEntity<ApiResponse<Void>> requestParameterException(MissingServletRequestParameterException e) {
         ApiResponse<Void> response = ApiResponse.error(
                 HttpStatus.BAD_REQUEST.value(),
                 "Missing required parameter: " + e.getParameterName());
