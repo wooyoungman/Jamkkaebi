@@ -17,16 +17,16 @@ const IndicatorContainer = styled.div`
   align-items: center;
 `;
 
-const IndicatorButton = styled(CustomGlassDiv)<{ isActive: boolean }>`
+const IndicatorButton = styled(CustomGlassDiv)<{ $isActive: boolean }>`
   width: 15px;
   height: 4px;
   border-radius: 5px;
-  background: ${({ isActive }) =>
-    isActive
+  background: ${({ $isActive }) =>
+    $isActive
       ? "linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%)"
       : "rgba(255, 255, 255, 0.5)"};
-  box-shadow: ${({ isActive }) =>
-    isActive
+  box-shadow: ${({ $isActive }) =>
+    $isActive
       ? "0px 0px 8px rgba(255, 255, 255, 0.8)" // 활성화 시 추가된 글로우 효과
       : "none"};
   transition:
@@ -83,7 +83,7 @@ const DrivingDetailGraphCarousel: React.FC = () => {
           {graphData.map((_, index) => (
             <IndicatorButton
               key={index}
-              isActive={index === currentIndex}
+              $isActive={index === currentIndex}
               onClick={() => handleIndicatorClick(index)}
             />
           ))}

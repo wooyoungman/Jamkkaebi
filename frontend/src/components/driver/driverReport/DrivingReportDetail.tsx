@@ -7,6 +7,8 @@ import {
   GrayEclipseSVG,
   BlueEclipseSVG,
   ModalGlassDiv,
+  ModalGlassDiv2,
+  GlassDiv,
 } from "@/styles/driver/GlassmorphismStyle";
 import { DriverText, InlineTextDiv } from "../driverMain/DriverMainCSS";
 import {
@@ -31,6 +33,19 @@ import {
 } from "@/styles/driver/driverReport/DriverReportSVG";
 import { HRLine } from "./DriverReportCSS";
 import DrivingDetailGraphCarousel from "./DrivingDetailGraphCarousel";
+import DriverMap from "../DriverMap";
+
+// const CustomModalGlassDiv = styled(ModalGlassDiv2)`
+//   width: 800px;
+//   height: 630px;
+//   border-radius: 30px;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   gap: 20px;
+//   padding: 20px;
+//   box-sizing: border-box;
+// `;
 
 const CustomHRLine = styled(HRLine)`
   height: 12px;
@@ -116,36 +131,39 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
 
   return ReactDOM.createPortal(
     <ModalOverlay onClick={onClose}>
-      <Card cardWidth="800px" cardHeight="630px">
+      <Card cardwidth="800px" cardheight="630px">
         <GrayLine
-          cardWidth="56%"
+          cardwidth="56%"
           opacity={0.6}
           position="top"
-          offsetLeft="7%"
+          offsetleft="7%"
         />
-        <EclipseDiv cardWidth="66%" cardHeight="14%" top="1%">
-          <GrayEclipseSVG cardWidth="100%" cardHeight="100%" />
+        <EclipseDiv cardwidth="66%" cardheight="14%" top="1%">
+          <GrayEclipseSVG cardwidth="100%" cardheight="100%" />
         </EclipseDiv>
-        <EclipseDiv cardWidth="66%" cardHeight="14%" bottom="3%">
-          <BlueEclipseSVG cardWidth="100%" cardHeight="100%" />
+        <EclipseDiv cardwidth="66%" cardheight="14%" bottom="1%">
+          <BlueEclipseSVG cardwidth="100%" cardheight="100%" />
         </EclipseDiv>
         <GrayLine
-          cardWidth="289px"
+          cardwidth="289px"
           opacity={0.6}
           position="bottom"
           centered={true}
         />
         <ModalGlassDiv
           onClick={(e) => e.stopPropagation()}
-          cardWidth="100%"
-          cardHeight="100%"
+          cardwidth="100%"
+          cardheight="100%"
         >
+          {/* <CustomModalGlassDiv onClick={(e) => e.stopPropagation()}> */}
           <CloseButton onClick={onClose}>✕</CloseButton>
           <DriverText fontSize="20px" color="#E0E0E0" fontWeight={700}>
             운행 상세 기록
           </DriverText>
           <ReportDetailMain>
-            <ReportMapDiv />
+            <ReportMapDiv>
+              <DriverMap />
+            </ReportMapDiv>
             <ReportDetailRightDiv>
               <ReportDetailTextDiv>
                 <CustomDriverText
@@ -165,9 +183,6 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
                       {reportData.departureLocation}
                     </CustomDriverText>
                   </ReportDetailJourneyDiv>
-                  {/* <div style={{ marginLeft: "49px" }}>
-                    <DottedLineSVG />
-                  </div> */}
                   <ReportDetailJourneyDiv>
                     <CustomDriverText
                       fontSize="12px"
@@ -269,6 +284,7 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
               Continue
             </DriverText>
           </ButtonDiv>
+          {/* </CustomModalGlassDiv> */}
         </ModalGlassDiv>
       </Card>
     </ModalOverlay>,

@@ -31,6 +31,6 @@
     "noUnusedLocals": false, // 사용하지 않는 지역 변수 에러 끄기
     "noUnusedParameters": false // 사용하지 않는 매개변수 에러 끄기
   },
-  "include": ["src"],
+  "include": ["src", "src/interfaces/Tmap.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
