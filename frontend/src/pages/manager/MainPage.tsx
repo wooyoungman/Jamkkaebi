@@ -16,8 +16,6 @@ type ExtendedInputProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-  helpText?: string;
-  helpLink?: string;
 };
 
 type ExtendedPurpleButtonProps = {
@@ -31,7 +29,7 @@ const MainPage = () => {
   const navigate = useNavigate();
   const [, setUser] = useAtom(userAtom);
   const [formData, setFormData] = useState<LoginRequest>({
-    id: "",
+    username: "",
     password: "",
   });
   const [error, setError] = useState<string>("");
@@ -44,12 +42,11 @@ const MainPage = () => {
       ...prev,
       [name]: value,
     }));
-    setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.id || !formData.password) {
+    if (!formData.username || !formData.password) {
       setError("아이디와 비밀번호를 모두 입력해주세요.");
       return;
     }
@@ -87,11 +84,9 @@ const MainPage = () => {
             <InputWrapper>
               <StyledInput
                 name="id"
-                value={formData.id}
+                value={formData.username}
                 onChange={handleChange}
                 placeholder="ID"
-                // helpText="아이디 찾기"
-                // helpLink="/forgot-id"
               />
             </InputWrapper>
             <InputWrapper>
@@ -101,8 +96,6 @@ const MainPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Password"
-                // helpText="비밀번호 찾기"
-                // helpLink="/forgot-password"
               />
             </InputWrapper>
             {error && <ErrorMessage>{error}</ErrorMessage>}

@@ -1,14 +1,13 @@
-// src/interfaces/manager.ts
-
 export interface LoginRequest {
-  id: string;
+  username: string;
   password: string;
 }
 
 export interface User {
-  id: string;
+  id: number;
+  username: string; // 아이디
   name: string;
-  role: "manager" | "driver";
+  role?: "manager" | "driver" | "admin";
   phone: string;
   employeeId: string;
   region: string;
@@ -22,7 +21,8 @@ export interface Location {
 }
 
 export interface DrowsyEvent {
-  id: string;
+  id: number;
+  username: string; // 아이디
   profileImage: string;
   driverName: string;
   age: number;
@@ -36,7 +36,8 @@ export interface DrowsyEvent {
 }
 
 export interface MapDriver {
-  id: string;
+  id: number;
+  username: string; // 아이디
   name: string;
   vehicleNumber: string;
   status: string;
