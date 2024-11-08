@@ -24,6 +24,7 @@ import ssafy.modo.jamkkaebi.domain.cargo.exception.CargoNotFoundException;
 import ssafy.modo.jamkkaebi.domain.manager.exception.DriverConflictException;
 import ssafy.modo.jamkkaebi.domain.member.exception.*;
 import ssafy.modo.jamkkaebi.domain.vehicle.exception.DuplicatedVehicleException;
+import ssafy.modo.jamkkaebi.domain.vehicle.exception.VehicleNotFoundException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -191,6 +192,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CargoDispatchedException.class)
     public ResponseEntity<ApiResponse<Void>> handleCargoDispatchedException(CargoDispatchedException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(VehicleNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleVehicleNotFoundException(VehicleNotFoundException e) {
         ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
         return ResponseEntity.status(e.getStatus()).body(response);
     }
