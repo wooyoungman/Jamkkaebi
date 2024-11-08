@@ -19,12 +19,12 @@ import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenExpirationExcepti
 import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenTypeException;
 import ssafy.modo.jamkkaebi.common.tmap.exception.InvalidAddressException;
 import ssafy.modo.jamkkaebi.common.tmap.exception.RouteSerializationException;
+import ssafy.modo.jamkkaebi.domain.cargo.exception.CargoDispatchedException;
+import ssafy.modo.jamkkaebi.domain.cargo.exception.CargoNotFoundException;
 import ssafy.modo.jamkkaebi.domain.manager.exception.DriverConflictException;
-import ssafy.modo.jamkkaebi.domain.member.exception.DriverNotFoundException;
-import ssafy.modo.jamkkaebi.domain.member.exception.DuplicatedNameException;
-import ssafy.modo.jamkkaebi.domain.member.exception.ManagerNotFoundException;
-import ssafy.modo.jamkkaebi.domain.member.exception.UserNotFoundException;
+import ssafy.modo.jamkkaebi.domain.member.exception.*;
 import ssafy.modo.jamkkaebi.domain.vehicle.exception.DuplicatedVehicleException;
+import ssafy.modo.jamkkaebi.domain.vehicle.exception.VehicleNotFoundException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -174,6 +174,30 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicatedVehicleException.class)
     public ResponseEntity<ApiResponse<Void>> handleDuplicatedVehicleException(DuplicatedVehicleException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(InvalidRelationshipException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidRelationshipException(InvalidRelationshipException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(CargoNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCargoNotFoundException(CargoNotFoundException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(CargoDispatchedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCargoDispatchedException(CargoDispatchedException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(VehicleNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleVehicleNotFoundException(VehicleNotFoundException e) {
         ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
         return ResponseEntity.status(e.getStatus()).body(response);
     }

@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssafy.modo.jamkkaebi.common.ApiResponse;
 import ssafy.modo.jamkkaebi.domain.cargo.dto.request.CargoCreateDto;
+import ssafy.modo.jamkkaebi.domain.cargo.dto.request.CargoDispatchRequestDto;
 import ssafy.modo.jamkkaebi.domain.cargo.dto.response.CargoCreateResponseDto;
+import ssafy.modo.jamkkaebi.domain.cargo.dto.response.CargoDispatchResponseDto;
 import ssafy.modo.jamkkaebi.domain.cargo.service.CargoWriteService;
 
 @RestController
@@ -25,5 +27,11 @@ public class CargoController {
     public ApiResponse<CargoCreateResponseDto> createCargo(@Valid @RequestBody CargoCreateDto dto)
             throws JsonProcessingException {
         return ApiResponse.success(cargoWriteService.createCargo(dto));
+    }
+
+    @PostMapping(path = "/dispatch",
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<CargoDispatchResponseDto> dispatchCargo(@Valid @RequestBody CargoDispatchRequestDto dto) {
+        return ApiResponse.success(cargoWriteService.dispatchCargo(dto));
     }
 }
