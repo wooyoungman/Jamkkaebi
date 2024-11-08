@@ -39,7 +39,11 @@ public class SecurityConfig implements WebMvcConfigurer {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost", "https://k11c106.p.ssafy.io"));
+                    config.setAllowedOrigins(List.of(
+                            "http://localhost",
+                            "http://localhost:5173",
+                            "https://k11c106.p.ssafy.io"
+                    ));
                     config.setAllowedMethods(Collections.singletonList("*"));
                     config.setAllowedHeaders(Collections.singletonList("*"));
                     config.setAllowCredentials(true);

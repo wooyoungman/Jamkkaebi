@@ -1,5 +1,6 @@
 package ssafy.modo.jamkkaebi.common.handler;
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import ssafy.modo.jamkkaebi.domain.member.exception.DriverNotFoundException;
 import ssafy.modo.jamkkaebi.domain.member.exception.DuplicatedNameException;
 import ssafy.modo.jamkkaebi.domain.member.exception.ManagerNotFoundException;
 import ssafy.modo.jamkkaebi.domain.member.exception.UserNotFoundException;
+import ssafy.modo.jamkkaebi.domain.vehicle.exception.DuplicatedVehicleException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -109,6 +111,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
+    @ExceptionHandler(MismatchedInputException.class)
+    public ResponseEntity<ApiResponse<Void>> mismatchedInputException(MismatchedInputException e) {
+        ApiResponse<Void> response = ApiResponse.error(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
     // Custom Exception
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleUserNotFoundException(UserNotFoundException e) {
@@ -160,6 +168,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidAddressException.class)
     public ResponseEntity<ApiResponse<Void>> handleInvalidAddressException(InvalidAddressException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(DuplicatedVehicleException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicatedVehicleException(DuplicatedVehicleException e) {
         ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
         return ResponseEntity.status(e.getStatus()).body(response);
     }
