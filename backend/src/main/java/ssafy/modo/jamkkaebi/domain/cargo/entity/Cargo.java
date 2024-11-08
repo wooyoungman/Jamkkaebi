@@ -5,16 +5,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ssafy.modo.jamkkaebi.common.entity.BaseEntity;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cargo extends BaseEntity {
 
@@ -50,20 +49,6 @@ public class Cargo extends BaseEntity {
     private Integer distance;
 
     private String routeId;
-
-    @Builder
-    public Cargo(String cargoInfo, String origin, String destination, LocalDateTime dueDate, Integer distance,
-                 String originLat, String originLon, String destinationLat, String destinationLon) {
-        this.cargoInfo = cargoInfo;
-        this.origin = origin;
-        this.originLat = originLat;
-        this.originLon = originLon;
-        this.destination = destination;
-        this.destinationLat = destinationLat;
-        this.destinationLon = destinationLon;
-        this.dueDate = dueDate;
-        this.distance = distance;
-    }
 
     public void updateRouteId(String routeId) {
         this.routeId = routeId;
