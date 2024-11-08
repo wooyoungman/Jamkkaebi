@@ -2,6 +2,7 @@ package ssafy.modo.jamkkaebi.domain.manager.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ssafy.modo.jamkkaebi.common.security.util.SecurityUtil;
 import ssafy.modo.jamkkaebi.domain.manager.dto.response.DriversResponseDto;
 import ssafy.modo.jamkkaebi.domain.manager.dto.response.SimpleDriverInfo;
 import ssafy.modo.jamkkaebi.domain.manager.entity.DriversType;
@@ -15,6 +16,7 @@ import java.util.List;
 public class ManagerReadService {
 
     private final MemberRepository memberRepository;
+    private final SecurityUtil securityUtil;
 
     private static SimpleDriverInfo setDriverInfo(Member driver) {
         return SimpleDriverInfo.builder()
@@ -27,7 +29,7 @@ public class ManagerReadService {
 
     public DriversResponseDto getManagedDrivers() {
 
-        List<SimpleDriverInfo> drivers = memberRepository.findManagedDriver()
+        List<SimpleDriverInfo> drivers = memberRepository.findManagedDriver(securityUtil.getCurrentUserId())
                 .stream().map(ManagerReadService::setDriverInfo).toList();
 
         return DriversResponseDto.builder()
