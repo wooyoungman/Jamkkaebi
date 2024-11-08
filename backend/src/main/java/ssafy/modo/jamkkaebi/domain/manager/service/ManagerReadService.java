@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ssafy.modo.jamkkaebi.domain.manager.dto.response.DriversResponseDto;
 import ssafy.modo.jamkkaebi.domain.manager.dto.response.SimpleDriverInfo;
+import ssafy.modo.jamkkaebi.domain.manager.entity.DriversType;
 import ssafy.modo.jamkkaebi.domain.member.entity.Member;
 import ssafy.modo.jamkkaebi.domain.member.repository.MemberRepository;
 
@@ -31,6 +32,7 @@ public class ManagerReadService {
 
         return DriversResponseDto.builder()
                 .count(drivers.size())
+                .driversType(DriversType.MANAGED)
                 .drivers(drivers)
                 .build();
     }
@@ -42,6 +44,7 @@ public class ManagerReadService {
 
         return DriversResponseDto.builder()
                 .count(drivers.size())
+                .driversType(DriversType.UNMANAGED)
                 .drivers(drivers)
                 .build();
     }

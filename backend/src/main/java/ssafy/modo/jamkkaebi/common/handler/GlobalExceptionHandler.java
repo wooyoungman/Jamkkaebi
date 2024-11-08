@@ -2,6 +2,7 @@ package ssafy.modo.jamkkaebi.common.handler;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,7 +17,10 @@ import ssafy.modo.jamkkaebi.common.ApiResponse;
 import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenExpirationException;
 import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenTypeException;
 import ssafy.modo.jamkkaebi.common.tmap.exception.RouteSerializationException;
+import ssafy.modo.jamkkaebi.domain.manager.exception.DriverConflictException;
+import ssafy.modo.jamkkaebi.domain.member.exception.DriverNotFoundException;
 import ssafy.modo.jamkkaebi.domain.member.exception.DuplicatedNameException;
+import ssafy.modo.jamkkaebi.domain.member.exception.ManagerNotFoundException;
 import ssafy.modo.jamkkaebi.domain.member.exception.UserNotFoundException;
 
 import java.util.HashMap;
@@ -24,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -97,7 +102,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<ApiResponse<Void>> RequestParameterException(MissingServletRequestParameterException e) {
+    public ResponseEntity<ApiResponse<Void>> requestParameterException(MissingServletRequestParameterException e) {
         ApiResponse<Void> response = ApiResponse.error(
                 HttpStatus.BAD_REQUEST.value(),
                 "Missing required parameter: " + e.getParameterName());
@@ -131,6 +136,24 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RouteSerializationException.class)
     public ResponseEntity<ApiResponse<Void>> handleRouteSerializationException(RouteSerializationException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(DriverConflictException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDriverConflictException(DriverConflictException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(DriverNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDriverNotFoundException(DriverNotFoundException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(ManagerNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleManagerNotFoundException(ManagerNotFoundException e) {
         ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
         return ResponseEntity.status(e.getStatus()).body(response);
     }
