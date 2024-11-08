@@ -18,7 +18,7 @@ public class VehicleWriteService {
 
     public VehicleCreateResponseDto registerVehicle(VehicleCreateRequestDto dto) {
 
-        if (vehicleRepository.existsByVehicleNumber(dto.getVehicleNumber())) {
+        if (Boolean.TRUE.equals(vehicleRepository.existsByVehicleNumber(dto.getVehicleNumber()))) {
             throw new DuplicatedVehicleException();
         }
 
