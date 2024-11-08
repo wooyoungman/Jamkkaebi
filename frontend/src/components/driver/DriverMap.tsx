@@ -4,10 +4,15 @@ import {
   mapAtom,
   routeDataAtom,
   mapInitializedAtom,
+  // startPointAtom,
+  // endPointAtom,
+  // restStopsAtom,
+  // polylineDataAtom,
 } from "@/atoms/driver/mapStore";
 import axios from "axios";
 import destinationImg from "@/assets/destinationImg.png";
 import locationImg from "@/assets/locationImg.png";
+import restStopImg from "@/assets/restStopImg.png";
 import { TMapMarker } from "@/interfaces/Tmap";
 
 interface CustomTMapMarker extends TMapMarker {
@@ -19,8 +24,15 @@ const DriverMap: React.FC = () => {
   const [map, setMap] = useAtom(mapAtom);
   const [routeData, setRouteData] = useAtom(routeDataAtom);
   const [mapInitialized, setMapInitialized] = useAtom(mapInitializedAtom);
+  // const [startPoint, setStartPoint] = useAtom(startPointAtom);
+  // const [endPoint, setEndPoint] = useAtom(endPointAtom);
+  // const [restStops, setRestStops] = useAtom(restStopsAtom);
+  // const [polylineData, setPolylineData] = useAtom(polylineDataAtom);
 
   useEffect(() => {
+    const markerList: CustomTMapMarker[] = [];
+    const polylineList: any[] = [];
+
     const initTmap = () => {
       // 1. 지도 띄우기
       const mapDiv = document.getElementById("map_div") as HTMLElement;
@@ -37,43 +49,32 @@ const DriverMap: React.FC = () => {
       setMap(map);
       setMapInitialized(true);
 
-      const drawData = (data: any) => {
-        const new_polyLine = [];
-        const newData = [];
-        let equalData = [];
-        let pointId1 = "-1234567";
-        let ar_line = [];
+      const clearMap = () => {
+        // Remove all markers
+        markerList.forEach((marker) => marker.setMap(null));
+        markerList.length = 0; // Clear marker list
 
-        for (let i = 0; i < data.features.length; i++) {
-          const feature = data.features[i];
-          if (feature.geometry.type == "LineString") {
-            ar_line = [];
-            for (let j = 0; j < feature.geometry.coordinates.length; j++) {
-              const startPt = new window.Tmapv2.LatLng(
-                feature.geometry.coordinates[j][1],
-                feature.geometry.coordinates[j][0]
-              );
-              ar_line.push(startPt);
-              pointArray.push(feature.geometry.coordinates[j]);
-            }
+        // Remove all polylines
+        polylineList.forEach((polyline) => polyline.setMap(null));
+        polylineList.length = 0; // Clear polyline list
+      };
+
+      const drawData = (data: any) => {
+        // clearMap();
+
+        for (const feature of data.features) {
+          if (feature.geometry.type === "LineString") {
+            const ar_line = feature.geometry.coordinates.map(
+              (coord: [number, number]) =>
+                new window.Tmapv2.LatLng(coord[1], coord[0])
+            );
             const polyline = new window.Tmapv2.Polyline({
               path: ar_line,
               strokeColor: "#00ff00",
-              // strokeColor: "#A5FF32",
-              // strokeColor: "#1E90FF",
               strokeWeight: 6,
               map: map,
             });
-            new_polyLine.push(polyline);
-          }
-          const pointId2 = feature.properties.viaPointId;
-          if (pointId1 != pointId2) {
-            equalData = [];
-            equalData.push(feature);
-            newData.push(equalData);
-            pointId1 = pointId2;
-          } else {
-            equalData.push(feature);
+            polylineList.push(polyline);
           }
         }
         // let markerCnt = 1;
@@ -97,9 +98,6 @@ const DriverMap: React.FC = () => {
         // }
       };
 
-      const markerList: CustomTMapMarker[] = [];
-      const pointArray = [];
-
       const addMarker = (
         status: string,
         lon: number,
@@ -112,7 +110,7 @@ const DriverMap: React.FC = () => {
             imgURL = locationImg;
             break;
           case "llPass":
-            imgURL = destinationImg;
+            imgURL = restStopImg;
             break;
           case "llEnd":
             imgURL = destinationImg;
@@ -127,7 +125,7 @@ const DriverMap: React.FC = () => {
           iconSize:
             imgURL === locationImg
               ? new window.Tmapv2.Size(15, 15)
-              : new window.Tmapv2.Size(24, 24),
+              : new window.Tmapv2.Size(30, 30),
           map: map,
         }) as CustomTMapMarker;
 
@@ -138,20 +136,57 @@ const DriverMap: React.FC = () => {
         // marker.addListener("drag", (evt:any) => {
         //   markerObject = markerList[tag];
         // });
-        markerList[tag] = marker;
+
+        // markerList[tag] = marker;
+        markerList.push(marker);
+
+        if (status === "llPass") {
+          marker.addListener("click", () => {
+            console.log(`lat: ${lat} lon: ${lon}`);
+
+            // // 클릭된 llPass 마커 제거
+            // marker.setMap(null);
+
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  const startLat = position.coords.latitude;
+                  const startLon = position.coords.longitude;
+
+                  clearMap();
+                  addMarker("llStart", startLon, startLat, 1);
+                  addMarker("llEnd", lon, lat, 2);
+
+                  // 현재 위치를 출발지로, llPass 마커 위치를 목적지로 경로 재계산
+                  fetchRouteData(startLon, startLat, lon, lat);
+                },
+                (error) => console.error("Geolocation error: ", error)
+              );
+            }
+          });
+
+          // marker.addListener("mouseenter", () => {
+          //   console.log("Mouse over llPass marker");
+          //   marker.setIcon(restStopImg); // 마커 아이콘 변경 (예: 강조된 버전)
+          // });
+
+          // marker.addListener("mouseleave", () => {
+          //   console.log("Mouse out from llPass marker");
+          //   marker.setIcon(restStopImg); // 기본 아이콘으로 변경
+          // });
+        }
+
         return marker;
       };
 
-      addMarker("llStart", 127.02810900563199, 37.519892712436906, 1);
-      addMarker("llEnd", 127.11971717230388, 37.49288934463672, 2);
-
-      const startX = 127.02810900563199;
-      const startY = 37.519892712436906;
-      const endX = 127.11971717230388;
-      const endY = 37.49288934463672;
-      const passList = "";
-
-      const fetchRouteData = async () => {
+      const fetchRouteData = async (
+        startX: number,
+        startY: number,
+        endX: number,
+        endY: number
+      ) => {
+        // addMarker("llstart", startX, startY, 1);
+        // addMarker("llEnd", endX, endY, 2);
         try {
           const response = await axios.post(
             "https://apis.openapi.sk.com/tmap/routes?version=1&format=json",
@@ -160,7 +195,7 @@ const DriverMap: React.FC = () => {
               startY,
               endX,
               endY,
-              passList,
+              passList: "",
               reqCoordType: "WGS84GEO",
               resCoordType: "WGS84GEO",
               angle: "172",
@@ -176,29 +211,62 @@ const DriverMap: React.FC = () => {
           );
           setRouteData(response.data);
           drawData(response.data);
-
-          // const trafficColors = {
-          //   extractStyles: true,
-          //   /* 실제 교통정보가 표출되면 아래와 같은 Color로 Line이 생성됩니다. */
-          //   trafficDefaultColor: "#636f63", //Default
-          //   trafficType1Color: "#19b95f", //원할
-          //   trafficType2Color: "#f15426", //지체
-          //   trafficType3Color: "#ff970e", //정체
-          // };
-          // const styled_red = {
-          //   fillColor: "#FF0000",
-          //   fillOpacity: 0.2,
-          //   strokeColor: "#FF0000",
-          //   strokeWidth: 3,
-          //   strokeDashstyle: "solid",
-          //   pointRadius: 2,
-          //   title: "this is a red line",
-          // };
         } catch (error) {
-          console.error("Error fetching route data: ", error);
+          console.error("Error fetching route data:", error);
         }
       };
-      fetchRouteData();
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userLat = position.coords.latitude;
+            const userLon = position.coords.longitude;
+            addMarker("llStart", userLon, userLat, 1);
+
+            map.setCenter(new window.Tmapv2.LatLng(userLat, userLon));
+          },
+          (error) => console.error("Geolocation error: ", error)
+        );
+      }
+
+      addMarker("llEnd", 127.11971717230388, 37.49288934463672, 2);
+      addMarker("llPass", 127.06033711446, 37.51148310935, 3);
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const startX = position.coords.longitude;
+          const startY = position.coords.latitude;
+          const endX = 127.11971717230388;
+          const endY = 37.49288934463672;
+          try {
+            const response = await axios.post(
+              "https://apis.openapi.sk.com/tmap/routes?version=1&format=json",
+              {
+                startX,
+                startY,
+                endX,
+                endY,
+                passList: "",
+                reqCoordType: "WGS84GEO",
+                resCoordType: "WGS84GEO",
+                angle: "172",
+                searchOption: "0",
+                trafficInfo: "Y",
+              },
+              {
+                headers: {
+                  appKey: API_KEY,
+                  "Content-Type": "application/x-www-form-urlencoded",
+                },
+              }
+            );
+            setRouteData(response.data);
+            drawData(response.data);
+          } catch (error) {
+            console.error("Error fetching route data:", error);
+          }
+        });
+      }
     };
 
     if (!window.Tmapv2) {

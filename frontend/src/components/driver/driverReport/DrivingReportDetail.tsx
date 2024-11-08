@@ -7,12 +7,10 @@ import {
   GrayEclipseSVG,
   BlueEclipseSVG,
   ModalGlassDiv,
-  ModalGlassDiv2,
-  GlassDiv,
 } from "@/styles/driver/GlassmorphismStyle";
 import { DriverText, InlineTextDiv } from "../driverMain/DriverMainCSS";
 import {
-  AccidentCountData,
+  AccidentCountItem,
   AccidentCountDiv,
   AccidentCountList,
   ButtonDiv,
@@ -226,109 +224,72 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
                   </CustomInlineTextDiv>
                 </div>
               </ReportDetailTextDiv>
-              {/* <AccidentCountDiv>
-                {reportData.drowsinessCount === 0 &&
-                reportData.focusLossCount === 0 ? (
-                  <AccidentCountList>
-                    <AccidentCountData>
+
+              <AccidentCountDiv>
+                <AccidentCountList>
+                  {/* 안전운행 상태 */}
+                  {reportData.drowsinessCount === 0 &&
+                  reportData.focusLossCount === 0 ? (
+                    <AccidentCountItem>
                       <GreenCircleSVG />
                       <CustomDriverText fontSize="12px" fontWeight={600}>
                         안전운행
                       </CustomDriverText>
-                    </AccidentCountData>
-                  </AccidentCountList>
-                ) : (
-                  <>
-                    <AccidentCountList>
-                      {reportData.drowsinessCount > 0 && (
-                        <AccidentCountData>
-                          <RedCircleSVG />
-                          <CustomDriverText fontSize="12px" fontWeight={600}>
-                            졸음 {reportData.drowsinessCount}회
-                          </CustomDriverText>
-                        </AccidentCountData>
-                      )}
-                      {reportData.focusLossCount > 0 && (
-                        <AccidentCountData>
-                          <MandarineCircleSVG />
-                          <CustomDriverText fontSize="12px" fontWeight={600}>
-                            집중 저하 {reportData.focusLossCount}회
-                          </CustomDriverText>
-                        </AccidentCountData>
-                      )}
-                    </AccidentCountList>
-                  </>
-                )}
-              </AccidentCountDiv> */}
-              <AccidentCountDiv>
-                <AccidentCountList>
-                  <AccidentCountData>
-                    {/* 안전운행 상태 */}
-                    {reportData.drowsinessCount === 0 &&
-                    reportData.focusLossCount === 0 ? (
-                      <>
-                        <GreenCircleSVG />
-                        <CustomDriverText fontSize="12px" fontWeight={600}>
-                          안전운행
-                        </CustomDriverText>
-                      </>
-                    ) : (
-                      <>
-                        <DarkGreenCircleSVG />
-                        <CustomDriverText
-                          fontSize="12px"
-                          fontWeight={600}
-                          color="#A9A9A9"
-                        >
-                          안전운행
-                        </CustomDriverText>
-                      </>
-                    )}
+                    </AccidentCountItem>
+                  ) : (
+                    <>
+                      <DarkGreenCircleSVG />
+                      <CustomDriverText
+                        fontSize="12px"
+                        fontWeight={600}
+                        color="#A9A9A9"
+                      >
+                        안전운행
+                      </CustomDriverText>
+                    </>
+                  )}
 
-                    {/* 졸음 상태 */}
-                    {reportData.drowsinessCount === 0 ? (
-                      <>
-                        <DarkRedCircleSVG style={{ marginLeft: "10px" }} />
-                        <CustomDriverText
-                          fontSize="12px"
-                          fontWeight={600}
-                          color="#A9A9A9"
-                        >
-                          졸음 {reportData.drowsinessCount}회
-                        </CustomDriverText>
-                      </>
-                    ) : (
-                      <>
-                        <RedCircleSVG style={{ marginLeft: "10px" }} />
-                        <CustomDriverText fontSize="12px" fontWeight={600}>
-                          졸음 {reportData.drowsinessCount}회
-                        </CustomDriverText>
-                      </>
-                    )}
+                  {/* 졸음 상태 */}
+                  {reportData.drowsinessCount === 0 ? (
+                    <AccidentCountItem>
+                      <DarkRedCircleSVG />
+                      <CustomDriverText
+                        fontSize="12px"
+                        fontWeight={600}
+                        color="#A9A9A9"
+                      >
+                        졸음 {reportData.drowsinessCount}회
+                      </CustomDriverText>
+                    </AccidentCountItem>
+                  ) : (
+                    <>
+                      <RedCircleSVG />
+                      <CustomDriverText fontSize="12px" fontWeight={600}>
+                        졸음 {reportData.drowsinessCount}회
+                      </CustomDriverText>
+                    </>
+                  )}
 
-                    {/* 집중 저하 상태 */}
-                    {reportData.focusLossCount === 0 ? (
-                      <>
-                        <DarkMandarineCircleSVG
-                          style={{ marginLeft: "10px" }}
-                        />
-                        <CustomDriverText
-                          fontSize="12px"
-                          fontWeight={600}
-                          color="#A9A9A9"
-                        >
-                          집중 저하 {reportData.focusLossCount}회
-                        </CustomDriverText>
-                      </>
-                    ) : (
-                      <>
-                        <MandarineCircleSVG style={{ marginLeft: "10px" }} />
-                        <CustomDriverText fontSize="12px" fontWeight={600}>
-                          집중 저하 {reportData.focusLossCount}회
-                        </CustomDriverText>
-                      </>
-                    )}
-                  </AccidentCountData>
+                  {/* 집중 저하 상태 */}
+                  {reportData.focusLossCount === 0 ? (
+                    <AccidentCountItem>
+                      <DarkMandarineCircleSVG />
+                      <CustomDriverText
+                        fontSize="12px"
+                        fontWeight={600}
+                        color="#A9A9A9"
+                      >
+                        집중 저하 {reportData.focusLossCount}회
+                      </CustomDriverText>
+                    </AccidentCountItem>
+                  ) : (
+                    <AccidentCountItem>
+                      <MandarineCircleSVG />
+                      <CustomDriverText fontSize="12px" fontWeight={600}>
+                        집중 저하 {reportData.focusLossCount}회
+                      </CustomDriverText>
+                    </AccidentCountItem>
+                  )}
                 </AccidentCountList>
               </AccidentCountDiv>
 
