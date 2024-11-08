@@ -11,10 +11,10 @@ import ssafy.modo.jamkkaebi.common.security.jwt.dto.JwtTokenDto;
 import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenExpirationException;
 import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenTypeException;
 import ssafy.modo.jamkkaebi.common.security.jwt.service.JwtService;
-import ssafy.modo.jamkkaebi.common.security.util.SecurityUtil;
 import ssafy.modo.jamkkaebi.domain.member.dto.request.LoginDto;
 import ssafy.modo.jamkkaebi.domain.member.dto.response.ValidateSuccessDto;
 import ssafy.modo.jamkkaebi.domain.member.entity.Member;
+import ssafy.modo.jamkkaebi.domain.member.repository.ManagerDriverRepository;
 
 @Slf4j
 @Service
@@ -24,7 +24,7 @@ public class MemberReadService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final SecurityUtil securityUtil;
+    private final ManagerDriverRepository managerDriverRepository;
 
     public JwtTokenDto login(LoginDto loginDto) {
 
@@ -33,7 +33,6 @@ public class MemberReadService {
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManager.authenticate(authToken);
-        log.info("Login Principal instance: {}", authentication.getPrincipal().getClass());
         JwtTokenDto tokenDto = jwtService.generateToken(authentication);
 
         Member member = (Member) authentication.getPrincipal();
@@ -43,13 +42,14 @@ public class MemberReadService {
     }
 
     public ValidateSuccessDto validate(String token) throws TokenTypeException, TokenExpirationException {
-        log.info("Token to validate: {}", token);
-        log.info("Member Auth info: {} (ID: {}), {}",
-                securityUtil.getCurrentUsername(), securityUtil.getCurrentUserId(), securityUtil.getCurrentUserRole());
         return ValidateSuccessDto
                 .builder()
                 .tokenType(jwtService.getTokenType(token))
                 .expiration(jwtService.getExpiration(token))
                 .build();
+    }
+
+    public boolean isDriverConnected(Integer driverId) {
+        return managerDriverRepository.existsByDriverId((long) driverId);
     }
 }

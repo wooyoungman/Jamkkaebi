@@ -12,6 +12,7 @@ import ssafy.modo.jamkkaebi.domain.member.exception.DriverNotFoundException;
 import ssafy.modo.jamkkaebi.domain.member.exception.ManagerNotFoundException;
 import ssafy.modo.jamkkaebi.domain.member.repository.ManagerDriverRepository;
 import ssafy.modo.jamkkaebi.domain.member.repository.MemberRepository;
+import ssafy.modo.jamkkaebi.domain.member.service.MemberReadService;
 
 @Service
 @Transactional
@@ -21,15 +22,16 @@ public class ManagerWriteService {
     private final ManagerDriverRepository managerDriverRepository;
     private final MemberRepository memberRepository;
     private final SecurityUtil securityUtil;
+    private final MemberReadService memberReadService;
 
     public ManageConnectResponseDto connectDriver(Integer driverId) {
 
-        if (isDriverConnected(driverId)) {
+        if (memberReadService.isDriverConnected(driverId)) {
             throw new DriverConflictException();
         } else {
             Member manager = memberRepository.findByUsername(securityUtil.getCurrentUsername())
                     .orElseThrow(ManagerNotFoundException::new);
-            Member driver = memberRepository.findByid((long) driverId)
+            Member driver = memberRepository.findById((long) driverId)
                     .orElseThrow(DriverNotFoundException::new);
 
             managerDriverRepository.save(ManagerAndDriver.builder()
@@ -42,9 +44,5 @@ public class ManagerWriteService {
                     .connectedDriverId(driverId)
                     .build();
         }
-    }
-
-    private boolean isDriverConnected(Integer driverId) {
-        return managerDriverRepository.existsByDriverId((long) driverId);
     }
 }
