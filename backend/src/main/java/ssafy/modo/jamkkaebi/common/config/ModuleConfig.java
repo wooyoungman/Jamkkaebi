@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+import ssafy.modo.jamkkaebi.common.handler.RestTemplateErrorHandler;
 
 @Configuration
 public class ModuleConfig {
@@ -22,6 +23,8 @@ public class ModuleConfig {
 
     @Bean
     public RestTemplate restTemplate() {
-        return new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setErrorHandler(new RestTemplateErrorHandler());
+        return restTemplate;
     }
 }

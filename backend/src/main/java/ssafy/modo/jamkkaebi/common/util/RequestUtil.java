@@ -5,9 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -44,15 +41,7 @@ public class RequestUtil {
     private <R> ResponseEntity<R> executeRequest(
             HttpMethod method, String url, HttpEntity<String> requestEntity, Class<R> responseType) {
 
-        try {
-            return restTemplate.exchange(url, method, requestEntity, responseType);
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            throw new RuntimeException("HTTP error: " + e.getStatusCode() + " - " + e.getResponseBodyAsString(), e);
-        } catch (ResourceAccessException e) {
-            throw new RuntimeException("Resource access error: " + e.getMessage(), e);
-        } catch (Exception e) {
-            throw new RuntimeException("Unexpected error: " + e.getMessage(), e);
-        }
+        return restTemplate.exchange(url, method, requestEntity, responseType);
     }
 
     public <T, R> ResponseEntity<R> sendRequest(
