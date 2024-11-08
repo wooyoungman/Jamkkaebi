@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssafy.modo.jamkkaebi.common.entity.BaseEntity;
+import ssafy.modo.jamkkaebi.domain.member.entity.Member;
 import ssafy.modo.jamkkaebi.domain.vehicle.dto.request.VehicleCreateRequestDto;
 
 @Entity
@@ -17,6 +18,9 @@ public class Vehicle extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne
+    private Member driver;
 
     @NotNull
     private String vehicleNumber;
