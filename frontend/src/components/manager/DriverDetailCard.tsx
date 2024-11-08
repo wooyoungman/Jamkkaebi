@@ -1,4 +1,4 @@
-import styledfrom "styled-components";
+import styled from "styled-components";
 import { DrowsyEvent } from "@/interfaces/manager";
 
 interface DriverDetailCardProps {

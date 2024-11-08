@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styledfrom "styled-components";
+import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import MapContainer from "@components/manager/MapContainer";
 import DriverMarker from "@components/manager/DriverMarker";
