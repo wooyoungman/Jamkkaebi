@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { styled } from "styled-components";
+import styledfrom "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import PurpleButton from "@/components/manager/PurpleButton";
 import { Share } from "lucide-react";
