@@ -5,6 +5,7 @@ import styled from "styled-components";
 import mascotImage from "@assets/character.png";
 import Input from "@components/manager/Input";
 import PurpleButton from "@components/manager/PurpleButton";
+import RegisterModal from "@components/manager/RegisterModal";
 import { useLogin } from "@queries/index";
 import { userAtom } from "@atoms/index";
 import type { LoginRequest } from "@/interfaces/manager";
@@ -28,6 +29,7 @@ type ExtendedPurpleButtonProps = {
 const MainPage = () => {
   const navigate = useNavigate();
   const [, setUser] = useAtom(userAtom);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [formData, setFormData] = useState<LoginRequest>({
     username: "",
     password: "",
@@ -83,7 +85,7 @@ const MainPage = () => {
           <Form onSubmit={handleSubmit}>
             <InputWrapper>
               <StyledInput
-                name="id"
+                name="username"
                 value={formData.username}
                 onChange={handleChange}
                 placeholder="ID"
@@ -102,7 +104,7 @@ const MainPage = () => {
             <StyledPurpleButton
               type="submit"
               disabled={loginMutation.isPending}
-              onClick={() => {}} // 빈 함수를 추가하여 onClick prop 만족
+              onClick={() => {}}
             >
               {loginMutation.isPending ? (
                 "Loading..."
@@ -110,10 +112,17 @@ const MainPage = () => {
                 <BoldText>LOGIN</BoldText>
               )}
             </StyledPurpleButton>
-            <SignupLink href="/signup">회원가입</SignupLink>
+            <SignupButton onClick={() => setIsRegisterModalOpen(true)}>
+              회원가입
+            </SignupButton>
           </Form>
         </LoginSection>
       </ContentWrapper>
+
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+      />
     </LoginContainer>
   );
 };
@@ -200,13 +209,16 @@ const ErrorMessage = styled.p`
   text-align: center;
 `;
 
-const SignupLink = styled.a`
+const SignupButton = styled.button`
   text-align: center;
   color: black;
   text-decoration: none;
   font-size: 16px;
   font-weight: 600;
   margin-top: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;

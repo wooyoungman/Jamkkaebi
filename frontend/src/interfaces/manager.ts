@@ -1,3 +1,9 @@
+export interface RegisterRequest {
+  username: string; // 아이디
+  password: string; // 비밀번호
+  name: string; // 사용자 이름
+}
+
 export interface LoginRequest {
   username: string;
   password: string;
