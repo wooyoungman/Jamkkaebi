@@ -55,6 +55,7 @@ public class Delivery extends BaseEntity {
         this.cargo = dto.getCargo();
         this.vehicle = dto.getVehicle();
         this.departureDate = dto.getDepartureDate();
+        this.arrivalDate = null;
         this.hasArrived = false;
         this.lowFocusSector = 0;
         this.avgFocusIndex = 0;
