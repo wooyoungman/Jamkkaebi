@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ssafy.modo.jamkkaebi.common.ApiResponse;
 import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenExpirationException;
 import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenTypeException;
+import ssafy.modo.jamkkaebi.common.tmap.exception.InvalidAddressException;
 import ssafy.modo.jamkkaebi.common.tmap.exception.RouteSerializationException;
 import ssafy.modo.jamkkaebi.domain.manager.exception.DriverConflictException;
 import ssafy.modo.jamkkaebi.domain.member.exception.DriverNotFoundException;
@@ -26,7 +27,6 @@ import ssafy.modo.jamkkaebi.domain.member.exception.UserNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Slf4j
 @RestControllerAdvice
@@ -97,7 +97,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleMediaTypeException(HttpMediaTypeNotSupportedException e) {
         ApiResponse<Void> response = ApiResponse.error(
                 HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(),
-                "Unsupported Media Type: " + Objects.requireNonNull(e.getContentType()).getSubtype());
+                "Unsupported Media Type: " + ((e.getContentType() != null) ? e.getContentType().getSubtype() : null));
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(response);
     }
 
@@ -154,6 +154,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ManagerNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleManagerNotFoundException(ManagerNotFoundException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(InvalidAddressException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidAddressException(InvalidAddressException e) {
         ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
         return ResponseEntity.status(e.getStatus()).body(response);
     }

@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum TmapExceptionMessage {
-    DESERIALIZATION_FAILED("Failed to deserialize GeoJSON route data.", HttpStatus.INTERNAL_SERVER_ERROR.value());
+    DESERIALIZATION_FAILED("Failed to deserialize GeoJSON route data.", HttpStatus.INTERNAL_SERVER_ERROR.value()),
+    INVALID_ADDRESS("Requested address is not valid.", HttpStatus.BAD_REQUEST.value());
 
     private final String message;
     private final int status;
