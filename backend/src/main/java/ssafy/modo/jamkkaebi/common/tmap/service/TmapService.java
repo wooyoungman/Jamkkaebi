@@ -10,11 +10,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 import ssafy.modo.jamkkaebi.common.tmap.dto.AddressQueryDto;
 import ssafy.modo.jamkkaebi.common.tmap.dto.RouteQueryDto;
+import ssafy.modo.jamkkaebi.common.tmap.exception.InvalidAddressException;
 import ssafy.modo.jamkkaebi.common.tmap.exception.RouteSerializationException;
 import ssafy.modo.jamkkaebi.common.util.RequestUtil;
 import ssafy.modo.jamkkaebi.domain.route.dto.GeoJsonDto;
@@ -71,6 +73,10 @@ public class TmapService {
 
         String requestUrl = buildUrlWithParams(baseUrl + "/geo/fullAddrGeo", address);
         ResponseEntity<String> response = requestUtil.sendRequest(HttpMethod.GET, requestUrl, String.class, null);
+
+        if (response.getStatusCode().equals(HttpStatus.BAD_REQUEST)) {
+            throw new InvalidAddressException();
+        }
 
         Gson gson = new GsonBuilder().create();
         JsonObject jsonBody = gson.fromJson(response.getBody(), JsonObject.class)
