@@ -6,5 +6,6 @@ export const mapInitializedAtom = atom<boolean>(false);
 
 export const startPointAtom = atom<{ lat: number; lon: number } | null>(null);
 export const endPointAtom = atom<{ lat: number; lon: number } | null>(null); // 도착지 좌표
-export const restStopsAtom = atom<{ lat: number; lon: number }[]>([]); // 휴게소 좌표 배열
-export const polylineDataAtom = atom<any[]>([]);
+export const restStopsAtom = atom<{ lat: number; lon: number; tag: number }[]>([
+  { lat: 37.51148310935, lon: 127.06033711446, tag: 3 }, // 기본 IIPass 더미 데이터
+]);

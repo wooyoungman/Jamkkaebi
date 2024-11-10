@@ -4,10 +4,9 @@ import {
   mapAtom,
   routeDataAtom,
   mapInitializedAtom,
-  // startPointAtom,
-  // endPointAtom,
-  // restStopsAtom,
-  // polylineDataAtom,
+  startPointAtom,
+  endPointAtom,
+  restStopsAtom,
 } from "@/atoms/driver/mapStore";
 import axios from "axios";
 import destinationImg from "@/assets/destinationImg.png";
@@ -24,12 +23,26 @@ const DriverMap: React.FC = () => {
   const [map, setMap] = useAtom(mapAtom);
   const [routeData, setRouteData] = useAtom(routeDataAtom);
   const [mapInitialized, setMapInitialized] = useAtom(mapInitializedAtom);
-  // const [startPoint, setStartPoint] = useAtom(startPointAtom);
-  // const [endPoint, setEndPoint] = useAtom(endPointAtom);
-  // const [restStops, setRestStops] = useAtom(restStopsAtom);
-  // const [polylineData, setPolylineData] = useAtom(polylineDataAtom);
+  const [startPoint, setStartPoint] = useAtom(startPointAtom);
+  const [endPoint, setEndPoint] = useAtom(endPointAtom);
+  const [restStops, setRestStops] = useAtom(restStopsAtom);
 
   useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLon = position.coords.longitude;
+
+          console.log("User location retrieved:", userLat, userLon);
+          // 사용자의 위치를 startPointAtom에 저장
+          setStartPoint({ lat: userLat, lon: userLon });
+        },
+        (error) => console.error("Geolocation error: ", error)
+      );
+    }
+
+    console.log("Map initialized");
     const markerList: CustomTMapMarker[] = [];
     const polylineList: any[] = [];
 
@@ -37,8 +50,12 @@ const DriverMap: React.FC = () => {
       // 1. 지도 띄우기
       const mapDiv = document.getElementById("map_div") as HTMLElement;
 
+      const centerPoint = startPoint
+        ? new window.Tmapv2.LatLng(startPoint.lat, startPoint.lon)
+        : new window.Tmapv2.LatLng(35.20531229555332, 126.81156301307217); // 기본 좌표
+
       const map = new window.Tmapv2.Map(mapDiv, {
-        center: new window.Tmapv2.LatLng(37.52084364186228, 127.058908811749),
+        center: centerPoint,
         width: "100%",
         height: "100%",
         zoom: 14,
@@ -46,6 +63,7 @@ const DriverMap: React.FC = () => {
         scrollwheel: true,
       });
 
+      console.log("1. 지도 띄우기");
       setMap(map);
       setMapInitialized(true);
 
@@ -57,6 +75,7 @@ const DriverMap: React.FC = () => {
         // Remove all polylines
         polylineList.forEach((polyline) => polyline.setMap(null));
         polylineList.length = 0; // Clear polyline list
+        console.log("Map cleared");
       };
 
       const drawData = (data: any) => {
@@ -77,6 +96,7 @@ const DriverMap: React.FC = () => {
             polylineList.push(polyline);
           }
         }
+        console.log("Route drawn on map");
         // let markerCnt = 1;
         // for (let i = 0; i < newData.length; i++) {
         //   const mData = newData[i];
@@ -118,6 +138,9 @@ const DriverMap: React.FC = () => {
           default:
             imgURL = undefined;
         }
+        console.log(
+          `Adding marker - Status: ${status}, Lat: ${lat}, Lon: ${lon}`
+        );
 
         const marker = new window.Tmapv2.Marker({
           position: new window.Tmapv2.LatLng(lat, lon),
@@ -141,11 +164,17 @@ const DriverMap: React.FC = () => {
         markerList.push(marker);
 
         if (status === "llPass") {
+          setRestStops((prev) => [...prev, { lat, lon, tag }]);
+
           marker.addListener("click", () => {
-            console.log(`lat: ${lat} lon: ${lon}`);
+            console.log(`Clicked on llPass marker at Lat: ${lat}, Lon: ${lon}`);
 
             // // 클릭된 llPass 마커 제거
             // marker.setMap(null);
+
+            setRestStops((prev) =>
+              prev.filter((stop) => stop.lat !== lat && stop.lon !== lon)
+            );
 
             if (navigator.geolocation) {
               navigator.geolocation.getCurrentPosition(
@@ -211,26 +240,47 @@ const DriverMap: React.FC = () => {
           );
           setRouteData(response.data);
           drawData(response.data);
+          setStartPoint({ lat: startY, lon: startX });
+          setEndPoint({ lat: endY, lon: endX });
+          console.log("Fetched and Renewaled Data");
         } catch (error) {
           console.error("Error fetching route data:", error);
         }
       };
 
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const userLat = position.coords.latitude;
-            const userLon = position.coords.longitude;
-            addMarker("llStart", userLon, userLat, 1);
+      if (startPoint) {
+        console.log("Start point exists");
+        addMarker("llStart", startPoint.lon, startPoint.lat, 1);
+        map.setCenter(new window.Tmapv2.LatLng(startPoint.lon, startPoint.lon));
+      } else {
+        console.log("Start point didn't exists");
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const userLat = position.coords.latitude;
+              const userLon = position.coords.longitude;
+              addMarker("llStart", userLon, userLat, 1);
+              setStartPoint({ lat: userLat, lon: userLon });
 
-            map.setCenter(new window.Tmapv2.LatLng(userLat, userLon));
-          },
-          (error) => console.error("Geolocation error: ", error)
-        );
+              map.setCenter(new window.Tmapv2.LatLng(userLat, userLon));
+            },
+            (error) => console.error("Geolocation error: ", error)
+          );
+        }
       }
 
-      addMarker("llEnd", 127.11971717230388, 37.49288934463672, 2);
-      addMarker("llPass", 127.06033711446, 37.51148310935, 3);
+      if (endPoint) {
+        console.log("End point exists");
+        addMarker("llEnd", endPoint.lon, endPoint.lat, 2);
+      } else {
+        console.log("End point didn't exists");
+        addMarker("llEnd", 127.11971717230388, 37.49288934463672, 2);
+        setEndPoint({ lat: 37.49288934463672, lon: 127.11971717230388 });
+      }
+      restStops.forEach((stop) => {
+        addMarker("llPass", stop.lon, stop.lat, stop.tag);
+        console.log("Added rest stop marker at:", stop.lat, stop.lon);
+      });
 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (position) => {
@@ -238,32 +288,36 @@ const DriverMap: React.FC = () => {
           const startY = position.coords.latitude;
           const endX = 127.11971717230388;
           const endY = 37.49288934463672;
-          try {
-            const response = await axios.post(
-              "https://apis.openapi.sk.com/tmap/routes?version=1&format=json",
-              {
-                startX,
-                startY,
-                endX,
-                endY,
-                passList: "",
-                reqCoordType: "WGS84GEO",
-                resCoordType: "WGS84GEO",
-                angle: "172",
-                searchOption: "0",
-                trafficInfo: "Y",
-              },
-              {
-                headers: {
-                  appKey: API_KEY,
-                  "Content-Type": "application/x-www-form-urlencoded",
+          if (routeData) {
+            drawData(routeData);
+          } else {
+            try {
+              const response = await axios.post(
+                "https://apis.openapi.sk.com/tmap/routes?version=1&format=json",
+                {
+                  startX,
+                  startY,
+                  endX,
+                  endY,
+                  passList: "",
+                  reqCoordType: "WGS84GEO",
+                  resCoordType: "WGS84GEO",
+                  angle: "172",
+                  searchOption: "0",
+                  trafficInfo: "Y",
                 },
-              }
-            );
-            setRouteData(response.data);
-            drawData(response.data);
-          } catch (error) {
-            console.error("Error fetching route data:", error);
+                {
+                  headers: {
+                    appKey: API_KEY,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                  },
+                }
+              );
+              setRouteData(response.data);
+              drawData(response.data);
+            } catch (error) {
+              console.error("Error fetching route data:", error);
+            }
           }
         });
       }
