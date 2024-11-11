@@ -26,20 +26,7 @@ public class Vehicle extends BaseEntity {
     private String vehicleNumber;
 
     @NotNull
-    private Boolean light;
-
-    @NotNull
-    private Boolean fan;
-
-    @NotNull
-    private Integer temperature;
-
-    @NotNull
     private Boolean inUse;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private WindowStatus windowStatus;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -48,11 +35,7 @@ public class Vehicle extends BaseEntity {
     @Builder
     public Vehicle(VehicleCreateRequestDto requestDto) {
         this.vehicleNumber = requestDto.getVehicleNumber();
-        this.light = false;
-        this.fan = false;
-        this.temperature = 23;
         this.inUse = false;
-        this.windowStatus = WindowStatus.HALT;
         this.alertType = AlertType.DISABLED;
     }
 
