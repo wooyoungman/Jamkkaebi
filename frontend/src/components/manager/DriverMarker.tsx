@@ -9,7 +9,7 @@ interface DriverMarkerProps {
     lat: number;
     lng: number;
   };
-  driverId: string;
+  driverId: number;
   onClick?: () => void;
 }
 

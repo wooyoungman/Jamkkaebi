@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 interface InputProps {
   type?: string;
+  name: string; // 필수 prop으로 추가
+  value: string; // 필수 prop으로 추가
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // 필수 prop으로 추가
   placeholder?: string;
   helpText?: string;
   helpLink?: string;
@@ -9,13 +12,22 @@ interface InputProps {
 
 const Input = ({
   type = "text",
+  name, // props 추가
+  value, // props 추가
+  onChange, // props 추가
   placeholder,
   helpText,
   helpLink,
 }: InputProps) => {
   return (
     <InputContainer>
-      <StyledInput type={type} placeholder={placeholder} />
+      <StyledInput
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+      />
       {helpText && helpLink && <HelpText href={helpLink}>{helpText}</HelpText>}
     </InputContainer>
   );

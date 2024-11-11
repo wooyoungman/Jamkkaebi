@@ -5,6 +5,7 @@ import styled from "styled-components";
 import mascotImage from "@assets/character.png";
 import Input from "@components/manager/Input";
 import PurpleButton from "@components/manager/PurpleButton";
+import RegisterModal from "@components/manager/RegisterModal";
 import { useLogin } from "@queries/index";
 import { userAtom } from "@atoms/index";
 import type { LoginRequest } from "@/interfaces/manager";
@@ -16,8 +17,6 @@ type ExtendedInputProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-  helpText?: string;
-  helpLink?: string;
 };
 
 type ExtendedPurpleButtonProps = {
@@ -28,10 +27,11 @@ type ExtendedPurpleButtonProps = {
 };
 
 const MainPage = () => {
-  const navigate = useNavigate();
+  const nav = useNavigate();
   const [, setUser] = useAtom(userAtom);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [formData, setFormData] = useState<LoginRequest>({
-    id: "",
+    username: "",
     password: "",
   });
   const [error, setError] = useState<string>("");
@@ -44,20 +44,18 @@ const MainPage = () => {
       ...prev,
       [name]: value,
     }));
-    setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.id || !formData.password) {
+    if (!formData.username || !formData.password) {
       setError("아이디와 비밀번호를 모두 입력해주세요.");
       return;
     }
 
     try {
-      const user = await loginMutation.mutateAsync(formData);
-      setUser(user);
-      navigate("/manager/dashboard");
+      await loginMutation.mutateAsync(formData);
+      nav("/manager/dashboard");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -86,12 +84,10 @@ const MainPage = () => {
           <Form onSubmit={handleSubmit}>
             <InputWrapper>
               <StyledInput
-                name="id"
-                value={formData.id}
+                name="username"
+                value={formData.username}
                 onChange={handleChange}
                 placeholder="ID"
-                // helpText="아이디 찾기"
-                // helpLink="/forgot-id"
               />
             </InputWrapper>
             <InputWrapper>
@@ -101,26 +97,31 @@ const MainPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Password"
-                // helpText="비밀번호 찾기"
-                // helpLink="/forgot-password"
               />
             </InputWrapper>
             {error && <ErrorMessage>{error}</ErrorMessage>}
             <StyledPurpleButton
               type="submit"
               disabled={loginMutation.isPending}
-              onClick={() => {}} // 빈 함수를 추가하여 onClick prop 만족
+              onClick={() => {}}
             >
               {loginMutation.isPending ? (
-                "Loading..."
+                "로딩중..."
               ) : (
                 <BoldText>LOGIN</BoldText>
               )}
             </StyledPurpleButton>
-            <SignupLink href="/signup">회원가입</SignupLink>
+            <SignupButton onClick={() => setIsRegisterModalOpen(true)}>
+              회원가입
+            </SignupButton>
           </Form>
         </LoginSection>
       </ContentWrapper>
+
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+      />
     </LoginContainer>
   );
 };
@@ -207,13 +208,16 @@ const ErrorMessage = styled.p`
   text-align: center;
 `;
 
-const SignupLink = styled.a`
+const SignupButton = styled.button`
   text-align: center;
   color: black;
   text-decoration: none;
   font-size: 16px;
   font-weight: 600;
   margin-top: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;

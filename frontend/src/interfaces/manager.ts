@@ -1,14 +1,39 @@
-// src/interfaces/manager.ts
+export interface RegisterRequest {
+  username: string; // 아이디
+  password: string; // 비밀번호
+  name: string; // 사용자 이름
+}
 
 export interface LoginRequest {
-  id: string;
+  username: string;
   password: string;
 }
 
-export interface User {
-  id: string;
+export interface LoginResponse {
+  memberId: number;
+  grantType: string; // "Bearer"
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface RegisterRequest {
   name: string;
-  role: "manager" | "driver";
+  username: string;
+  password: string;
+  email?: string;
+}
+
+export interface RegisterResponse {
+  name: string;
+  username: string;
+  registerDate: string;
+}
+
+export interface User {
+  id: number;
+  username: string; // 아이디
+  name: string;
+  role?: "manager" | "driver" | "admin";
   phone: string;
   employeeId: string;
   region: string;
@@ -22,7 +47,8 @@ export interface Location {
 }
 
 export interface DrowsyEvent {
-  id: string;
+  id: number;
+  username: string; // 아이디
   profileImage: string;
   driverName: string;
   age: number;
@@ -36,7 +62,8 @@ export interface DrowsyEvent {
 }
 
 export interface MapDriver {
-  id: string;
+  id: number;
+  username: string; // 아이디
   name: string;
   vehicleNumber: string;
   status: string;

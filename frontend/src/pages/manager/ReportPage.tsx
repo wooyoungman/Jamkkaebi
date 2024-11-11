@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { styled } from "styled-components";
+import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import PurpleButton from "@/components/manager/PurpleButton";
 import { Share } from "lucide-react";
@@ -34,12 +34,16 @@ ChartJS.register(
 );
 
 export const ReportPage = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
+
   const { data: driver } = useQuery<User>({
     queryKey: ["driver", id],
     queryFn: () => {
-      return DUMMY_USERS.find((user) => user.id === id) as User;
+      const foundDriver = DUMMY_USERS.find((user) => user.id === Number(id));
+      if (!foundDriver) throw new Error("Driver not found");
+      return foundDriver;
     },
+    enabled: !!id,
   });
 
   // 집중 시간 비교 임의 데이터

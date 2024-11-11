@@ -3,7 +3,8 @@ import { User, DrowsyEvent, LoginRequest, MapDriver } from "./manager";
 // User 데이터
 export const dummyUsers: User[] = [
   {
-    id: "DRV001",
+    id: 1,
+    username: "driver1",
     name: "김운전",
     role: "driver",
     phone: "010-1234-5678",
@@ -14,7 +15,8 @@ export const dummyUsers: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=KimDriving&backgroundColor=b6e3f4",
   },
   {
-    id: "DRV002",
+    id: 2,
+    username: "driver2",
     name: "이안전",
     role: "driver",
     phone: "010-2345-6789",
@@ -29,7 +31,8 @@ export const dummyUsers: User[] = [
 // 졸음운전 이벤트 데이터
 export const dummyDrowsyEvents: DrowsyEvent[] = [
   {
-    id: "EVENT001",
+    id: 1,
+    username: "driver1",
     profileImage:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=KimDriving&backgroundColor=b6e3f4",
     driverName: "김운전",
@@ -52,7 +55,8 @@ export const dummyDrowsyEvents: DrowsyEvent[] = [
     fatigueLevel: "보통",
   },
   {
-    id: "EVENT002",
+    id: 2,
+    username: "driver2",
     profileImage:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeSafety&backgroundColor=b6e3f4",
     driverName: "이안전",
@@ -79,7 +83,8 @@ export const dummyDrowsyEvents: DrowsyEvent[] = [
 // 지도 표시용 운전자 데이터
 export const dummyMapDrivers: MapDriver[] = [
   {
-    id: "DRV001",
+    id: 1,
+    username: "driver1",
     name: "김운전",
     vehicleNumber: "서울 123가 4567",
     status: "운행중",
@@ -99,7 +104,8 @@ export const dummyMapDrivers: MapDriver[] = [
     lastUpdate: "2024-03-05 14:30:00",
   },
   {
-    id: "DRV002",
+    id: 2,
+    username: "driver2",
     name: "이안전",
     vehicleNumber: "서울 456나 7890",
     status: "운행중",
@@ -126,15 +132,3 @@ export const dummySleepEvent = {
   time: "2024-03-05 14:35:00",
   location: "서울시 중구 세종대로 110 부근",
 };
-
-// 로그인 테스트용 데이터
-export const dummyLoginRequests: LoginRequest[] = [
-  {
-    id: "driver1",
-    password: "password123",
-  },
-  {
-    id: "manager1",
-    password: "password123",
-  },
-];

@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 const MarkerSvg = styled.svg`
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));

@@ -2,7 +2,8 @@ import { User } from "./manager";
 
 export const DUMMY_USERS: User[] = [
   {
-    id: "1",
+    id: 1,
+    username: "driver1",
     name: "이정준",
     role: "driver",
     phone: "(225) 555-0118",
@@ -13,7 +14,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeJungJun&backgroundColor=b6e3f4",
   },
   {
-    id: "2",
+    id: 2,
+    username: "driver2",
     name: "이예지",
     role: "driver",
     phone: "(205) 555-0100",
@@ -24,7 +26,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeYeJi&backgroundColor=c0aede",
   },
   {
-    id: "3",
+    id: 3,
+    username: "driver3",
     name: "송준혁",
     role: "driver",
     phone: "(302) 555-0107",
@@ -35,7 +38,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=SongJunHyeok&backgroundColor=b6e3f4",
   },
   {
-    id: "4",
+    id: 4,
+    username: "driver4",
     name: "조정훈",
     role: "driver",
     phone: "(252) 555-0126",
@@ -46,7 +50,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=JoJungHun&backgroundColor=c0aede",
   },
   {
-    id: "5",
+    id: 5,
+    username: "driver5",
     name: "박건국",
     role: "driver",
     phone: "(629) 555-0129",
@@ -57,7 +62,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=ParkGunKuk&backgroundColor=ffd5dc",
   },
   {
-    id: "6",
+    id: 6,
+    username: "driver6",
     name: "정우영",
     role: "driver",
     phone: "(406) 555-0120",
@@ -68,7 +74,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=JungWooYoung&backgroundColor=b6e3f4",
   },
   {
-    id: "7",
+    id: 7,
+    username: "driver7",
     name: "김현지",
     role: "driver",
     phone: "(208) 555-0112",
@@ -79,7 +86,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=KimHyunJi&backgroundColor=c0aede",
   },
   {
-    id: "8",
+    id: 8,
+    username: "driver8",
     name: "이도훈",
     role: "driver",
     phone: "(704) 555-0127",
@@ -90,7 +98,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeDooHoon&backgroundColor=d1d4f9",
   },
   {
-    id: "9",
+    id: 9,
+    username: "driver9",
     name: "서정빈",
     role: "driver",
     phone: "(509) 555-0133",
@@ -101,7 +110,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=KangMinSeo&backgroundColor=ffd5dc",
   },
   {
-    id: "10",
+    id: 10,
+    username: "driver10",
     name: "김한주",
     role: "driver",
     phone: "(603) 555-0123",
@@ -112,7 +122,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=ChoiSeoYeon&backgroundColor=b6e3f4",
   },
   {
-    id: "11",
+    id: 11,
+    username: "driver11",
     name: "오형남",
     role: "driver",
     phone: "(701) 555-0183",
@@ -123,7 +134,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=HanJiWon&backgroundColor=c0aede",
   },
   {
-    id: "12",
+    id: 12,
+    username: "driver12",
     name: "박성민",
     role: "driver",
     phone: "(503) 555-0137",
@@ -134,7 +146,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=ParkSungMin&backgroundColor=d1d4f9",
   },
   {
-    id: "13",
+    id: 13,
+    username: "driver13",
     name: "김태호",
     role: "driver",
     phone: "(208) 555-0114",
@@ -145,7 +158,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=KimTaeHo&backgroundColor=ffd5dc",
   },
   {
-    id: "14",
+    id: 14,
+    username: "driver14",
     name: "윤하진",
     role: "driver",
     phone: "(435) 555-0198",
@@ -156,7 +170,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=YoonHaJin&backgroundColor=b6e3f4",
   },
   {
-    id: "15",
+    id: 15,
+    username: "driver15",
     name: "임수진",
     role: "driver",
     phone: "(582) 555-0144",
@@ -167,7 +182,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=ImSuJin&backgroundColor=c0aede",
   },
   {
-    id: "16",
+    id: 16,
+    username: "driver16",
     name: "강동원",
     role: "driver",
     phone: "(582) 555-0155",
@@ -178,7 +194,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=KangDongWon&backgroundColor=b6e3f4",
   },
   {
-    id: "17",
+    id: 17,
+    username: "driver17",
     name: "한소희",
     role: "driver",
     phone: "(582) 555-0166",
@@ -189,7 +206,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=HanSoHee&backgroundColor=ffd5dc",
   },
   {
-    id: "18",
+    id: 18,
+    username: "driver18",
     name: "장민석",
     role: "driver",
     phone: "(582) 555-0177",
@@ -200,7 +218,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=JangMinSeok&backgroundColor=c0aede",
   },
   {
-    id: "19",
+    id: 19,
+    username: "driver19",
     name: "정유미",
     role: "driver",
     phone: "(582) 555-0188",
@@ -211,7 +230,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=JungYouMi&backgroundColor=d1d4f9",
   },
   {
-    id: "20",
+    id: 20,
+    username: "driver20",
     name: "이승훈",
     role: "driver",
     phone: "(582) 555-0199",
@@ -222,7 +242,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeSeungHoon&backgroundColor=b6e3f4",
   },
   {
-    id: "21",
+    id: 21,
+    username: "driver21",
     name: "백지민",
     role: "driver",
     phone: "(582) 555-0200",
@@ -233,7 +254,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=BaekJiMin&backgroundColor=ffd5dc",
   },
   {
-    id: "22",
+    id: 22,
+    username: "driver22",
     name: "최우진",
     role: "driver",
     phone: "(582) 555-0211",
@@ -244,7 +266,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=ChoiWooJin&backgroundColor=c0aede",
   },
   {
-    id: "23",
+    id: 23,
+    username: "driver23",
     name: "김태리",
     role: "driver",
     phone: "(582) 555-0222",
@@ -255,7 +278,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=KimTaeRi&backgroundColor=d1d4f9",
   },
   {
-    id: "24",
+    id: 24,
+    username: "driver24",
     name: "박보검",
     role: "driver",
     phone: "(582) 555-0233",
@@ -266,7 +290,8 @@ export const DUMMY_USERS: User[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=ParkBoGum&backgroundColor=b6e3f4",
   },
   {
-    id: "25",
+    id: 25,
+    username: "driver25",
     name: "송혜교",
     role: "driver",
     phone: "(582) 555-0244",

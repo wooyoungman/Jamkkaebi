@@ -2,7 +2,8 @@ import { DrowsyEvent } from "./manager";
 
 export const dummyDrowsyEvents: DrowsyEvent[] = [
   {
-    id: "1",
+    id: 1,
+    username: "driver3",
     driverName: "송준혁",
     age: 24,
     gender: "남",
@@ -23,7 +24,8 @@ export const dummyDrowsyEvents: DrowsyEvent[] = [
     fatigueLevel: "강함",
   },
   {
-    id: "2",
+    id: 2,
+    username: "driver4",
     driverName: "조정훈",
     age: 22,
     gender: "남",
@@ -44,7 +46,8 @@ export const dummyDrowsyEvents: DrowsyEvent[] = [
     fatigueLevel: "보통",
   },
   {
-    id: "3",
+    id: 3,
+    username: "driver3",
     driverName: "송준혁",
     age: 24,
     gender: "남",

@@ -11,6 +11,7 @@ import DriverTempPage from "./pages/driver/DriverTempPage";
 
 // Manager
 import Layout from "@components/manager/Layout";
+import ProtectedRoute from "@components/manager/ProtectedRoute";
 import MainPage from "@pages/manager/MainPage";
 import DashboardPage from "@pages/manager/DashboardPage";
 import DriverListPage from "@/pages/manager/DriverListPage";
@@ -22,11 +23,46 @@ const router = createBrowserRouter([
     path: "/manager",
     element: <Layout />,
     children: [
-      { path: "", element: <MainPage /> },
-      { path: "dashboard", element: <DashboardPage /> },
-      { path: "report", element: <DriverListPage /> },
-      { path: "report/:id", element: <ReportPage /> },
-      { path: "history", element: <HistoryPage /> },
+      {
+        path: "",
+        element: (
+          <ProtectedRoute requireAuth={false}>
+            <MainPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "dashboard",
+        element: (
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "report",
+        element: (
+          <ProtectedRoute>
+            <DriverListPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "report/:id",
+        element: (
+          <ProtectedRoute>
+            <ReportPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "history",
+        element: (
+          <ProtectedRoute>
+            <HistoryPage />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
   {
@@ -37,7 +73,7 @@ const router = createBrowserRouter([
       { path: "navigation", element: <DriverNaviPage /> },
       { path: "car-control", element: <DriverCarPage /> },
       { path: "report", element: <DriverReportPage /> },
-      { path: "temp", element: <DriverTempPage />}
+      { path: "temp", element: <DriverTempPage /> },
     ],
   },
 ]);
