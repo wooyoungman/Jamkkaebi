@@ -55,4 +55,8 @@ public class Vehicle extends BaseEntity {
         this.windowStatus = WindowStatus.HALT;
         this.alertType = AlertType.DISABLED;
     }
+
+    public void updateDriver(Member driver) {
+        this.driver = driver;
+    }
 }
