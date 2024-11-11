@@ -20,7 +20,7 @@ export interface RegisterRequest {
   name: string;
   username: string;
   password: string;
-  email: string;
+  email?: string;
 }
 
 export interface RegisterResponse {

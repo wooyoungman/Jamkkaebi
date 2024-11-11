@@ -4,6 +4,7 @@ import { useLocation, Link } from "react-router-dom";
 import { atom, useAtom } from "jotai";
 import { UserCircle, Bell, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
+import { authAtom } from "@atoms/manager/user";
 
 interface Notification {
   id: number;
@@ -12,28 +13,16 @@ interface Notification {
   isRead: boolean;
 }
 
-interface NavItemProps {
-  isActive?: boolean;
-  to?: string;
-  as?: React.ElementType;
-}
-
-// atoms
-const isLoggedInAtom = atom<boolean>(false);
-const userInfoAtom = atom<{
-  name: string;
-} | null>(null);
+// notifications atom은 유지
 const notificationsAtom = atom<Notification[]>([]);
 
 const Header = () => {
-  const location = useLocation(); // 현재 경로 가져오기
+  const location = useLocation();
   const [activeMenu, setActiveMenu] = useState("undefined");
-  const [isLoggedIn] = useAtom(isLoggedInAtom);
-  const [userInfo] = useAtom(userInfoAtom);
+  const [auth] = useAtom(authAtom); // authAtom 사용
   const [notifications] = useAtom(notificationsAtom);
   const [showNotifications, setShowNotifications] = useState(false);
 
-  // URL이 변경될 때마다 activeMenu 업데이트
   useEffect(() => {
     setActiveMenu(location.pathname);
   }, [location]);
@@ -50,9 +39,7 @@ const Header = () => {
     <HeaderWrapper>
       <HeaderContent>
         <LogoSection>
-          <Link to="/manager">
-            <LogoImage src={LogoImg} alt="logo" />
-          </Link>
+          <LogoImage src={LogoImg} alt="logo" />
           <NavMenu>
             <NavItem
               as={Link}
@@ -78,10 +65,10 @@ const Header = () => {
           </NavMenu>
         </LogoSection>
 
-        {isLoggedIn && (
+        {auth.isAuthenticated && (
           <UserSection>
             <UserInfo>
-              <UserName>{userInfo?.name} 관리자님</UserName>
+              <UserName>관리자님</UserName>
               <IconButton>
                 <UserCircle size={32} />
               </IconButton>
