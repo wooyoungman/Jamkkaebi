@@ -89,7 +89,7 @@ const Header = () => {
               to="/manager/history"
               $isActive={activeMenu === "/manager/history"}
             >
-              사건 기록
+              히스토리
             </NavItem>
           </NavMenu>
         </LogoSection>
