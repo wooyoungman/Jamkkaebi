@@ -27,7 +27,7 @@ type ExtendedPurpleButtonProps = {
 };
 
 const MainPage = () => {
-  const navigate = useNavigate();
+  const nav = useNavigate();
   const [, setUser] = useAtom(userAtom);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [formData, setFormData] = useState<LoginRequest>({
@@ -54,9 +54,8 @@ const MainPage = () => {
     }
 
     try {
-      const user = await loginMutation.mutateAsync(formData);
-      setUser(user);
-      navigate("/manager/dashboard");
+      await loginMutation.mutateAsync(formData);
+      nav("/manager/dashboard");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -107,7 +106,7 @@ const MainPage = () => {
               onClick={() => {}}
             >
               {loginMutation.isPending ? (
-                "Loading..."
+                "로딩중..."
               ) : (
                 <BoldText>LOGIN</BoldText>
               )}

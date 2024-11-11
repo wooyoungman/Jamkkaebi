@@ -1,44 +1,35 @@
 import { useMutation } from "@tanstack/react-query";
-import { LoginRequest, RegisterRequest } from "@interfaces/manager";
-import axiosInstance from "../axiosInstance";
-
-interface AuthResponse<T> {
-  status: number;
-  message: string;
-  timestamp: string;
-  data: T;
-}
-
-interface LoginResponseData {
-  memberId: number;
-  grantType: string;
-  accessToken: string;
-  refreshToken: string;
-}
-
-interface RegisterResponseData {
-  name: string;
-  username: string;
-  registerDate: string;
-}
+import { axiosInstance } from "../axiosInstance";
+import {
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+  RegisterResponse,
+} from "@interfaces/manager";
 
 export const useLogin = () => {
-  return useMutation({
-    mutationFn: async (credentials: LoginRequest) => {
-      const response = await axiosInstance.post<
-        AuthResponse<LoginResponseData>
-      >("/member/login", credentials);
+  return useMutation<LoginResponse, Error, LoginRequest>({
+    mutationFn: async (loginData: LoginRequest) => {
+      const response = await axiosInstance.post<LoginResponse>(
+        "/member/login",
+        loginData
+      );
+
+      const { accessToken, refreshToken } = response.data;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
       return response.data;
     },
   });
 };
 
 export const useRegister = () => {
-  return useMutation({
+  return useMutation<RegisterResponse, Error, RegisterRequest>({
     mutationFn: async (userData: RegisterRequest) => {
-      const response = await axiosInstance.post<
-        AuthResponse<RegisterResponseData>
-      >("/member/register", userData);
+      const response = await axiosInstance.post<RegisterResponse>(
+        "/member/register",
+        userData
+      );
       return response.data;
     },
   });

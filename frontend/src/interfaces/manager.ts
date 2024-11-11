@@ -9,6 +9,26 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface LoginResponse {
+  memberId: number;
+  grantType: string; // "Bearer"
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface RegisterRequest {
+  name: string;
+  username: string;
+  password: string;
+  email: string;
+}
+
+export interface RegisterResponse {
+  name: string;
+  username: string;
+  registerDate: string;
+}
+
 export interface User {
   id: number;
   username: string; // 아이디

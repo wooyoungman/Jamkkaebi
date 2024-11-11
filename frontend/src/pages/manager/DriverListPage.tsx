@@ -38,7 +38,7 @@ const DriverListContent = () => {
     return <Container>Error loading users</Container>;
   }
 
-  const handleRowClick = (userId: string) => {
+  const handleRowClick = (userId: number) => {
     nav(`/manager/report/${userId}`);
   };
 

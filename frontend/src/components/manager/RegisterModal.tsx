@@ -5,20 +5,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { RegisterRequest } from "@/interfaces/manager";
 import Input from "@components/manager/Input";
 import PurpleButton from "@components/manager/PurpleButton";
-import { PurpleButtonProps } from "@components/manager/PurpleButton";
 import { useRegister } from "@queries/index";
 
 type RegisterModalProps = {
   isOpen: boolean;
   onClose: () => void;
-};
-
-type ExtendedInputProps = {
-  type?: string;
-  name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
 };
 
 const RegisterModal = ({ isOpen, onClose }: RegisterModalProps) => {
@@ -107,11 +98,7 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModalProps) => {
               />
             </InputWrapper>
             {error && <ErrorMessage>{error}</ErrorMessage>}
-            <PurpleButton
-              type="submit"
-              disabled={registerMutation.isPending} // isLoading 대신 mutation의 상태 사용
-              onClick={handleSubmit}
-            >
+            <PurpleButton type="submit" disabled={registerMutation.isPending}>
               {registerMutation.isPending ? (
                 "로딩중..."
               ) : (

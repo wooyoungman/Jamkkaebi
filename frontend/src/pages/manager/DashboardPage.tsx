@@ -82,7 +82,7 @@ const calculateOptimalZoom = (bounds: ReturnType<typeof findBounds>) => {
 };
 
 const DashboardPage = () => {
-  const [selectedDriver, setSelectedDriver] = useState<string | null>(null);
+  const [selectedDriver, setSelectedDriver] = useState<number | null>(null);
   const [showDriverInfo, setShowDriverInfo] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertInfo, setAlertInfo] = useState({
