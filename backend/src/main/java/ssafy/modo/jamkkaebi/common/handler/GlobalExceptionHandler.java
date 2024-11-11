@@ -23,7 +23,9 @@ import ssafy.modo.jamkkaebi.domain.cargo.exception.CargoDispatchedException;
 import ssafy.modo.jamkkaebi.domain.cargo.exception.CargoNotFoundException;
 import ssafy.modo.jamkkaebi.domain.manager.exception.DriverConflictException;
 import ssafy.modo.jamkkaebi.domain.member.exception.*;
+import ssafy.modo.jamkkaebi.domain.vehicle.exception.DriverHasVehicleException;
 import ssafy.modo.jamkkaebi.domain.vehicle.exception.DuplicatedVehicleException;
+import ssafy.modo.jamkkaebi.domain.vehicle.exception.VehicleHasDriverException;
 import ssafy.modo.jamkkaebi.domain.vehicle.exception.VehicleNotFoundException;
 
 import java.util.HashMap;
@@ -198,6 +200,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(VehicleNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleVehicleNotFoundException(VehicleNotFoundException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(DriverHasVehicleException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDriverHasVehicleException(DriverHasVehicleException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(VehicleHasDriverException.class)
+    public ResponseEntity<ApiResponse<Void>> handleVehicleHasDriverException(VehicleHasDriverException e) {
         ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
         return ResponseEntity.status(e.getStatus()).body(response);
     }
