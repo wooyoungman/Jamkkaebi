@@ -22,4 +22,12 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             SELECT v FROM Vehicle v WHERE v.id = :vehicleId AND v.driver IS NULL
             """)
     Optional<Vehicle> findAvailableById(Long vehicleId);
+
+    @Query("""
+            SELECT CASE WHEN COUNT(v) > 0 THEN TRUE ELSE FALSE END
+            FROM Vehicle v
+            JOIN ManagerAndDriver md ON md.driver = v.driver
+            WHERE v.id = :vehicleId AND md.manager.id = :managerId
+            """)
+    Boolean isVehicleMappedToDriverOfManager(Long vehicleId, Long managerId);
 }
