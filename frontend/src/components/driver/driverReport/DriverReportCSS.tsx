@@ -8,7 +8,7 @@ export const CustomGlassDiv = styled(GlassDiv)`
 
 export const ReportRightDiv = styled.div`
   width: 63.5%;
-  min-width: 500px;
+  min-width: 650px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -53,7 +53,7 @@ export const DrivingReportDiv = styled(GlassDiv)`
   display: flex;
   flex-direction: column;
   justify-content: start;
-  padding: 10px;
+  padding: 20px 10px;
   box-sizing: border-box;
   gap: 15px;
   overflow-y: auto; /* 스크롤 기능 추가 */
@@ -164,7 +164,7 @@ export const ReportDetailJourneyDiv = styled.div`
 
 export const AccidentCountDiv = styled(CustomGlassDiv)`
   width: 100%;
-  padding: 12px 56px;
+  padding: 12px 72px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -174,13 +174,12 @@ export const AccidentCountDiv = styled(CustomGlassDiv)`
 export const AccidentCountList = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-around;
-  padding: 0px 19px;
+  justify-content: space-between;
 `;
 
-export const AccidentCountData = styled.div`
+export const AccidentCountItem = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 7px;
   align-items: center;
 `;
 

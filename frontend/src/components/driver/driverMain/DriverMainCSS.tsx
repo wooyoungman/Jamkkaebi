@@ -5,7 +5,7 @@ import cloudyImg from "@/assets/cloudyImg.png";
 
 export const Left = styled(GlassDiv)`
   width: 35%;
-  min-width: 350px;
+  min-width: 400px;
   height: 100%;
   display: flex;
   flex-direction: column;
