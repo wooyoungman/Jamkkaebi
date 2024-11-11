@@ -15,4 +15,11 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             WHERE v.driver.id = :driverId
             """)
     Optional<Vehicle> findByDriverId(Long driverId);
+
+    Boolean existsByDriverId(Long driverId);
+
+    @Query("""
+            SELECT v FROM Vehicle v WHERE v.id = :vehicleId AND v.driver IS NULL
+            """)
+    Optional<Vehicle> findAvailableById(Long vehicleId);
 }

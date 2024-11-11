@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 public enum VehicleExceptionMessage {
     DUPLICATED_VEHICLE_NUMBER(HttpStatus.CONFLICT.value(), "Already registered vehicle number"),
     VEHICLE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Vehicle not found"),
+    DRIVER_HAS_VEHICLE(HttpStatus.CONFLICT.value(), "Driver already mapped to a vehicle"),
+    VEHICLE_HAS_DRIVER(HttpStatus.CONFLICT.value(), "Vehicle already mapped to a driver"),
     ;
 
     private final String message;
