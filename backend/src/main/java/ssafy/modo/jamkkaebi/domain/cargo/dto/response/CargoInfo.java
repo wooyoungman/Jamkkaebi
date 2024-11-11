@@ -1,9 +1,11 @@
 package ssafy.modo.jamkkaebi.domain.cargo.dto.response;
 
 import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 @Builder
 public class CargoInfo {
 
