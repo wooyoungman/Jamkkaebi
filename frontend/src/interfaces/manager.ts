@@ -29,6 +29,19 @@ export interface RegisterResponse {
   registerDate: string;
 }
 
+export interface Driver extends Omit<User, "phone" | "name"> {
+  driverId: number;
+  driverName: string;
+  phoneNumber: string | null;
+  address: string | null;
+}
+
+export interface DriverList {
+  count: number;
+  driversType: "UNMANAGED" | "MANAGED";
+  drivers: Driver[];
+}
+
 export interface UserInfo {
   memberType: "MANAGER" | "DRIVER" | "ADMIN";
   memberId: number;
