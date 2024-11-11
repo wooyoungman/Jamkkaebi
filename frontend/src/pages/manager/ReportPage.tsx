@@ -372,11 +372,14 @@ export const ReportPage = () => {
           <ChartsGrid>
             <ChartCard>
               <ChartHeader>
-                <ChartTitle>운전 분석</ChartTitle>
+                <ChartTitle>뇌파 차트</ChartTitle>
+                <TabGroup>
+                  <Tab>시간별</Tab>
+                  <Tab>일별</Tab>
+                  <Tab active>주간</Tab>
+                </TabGroup>
               </ChartHeader>
-              <RadarWrapper>
-                <Radar data={radarData} options={radarOptions} />
-              </RadarWrapper>
+              <Line data={brainwaveData} options={chartOptions} />
             </ChartCard>
 
             <ChartCard>
@@ -393,7 +396,7 @@ export const ReportPage = () => {
 
             <ChartCard>
               <ChartHeader>
-                <ChartTitle>뇌파 차트</ChartTitle>
+                <ChartTitle>근전도 차트</ChartTitle>
                 <TabGroup>
                   <Tab>시간별</Tab>
                   <Tab>일별</Tab>
