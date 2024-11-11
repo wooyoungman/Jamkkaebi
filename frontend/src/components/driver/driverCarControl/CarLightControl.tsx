@@ -5,7 +5,7 @@ import styled, { css } from "styled-components";
 import { GlassDiv } from "@/styles/driver/GlassmorphismStyle";
 
 // 슬라이더 배경이 되는 GlassDiv 스타일을 추가
-const SliderContainer = styled(GlassDiv)`
+const SliderContainer = styled.div`
   display: flex;
   align-items: center;
   padding: 10px 15px;
@@ -25,10 +25,16 @@ const StyledSlider = styled.input.attrs({ type: "range" })<StyledSliderProps>`
   -webkit-appearance: none;
   width: 100%;
   height: 8px;
-  border-radius: 5px;
-  ${({ value }) => css`
-    background: linear-gradient(to right, #00bfff ${value}%, #333333 ${value}%);
-  `}
+  border-radius: 20px;
+  background: ${({ value }) => css`
+    linear-gradient(
+      to right,
+      #0072ff 0%,
+      #00b3ff ${value}%,
+      #0033cc ${value}%,
+      #333333 ${value}%
+    );
+  `};
   outline: none;
   cursor: pointer;
 
@@ -78,11 +84,11 @@ const CarLightControl: React.FC = () => {
   };
 
   return (
-    <CarRightBody>
-      <DriverText color="#E0E0E0" fontSize="15px" fontWeight={700}>
+    <>
+      {/* <DriverText color="#E0E0E0" fontSize="15px" fontWeight={700}>
         평상시와 졸음 감지용 조명의 세기를 조절할 수 있으며, <br /> 졸음 감지 시
         조명의 자동 작동 여부를 설정할 수 있습니다.
-      </DriverText>
+      </DriverText> */}
       <SliderContainer>
         <StyledSlider
           value={power}
@@ -93,7 +99,7 @@ const CarLightControl: React.FC = () => {
         />
         <SliderValue>{power}</SliderValue>
       </SliderContainer>
-    </CarRightBody>
+    </>
   );
 };
 

@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import { GlassDiv } from "@/styles/driver/GlassmorphismStyle";
+import {
+  OnToggleEclipseSVG,
+  OffToggleEclipseSVG,
+} from "@/styles/driver/driverCar/DriverCarSVG";
 
 export const CarRightDiv = styled.div`
   width: 65%;
@@ -63,4 +67,25 @@ export const CarRightBody = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  /* background-color: white; */
+`;
+
+export const OnToggleDiv = styled.div`
+  display: flex;
+  width: 57px;
+  padding: 2.78px;
+  justify-content: flex-end;
+  align-items: center;
+  border-radius: 278.049px;
+  background: #00ff47;
+`;
+
+export const OffToggleDiv = styled.div`
+  display: flex;
+  width: 57px;
+  padding: 2.78px;
+  align-items: center;
+  border-radius: 278.049px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
 `;

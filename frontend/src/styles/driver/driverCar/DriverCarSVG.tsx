@@ -7,7 +7,9 @@ export const CeilingLightSVG = () => (
     fill="none"
   >
     <path
-      d="M13.0016 6.82422C7.04323 6.82422 0.976562 8.12422 0.976562 10.3992V12.5659C0.976562 12.8909 1.19323 13.1076 1.51823 13.1076H1.62656C1.7349 14.1909 2.27656 15.5992 4.22656 16.8992C7.15156 18.9576 11.5932 19.0659 12.8932 19.0659H13.3266C14.7349 19.0659 19.0682 18.8492 21.8849 16.8992C23.7266 15.5992 24.3766 14.1909 24.4849 13.1076H24.5932C24.9182 13.1076 25.1349 12.8909 25.1349 12.5659V10.3992C25.0266 8.12422 18.9599 6.82422 13.0016 6.82422ZM21.2349 16.0326C18.6349 17.8742 14.4099 18.0909 13.2182 17.9826H12.8932C11.7016 17.9826 7.47656 17.8742 4.87656 16.0326C2.0599 13.9742 2.81823 12.0242 2.81823 11.9159V11.8076C4.22656 11.0492 7.69323 10.0742 13.0016 10.0742C18.3099 10.0742 21.7766 10.9409 23.1849 11.8076V11.9159C23.2932 12.0242 23.9432 13.9742 21.2349 16.0326Z"
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M13.0013 4.3337C11.1337 4.3337 9.34266 5.07559 8.02209 6.39616C6.70153 7.71673 5.95964 9.5078 5.95964 11.3754C5.95964 13.2429 6.70153 15.034 8.02209 16.3546C9.34266 17.6751 11.1337 18.417 13.0013 18.417C14.8689 18.417 16.6599 17.6751 17.9805 16.3546C19.3011 15.034 20.043 13.2429 20.043 11.3754C20.043 9.5078 19.3011 7.71673 17.9805 6.39616C16.6599 5.07559 14.8689 4.3337 13.0013 4.3337ZM3.79297 11.3754C3.79313 9.79399 4.20054 8.2393 4.97596 6.86108C5.75137 5.48286 6.86866 4.32756 8.22017 3.50648C9.57168 2.6854 11.1119 2.22621 12.6924 2.17315C14.2729 2.1201 15.8404 2.47496 17.2439 3.20356C18.6474 3.93216 19.8397 5.00993 20.7058 6.33305C21.5719 7.65616 22.0826 9.18003 22.1888 10.7578C22.2951 12.3356 21.9931 13.9142 21.3122 15.3415C20.6312 16.7687 19.5942 17.9966 18.301 18.9067L16.7356 22.0375C16.4656 22.5773 16.0507 23.0312 15.5373 23.3484C15.024 23.6656 14.4324 23.8337 13.829 23.8337H12.1736C11.5702 23.8337 10.9786 23.6656 10.4653 23.3484C9.9519 23.0312 9.53701 22.5773 9.26706 22.0375L7.70164 18.9067C6.4933 18.0574 5.50726 16.9296 4.82691 15.6187C4.14656 14.3078 3.79192 12.8523 3.79297 11.3754ZM10.8346 20.327L11.2051 21.068C11.295 21.2479 11.4333 21.3992 11.6043 21.505C11.7754 21.6108 11.9725 21.6669 12.1736 21.667H13.829C14.0301 21.6669 14.2272 21.6108 14.3983 21.505C14.5693 21.3992 14.7076 21.2479 14.7975 21.068L15.168 20.327C14.4585 20.4981 13.7311 20.5843 13.0013 20.5837C12.2715 20.5843 11.5441 20.4981 10.8346 20.327Z"
       fill="#E0E0E0"
     />
   </svg>
@@ -89,5 +91,138 @@ export const AlarmSVG = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     />
+  </svg>
+);
+
+export const OnToggleEclipseSVG = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="52"
+    height="53"
+    viewBox="0 0 52 53"
+    fill="none"
+  >
+    <g filter="url(#filter0_d_397_1461)">
+      <circle
+        cx="28.621"
+        cy="26.3788"
+        r="14.5976"
+        fill="url(#paint0_linear_397_1461)"
+        shape-rendering="crispEdges"
+      />
+    </g>
+    <defs>
+      <filter
+        id="filter0_d_397_1461"
+        x="0.121"
+        y="0.6593"
+        width="51.4392"
+        height="51.4392"
+        filterUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB"
+      >
+        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feColorMatrix
+          in="SourceAlpha"
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          result="hardAlpha"
+        />
+        <feOffset dx="-2.78049" />
+        <feGaussianBlur stdDeviation="5.56098" />
+        <feComposite in2="hardAlpha" operator="out" />
+        <feColorMatrix
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+        />
+        <feBlend
+          mode="normal"
+          in2="BackgroundImageFix"
+          result="effect1_dropShadow_397_1461"
+        />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="effect1_dropShadow_397_1461"
+          result="shape"
+        />
+      </filter>
+      <linearGradient
+        id="paint0_linear_397_1461"
+        x1="28.621"
+        y1="18.8788"
+        x2="28.621"
+        y2="40.9764"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stop-color="white" />
+        <stop offset="1" stop-color="white" stop-opacity="0.62" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+export const OffToggleEclipseSVG = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="53"
+    height="53"
+    viewBox="0 0 53 53"
+    fill="none"
+  >
+    <g filter="url(#filter0_d_397_1471)">
+      <circle
+        cx="14.5976"
+        cy="14.5976"
+        r="14.5976"
+        transform="matrix(1 0 0 -1 14.7812 40.9766)"
+        fill="white"
+      />
+      <circle
+        cx="14.5976"
+        cy="14.5976"
+        r="14.0976"
+        transform="matrix(1 0 0 -1 14.7812 40.9766)"
+        stroke="white"
+        stroke-opacity="0.26"
+      />
+    </g>
+    <defs>
+      <filter
+        id="filter0_d_397_1471"
+        x="0.878812"
+        y="0.6593"
+        width="51.4392"
+        height="51.4392"
+        filterUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB"
+      >
+        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feColorMatrix
+          in="SourceAlpha"
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          result="hardAlpha"
+        />
+        <feOffset dx="-2.78049" />
+        <feGaussianBlur stdDeviation="5.56098" />
+        <feComposite in2="hardAlpha" operator="out" />
+        <feColorMatrix
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+        />
+        <feBlend
+          mode="normal"
+          in2="BackgroundImageFix"
+          result="effect1_dropShadow_397_1471"
+        />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="effect1_dropShadow_397_1471"
+          result="shape"
+        />
+      </filter>
+    </defs>
   </svg>
 );
