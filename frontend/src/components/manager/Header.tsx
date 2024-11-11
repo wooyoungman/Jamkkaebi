@@ -1,4 +1,5 @@
 import LogoImg from "@assets/logo.png";
+import styled from "styled-components";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { atom, useAtom } from "jotai";
 import { UserCircle, Bell, LogOut } from "lucide-react";
@@ -11,7 +12,6 @@ import {
   LogoSection,
   LogoImage,
   NavMenu,
-  NavItem,
   UserSection,
   UserInfo,
   UserName,
@@ -145,5 +145,25 @@ const Header = () => {
     </HeaderWrapper>
   );
 };
+
+const NavItem = styled(Link)<{ $isActive?: boolean }>`
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  background: none;
+  color: white;
+  text-decoration: none;
+
+  ${(props) =>
+    props.$isActive &&
+    `
+    color: white;
+    border-radius: 9px;
+    background: linear-gradient(90deg, #4642FF 0%, #9361FF 100%);
+  `}
+`;
 
 export default Header;

@@ -35,26 +35,6 @@ const NavMenu = styled.nav`
   align-items: center;
 `;
 
-const NavItem = styled(Link)<{ $isActive?: boolean }>`
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-  background: none;
-  color: white;
-  text-decoration: none;
-
-  ${(props) =>
-    props.$isActive &&
-    `
-    color: white;
-    border-radius: 9px;
-    background: linear-gradient(90deg, #4642FF 0%, #9361FF 100%);
-  `}
-`;
-
 const UserSection = styled.div`
   display: flex;
   align-items: center;
@@ -190,7 +170,6 @@ export {
   LogoSection,
   LogoImage,
   NavMenu,
-  NavItem,
   UserSection,
   UserInfo,
   UserName,
