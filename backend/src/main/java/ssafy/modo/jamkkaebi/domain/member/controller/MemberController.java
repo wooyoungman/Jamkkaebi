@@ -14,6 +14,7 @@ import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenExpirationExcepti
 import ssafy.modo.jamkkaebi.common.security.jwt.exception.TokenTypeException;
 import ssafy.modo.jamkkaebi.domain.member.dto.request.LoginDto;
 import ssafy.modo.jamkkaebi.domain.member.dto.request.RegisterDto;
+import ssafy.modo.jamkkaebi.domain.member.dto.response.MemberInfoResponseDto;
 import ssafy.modo.jamkkaebi.domain.member.dto.response.RegisterSuccessDto;
 import ssafy.modo.jamkkaebi.domain.member.entity.MemberRole;
 import ssafy.modo.jamkkaebi.domain.member.service.MemberReadService;
@@ -57,5 +58,11 @@ public class MemberController implements MemberControllerApi {
     @PatchMapping("/update/{member_id}")
     public ApiResponse<MemberRole> updateRole(@PathVariable("member_id") Long memberId) {
         return ApiResponse.success(memberWriteService.updateRole(memberId));
+    }
+
+    @GetMapping("/info/simple")
+    public ApiResponse<MemberInfoResponseDto> getSimpleInfo() {
+        MemberInfoResponseDto memberInfoResponseDto = memberReadService.getSimpleInfo();
+        return ApiResponse.success(memberInfoResponseDto);
     }
 }
