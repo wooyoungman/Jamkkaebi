@@ -74,9 +74,14 @@ public class GlobalExceptionHandler {
         Map<String, String> errors = new HashMap<>();
 
         e.getBindingResult().getAllErrors().forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            if (error instanceof FieldError) {
+                String fieldName = ((FieldError) error).getField();
+                String errorMessage = error.getDefaultMessage();
+                errors.put(fieldName, errorMessage);
+            } else {
+                String errorMessage = error.getDefaultMessage();
+                errors.put("errorMsg", errorMessage);
+            }
         });
 
         ApiResponse<Map<String, String>> response = ApiResponse.error(
