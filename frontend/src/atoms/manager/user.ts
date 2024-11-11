@@ -38,21 +38,20 @@ export const loginAtom = atom(
 );
 
 // logout용 atom
-// export const logoutAtom = atom(null, (get, set) => {
-//   // localStorage에서 제거
-//   localStorage.removeItem("accessToken");
-//   localStorage.removeItem("refreshToken");
+export const logoutAtom = atom(null, (get, set) => {
+  // localStorage에서 제거
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
 
-//   // atom 상태 초기화
-//   set(authAtom, {
-//     isAuthenticated: false,
-//     accessToken: null,
-//     refreshToken: null,
-//     memberId: null,
-//   });
+  // atom 상태 초기화
+  set(authAtom, {
+    isAuthenticated: false,
+    accessToken: null,
+    refreshToken: null,
+    memberId: null,
+  });
+});
 
-// });
-
-// auth 관련 selector atoms (필요한 경우)
+// auth 관련 selector atoms
 export const isAuthenticatedAtom = atom((get) => get(authAtom).isAuthenticated);
 export const memberIdAtom = atom((get) => get(authAtom).memberId);

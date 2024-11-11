@@ -1,11 +1,13 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../axiosInstance";
 import {
   LoginRequest,
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
+  UserInfo,
 } from "@interfaces/manager";
+import { queryKeys } from "@queries/index";
 
 export const useLogin = () => {
   return useMutation<LoginResponse, Error, LoginRequest>({
@@ -19,6 +21,16 @@ export const useLogin = () => {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       return response.data;
+    },
+  });
+};
+
+export const useGetUserInfo = () => {
+  return useQuery<UserInfo>({
+    queryKey: queryKeys.auth.user(),
+    queryFn: async () => {
+      const res = await axiosInstance.get<UserInfo>("/member/info/simple");
+      return res.data;
     },
   });
 };

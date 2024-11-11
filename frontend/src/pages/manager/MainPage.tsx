@@ -7,7 +7,7 @@ import Input from "@components/manager/Input";
 import PurpleButton from "@components/manager/PurpleButton";
 import RegisterModal from "@components/manager/RegisterModal";
 import { useLogin } from "@queries/index";
-import { userAtom } from "@atoms/index";
+import { loginAtom } from "@atoms/index";
 import type { LoginRequest } from "@/interfaces/manager";
 
 // 기존 컴포넌트의 Props 타입을 가져와서 확장
@@ -28,15 +28,14 @@ type ExtendedPurpleButtonProps = {
 
 const MainPage = () => {
   const nav = useNavigate();
-  const [, setUser] = useAtom(userAtom);
+  const [, login] = useAtom(loginAtom);
+  const loginMutation = useLogin();
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [formData, setFormData] = useState<LoginRequest>({
     username: "",
     password: "",
   });
   const [error, setError] = useState<string>("");
-
-  const loginMutation = useLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -54,7 +53,8 @@ const MainPage = () => {
     }
 
     try {
-      await loginMutation.mutateAsync(formData);
+      const response = await loginMutation.mutateAsync(formData);
+      login(response);
       nav("/manager/dashboard");
     } catch (err) {
       if (err instanceof Error) {

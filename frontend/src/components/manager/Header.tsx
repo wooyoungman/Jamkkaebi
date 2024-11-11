@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import LogoImg from "@assets/logo.png";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { atom, useAtom } from "jotai";
 import { UserCircle, Bell, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
-import { authAtom } from "@atoms/manager/user";
+import { authAtom, logoutAtom } from "@atoms/manager/user";
+import { useGetUserInfo } from "@queries/index";
 
 interface Notification {
   id: number;
@@ -13,15 +14,18 @@ interface Notification {
   isRead: boolean;
 }
 
-// notifications atom은 유지
+// notifications용 atom
 const notificationsAtom = atom<Notification[]>([]);
 
 const Header = () => {
   const location = useLocation();
+  const { data: userInfo } = useGetUserInfo();
+  const nav = useNavigate();
   const [activeMenu, setActiveMenu] = useState("undefined");
-  const [auth] = useAtom(authAtom); // authAtom 사용
+  const [auth] = useAtom(authAtom);
   const [notifications] = useAtom(notificationsAtom);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [, logout] = useAtom(logoutAtom);
 
   useEffect(() => {
     setActiveMenu(location.pathname);
@@ -33,6 +37,10 @@ const Header = () => {
 
   const handleNotificationClick = () => {
     setShowNotifications((prev) => !prev);
+  };
+  const handleLogout = () => {
+    logout();
+    nav("/manager");
   };
 
   return (
@@ -68,7 +76,7 @@ const Header = () => {
         {auth.isAuthenticated && (
           <UserSection>
             <UserInfo>
-              <UserName>관리자님</UserName>
+              <UserName>{userInfo?.memberName ?? ""} 관리자님</UserName>
               <IconButton>
                 <UserCircle size={32} />
               </IconButton>
@@ -106,7 +114,7 @@ const Header = () => {
                   </NotificationDropdown>
                 )}
               </NotificationButton>
-              <IconButton>
+              <IconButton onClick={handleLogout}>
                 <LogOut size={24} />
               </IconButton>
             </IconWrapper>

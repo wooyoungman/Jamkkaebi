@@ -1,4 +1,4 @@
-import { User, DrowsyEvent, LoginRequest, MapDriver } from "./manager";
+import { User, DrowsyEvent, MapDriver } from "./manager";
 
 // User 데이터
 export const dummyUsers: User[] = [
@@ -6,7 +6,7 @@ export const dummyUsers: User[] = [
     id: 1,
     username: "driver1",
     name: "김운전",
-    role: "driver",
+    role: "DRIVER",
     phone: "010-1234-5678",
     employeeId: "EMP001",
     region: "서울",
@@ -18,7 +18,7 @@ export const dummyUsers: User[] = [
     id: 2,
     username: "driver2",
     name: "이안전",
-    role: "driver",
+    role: "DRIVER",
     phone: "010-2345-6789",
     employeeId: "EMP002",
     region: "경기",

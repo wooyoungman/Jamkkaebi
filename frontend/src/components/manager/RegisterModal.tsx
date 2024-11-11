@@ -24,26 +24,20 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModalProps) => {
 
   const registerMutation = useRegister();
 
-  console.log("Current formData:", formData); // 현재 formData 상태 확인
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log("Input change - name:", name, "value:", value); // 입력 값 변경 확인
 
     setFormData((prev) => {
       const newData = {
         ...prev,
         [name]: value,
       };
-      console.log("Updated formData:", newData); // 업데이트된 formData 확인
       return newData;
     });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submitting formData:", formData);
-
     if (!formData.username || !formData.password || !formData.name) {
       setError("아이디, 비밀번호, 이름을 모두 입력해주세요.");
       return;

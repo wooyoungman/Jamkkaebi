@@ -29,11 +29,18 @@ export interface RegisterResponse {
   registerDate: string;
 }
 
+export interface UserInfo {
+  memberType: "MANAGER" | "DRIVER" | "ADMIN";
+  memberId: number;
+  memberName: string;
+  additionalInfo: null | string;
+}
+
 export interface User {
   id: number;
   username: string; // 아이디
   name: string;
-  role?: "manager" | "driver" | "admin";
+  role?: "MANAGER" | "DRIVER" | "ADMIN";
   phone: string;
   employeeId: string;
   region: string;
