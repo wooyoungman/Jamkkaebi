@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { RegisterRequest } from "@/interfaces/manager";
 import Input from "@components/manager/Input";
 import PurpleButton from "@components/manager/PurpleButton";
+import { PurpleButtonProps } from "@components/manager/PurpleButton";
 import { useRegister } from "@queries/index";
 
 type RegisterModalProps = {
@@ -18,13 +19,6 @@ type ExtendedInputProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-};
-
-type ExtendedPurpleButtonProps = {
-  children: React.ReactNode;
-  onClick?: () => void;
-  type?: "button" | "submit" | "reset";
-  disabled?: boolean;
 };
 
 const RegisterModal = ({ isOpen, onClose }: RegisterModalProps) => {
@@ -115,8 +109,8 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModalProps) => {
             {error && <ErrorMessage>{error}</ErrorMessage>}
             <PurpleButton
               type="submit"
-              disabled={registerMutation.isPending}
-              onClick={() => {}}
+              disabled={registerMutation.isPending} // isLoading 대신 mutation의 상태 사용
+              onClick={handleSubmit}
             >
               {registerMutation.isPending ? (
                 "로딩중..."
@@ -130,12 +124,6 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModalProps) => {
     </ModalOverlay>
   );
 };
-
-// 스타일이 적용된 Input 컴포넌트
-const StyledInput = styled(Input)<ExtendedInputProps>``;
-
-// 스타일이 적용된 PurpleButton 컴포넌트
-const StyledPurpleButton = styled(PurpleButton)<ExtendedPurpleButtonProps>``;
 
 const ModalOverlay = styled.div`
   position: fixed;
