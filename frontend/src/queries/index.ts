@@ -1,19 +1,15 @@
-// Role따라 로그인 시키려고
-import { useMutation } from "@tanstack/react-query";
-import { LoginRequest, User } from "@/interfaces/manager";
-import axios from "axios";
+export * from "@queries/manager/auth";
+export * from "@queries/manager/driver";
 
-export const useLogin = () => {
-  return useMutation({
-    mutationFn: async (credentials: LoginRequest) => {
-      const { data } = await axios.post<User>("/api/auth/login", credentials);
-
-      // role이 manager가 아니면 에러 처리
-      if (data.role !== "manager") {
-        throw new Error("관리자만 접근할 수 있습니다.");
-      }
-
-      return data;
-    },
-  });
-};
+export const queryKeys = {
+  auth: {
+    all: ["auth"] as const,
+    login: () => [...queryKeys.auth.all, "login"] as const,
+    register: () => [...queryKeys.auth.all, "register"] as const,
+    user: () => [...queryKeys.auth.all, "user"] as const,
+  },
+  driver: {
+    all: ["driver"] as const,
+    list: () => [...queryKeys.driver.all, "list"] as const,
+  },
+} as const;

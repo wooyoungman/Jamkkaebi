@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { styled } from "styled-components";
+import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import MapContainer from "@components/manager/MapContainer";
 import DriverMarker from "@components/manager/DriverMarker";
@@ -82,7 +82,7 @@ const calculateOptimalZoom = (bounds: ReturnType<typeof findBounds>) => {
 };
 
 const DashboardPage = () => {
-  const [selectedDriver, setSelectedDriver] = useState<string | null>(null);
+  const [selectedDriver, setSelectedDriver] = useState<number | null>(null);
   const [showDriverInfo, setShowDriverInfo] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertInfo, setAlertInfo] = useState({

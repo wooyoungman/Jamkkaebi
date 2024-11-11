@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { styled } from "styled-components";
+import styled from "styled-components";
 import { atom, useAtom } from "jotai";
 
 import { TMap, TMapLatLng, MapOptions } from "@interfaces/Tmap";
