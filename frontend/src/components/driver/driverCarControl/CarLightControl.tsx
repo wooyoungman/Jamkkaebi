@@ -4,32 +4,25 @@ import {
   CarPowerWrapper,
   CarRightLowerBody,
   CarRightUpperBody,
-  OnToggleDiv,
-  OffToggleDiv,
+  ToggleContainer,
+  SliderContainer,
+  SliderRGBContainer,
+  ToggleCircle,
+  ColorPickerContainer,
 } from "./DriverCarCSS";
 import { DriverText } from "../driverMain/DriverMainCSS";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
+import { SketchPicker } from "react-color";
 import {
-  OnToggleEclipseSVG,
-  OffToggleEclipseSVG,
+  ToggleEclipseSVG,
+  EclipseRGB,
+  SliderLightSVG,
 } from "@/styles/driver/driverCar/DriverCarSVG";
-
 import OffBulbSVG from "@/styles/driver/driverCar/OffBulbSVG";
 
 const CustomDriverText = styled(DriverText)`
   text-align: start;
-`;
-// 슬라이더 배경이 되는 GlassDiv 스타일을 추가
-const SliderContainer = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  gap: 10px;
-  width: 100%;
-  max-width: 400px;
-  border-radius: 10px;
-  margin-top: 15px;
 `;
 
 interface StyledSliderProps {
@@ -94,29 +87,65 @@ const SliderValue = styled.div`
 
 const CarLightControl: React.FC = () => {
   const [power, setPower] = useState(50);
+  const [isOn, setIsOn] = useState(false);
+  const [showPicker, setShowPicker] = useState(false);
+  const [pickerPosition, setPickerPosition] = useState({ x: 0, y: 0 });
+  const [initialColor, setInitialColor] = useState("#ffffff"); // 컬러 피커의 초기 색상
+  const [selectedRGB, setSelectedRGB] = useState<string>("#ffffff"); // 선택된 RGB 저장 변수
 
+  const pickerRef = useRef<HTMLDivElement>(null);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPower(e.target.valueAsNumber);
   };
 
+  const togglePower = () => {
+    setIsOn((prev) => !prev);
+  };
+
+  // EclipseRGB 클릭 핸들러
+  const handleEclipseClick = (event: React.MouseEvent, color: string) => {
+    setInitialColor(color); // 피커 초기 색상 설정
+    setShowPicker(true);
+    setPickerPosition({ x: event.clientX, y: event.clientY });
+  };
+
+  // 컬러 피커의 색상 변경 핸들러
+  const handleColorChange = (color: any) => {
+    setSelectedRGB(color.hex); // 선택된 RGB 값만 저장
+    setInitialColor(color.hex);
+    console.log("Selected RGB:", color.hex);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // 클릭한 영역이 컬러 피커가 아닐 경우 닫기
+      if (
+        pickerRef.current &&
+        !pickerRef.current.contains(event.target as Node)
+      ) {
+        setShowPicker(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside); // 이벤트 리스너 추가
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside); // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    };
+  }, []);
+
   return (
     <>
-      {/* <DriverText color="#E0E0E0" fontSize="15px" fontWeight={700}>
-        평상시와 졸음 감지용 조명의 세기를 조절할 수 있으며, <br /> 졸음 감지 시
-        조명의 자동 작동 여부를 설정할 수 있습니다.
-      </DriverText> */}
       <CarRightUpperBody>
         <CarPowerDiv>
           <CarPowerWrapper>
             <CustomDriverText fontSize="20px" fontWeight={700}>
               Power
             </CustomDriverText>
-            <OffToggleDiv>
-              <OffToggleEclipseSVG />
-            </OffToggleDiv>
-            {/* <OnToggleDiv>
-              <OnToggleEclipseSVG />
-            </OnToggleDiv> */}
+            <ToggleContainer isOn={isOn} onClick={togglePower}>
+              <ToggleCircle isOn={isOn}>
+                <ToggleEclipseSVG isOn={isOn} />
+              </ToggleCircle>
+            </ToggleContainer>
           </CarPowerWrapper>
         </CarPowerDiv>
         <CarControlUIDiv>
@@ -125,7 +154,22 @@ const CarLightControl: React.FC = () => {
       </CarRightUpperBody>
 
       <CarRightLowerBody>
+        <SliderRGBContainer>
+          <EclipseRGB
+            color="red"
+            onClick={(e) => handleEclipseClick(e, "red")}
+          />
+          <EclipseRGB
+            color="blue"
+            onClick={(e) => handleEclipseClick(e, "blue")}
+          />
+          <EclipseRGB
+            color="green"
+            onClick={(e) => handleEclipseClick(e, "green")}
+          />
+        </SliderRGBContainer>
         <SliderContainer>
+          <SliderLightSVG />
           <StyledSlider
             value={power}
             min={0}
@@ -136,6 +180,16 @@ const CarLightControl: React.FC = () => {
           <SliderValue>{power}</SliderValue>
         </SliderContainer>
       </CarRightLowerBody>
+
+      {/* 컬러 피커 */}
+      {showPicker && (
+        <ColorPickerContainer
+          ref={pickerRef}
+          style={{ top: pickerPosition.y, left: pickerPosition.x }}
+        >
+          <SketchPicker color={initialColor} onChange={handleColorChange} />
+        </ColorPickerContainer>
+      )}
     </>
   );
 };

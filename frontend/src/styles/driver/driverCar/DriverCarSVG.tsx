@@ -94,7 +94,44 @@ export const AlarmSVG = () => (
   </svg>
 );
 
-export const OnToggleEclipseSVG = () => (
+// export const OnToggleEclipseSVG = () => (
+//   <svg
+//     xmlns="http://www.w3.org/2000/svg"
+//     width="36"
+//     height="36"
+//     viewBox="0 0 36 36"
+//     fill="none"
+//   >
+//     <defs>
+//       <linearGradient id="gradientFill" x1="0" y1="0" x2="0" y2="1">
+//         <stop offset="24.31%" stop-color="white" />
+//         <stop offset="100%" stop-color="rgba(255, 255, 255, 0.62)" />
+//       </linearGradient>
+
+//       <filter id="dropShadow" x="-50%" y="-50%" width="200%" height="200%">
+//         <feOffset dx="-2.78" dy="0" />
+//         <feGaussianBlur stdDeviation="5.561" />
+//         <feComposite in2="SourceAlpha" operator="out" />
+//         <feColorMatrix
+//           type="matrix"
+//           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+//         />
+//         <feBlend mode="normal" in2="SourceGraphic" result="dropShadow" />
+//       </filter>
+//     </defs>
+
+//     <path
+//       d="M18 3.375C9.9225 3.375 3.375 9.9225 3.375 18C3.375 26.0775 9.9225 32.625 18 32.625C26.0775 32.625 32.625 26.0775 32.625 18C32.625 9.9225 26.0775 3.375 18 3.375Z"
+//       fill="url(#gradientFill)"
+//     />
+//   </svg>
+// );
+
+interface ToggleEclipseSVGProps {
+  isOn: boolean; // 토글 상태에 따른 스타일을 지정하기 위한 prop
+}
+
+export const ToggleEclipseSVG: React.FC<ToggleEclipseSVGProps> = ({ isOn }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="36"
@@ -103,13 +140,13 @@ export const OnToggleEclipseSVG = () => (
     fill="none"
   >
     <defs>
-      {/* Linear Gradient 정의 */}
+      {/* 그라데이션 정의 (On 상태에서만 사용) */}
       <linearGradient id="gradientFill" x1="0" y1="0" x2="0" y2="1">
         <stop offset="24.31%" stop-color="white" />
         <stop offset="100%" stop-color="rgba(255, 255, 255, 0.62)" />
       </linearGradient>
 
-      {/* Drop Shadow 필터 정의 */}
+      {/* Drop Shadow 필터 정의 (On 상태에서만 사용) */}
       <filter id="dropShadow" x="-50%" y="-50%" width="200%" height="200%">
         <feOffset dx="-2.78" dy="0" />
         <feGaussianBlur stdDeviation="5.561" />
@@ -122,91 +159,79 @@ export const OnToggleEclipseSVG = () => (
       </filter>
     </defs>
 
-    {/* Gradient와 Drop Shadow를 적용한 Circle Path */}
+    {/* 상태에 따른 fill과 filter 적용 */}
     <path
       d="M18 3.375C9.9225 3.375 3.375 9.9225 3.375 18C3.375 26.0775 9.9225 32.625 18 32.625C26.0775 32.625 32.625 26.0775 32.625 18C32.625 9.9225 26.0775 3.375 18 3.375Z"
-      fill="url(#gradientFill)"
-      filter="url(#dropShadow)"
+      fill={isOn ? "url(#gradientFill)" : "white"}
+      // filter={isOn ? "url(#dropShadow)" : "none"}
     />
   </svg>
-  // <svg
-  //   xmlns="http://www.w3.org/2000/svg"
-  //   width="52"
-  //   height="53"
-  //   viewBox="0 0 52 53"
-  //   fill="none"
-  // >
-  //   <g filter="url(#filter0_d_397_1461)">
-  //     <circle
-  //       cx="28.621"
-  //       cy="26.3788"
-  //       r="14.5976"
-  //       fill="url(#paint0_linear_397_1461)"
-  //       shape-rendering="crispEdges"
-  //     />
-  //   </g>
-  //   <defs>
-  //     <filter
-  //       id="filter0_d_397_1461"
-  //       x="0.121"
-  //       y="0.6593"
-  //       width="51.4392"
-  //       height="51.4392"
-  //       filterUnits="userSpaceOnUse"
-  //       color-interpolation-filters="sRGB"
-  //     >
-  //       <feFlood flood-opacity="0" result="BackgroundImageFix" />
-  //       <feColorMatrix
-  //         in="SourceAlpha"
-  //         type="matrix"
-  //         values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-  //         result="hardAlpha"
-  //       />
-  //       <feOffset dx="-2.78049" />
-  //       <feGaussianBlur stdDeviation="5.56098" />
-  //       <feComposite in2="hardAlpha" operator="out" />
-  //       <feColorMatrix
-  //         type="matrix"
-  //         values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
-  //       />
-  //       <feBlend
-  //         mode="normal"
-  //         in2="BackgroundImageFix"
-  //         result="effect1_dropShadow_397_1461"
-  //       />
-  //       <feBlend
-  //         mode="normal"
-  //         in="SourceGraphic"
-  //         in2="effect1_dropShadow_397_1461"
-  //         result="shape"
-  //       />
-  //     </filter>
-  //     <linearGradient
-  //       id="paint0_linear_397_1461"
-  //       x1="28.621"
-  //       y1="18.8788"
-  //       x2="28.621"
-  //       y2="40.9764"
-  //       gradientUnits="userSpaceOnUse"
-  //     >
-  //       <stop stop-color="white" />
-  //       <stop offset="1" stop-color="white" stop-opacity="0.62" />
-  //     </linearGradient>
-  //   </defs>
-  // </svg>
 );
 
-export const OffToggleEclipseSVG = () => (
+interface EclipseRGBProps {
+  color: string; // 색상을 커스텀할 수 있는 prop 추가
+  onClick?: (e: React.MouseEvent<SVGElement>) => void;
+}
+
+export const EclipseRGB: React.FC<EclipseRGBProps> = ({ color, onClick }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="36"
     height="36"
     viewBox="0 0 36 36"
     fill="none"
+    onClick={onClick}
   >
     <path
       d="M18 3.375C9.9225 3.375 3.375 9.9225 3.375 18C3.375 26.0775 9.9225 32.625 18 32.625C26.0775 32.625 32.625 26.0775 32.625 18C32.625 9.9225 26.0775 3.375 18 3.375Z"
+      fill={color} // 기본 색상은 흰색이며, color prop으로 덮어쓰기 가능
+    />
+  </svg>
+);
+
+export const SliderLightSVG = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="25"
+    height="25"
+    viewBox="0 0 16 16"
+    fill="none"
+  >
+    <path
+      d="M15.2 7.3592H14.416C13.9736 7.3592 13.616 7.6464 13.616 8C13.616 8.3528 13.9736 8.6392 14.416 8.6392H15.2C15.6416 8.6392 16 8.3536 16 8C16 7.6472 15.6408 7.3592 15.2 7.3592ZM8 3.6C7.42168 3.5982 6.84871 3.71079 6.31407 3.93127C5.77943 4.15176 5.29366 4.47579 4.88473 4.88473C4.47579 5.29366 4.15176 5.77943 3.93127 6.31407C3.71079 6.84871 3.5982 7.42168 3.6 8C3.6 10.4408 5.5592 12.4 8 12.4C10.44 12.4 12.4 10.4408 12.4 8C12.4 5.5592 10.4392 3.6 8 3.6ZM8 11.2C6.2312 11.2 4.8 9.7672 4.8 8C4.8 6.2312 6.2312 4.8 8 4.8C8.84869 4.8 9.66262 5.13714 10.2627 5.73726C10.8629 6.33737 11.2 7.15131 11.2 8C11.2 8.84869 10.8629 9.66262 10.2627 10.2627C9.66262 10.8629 8.84869 11.2 8 11.2ZM2.4 8C2.4 7.6472 2.0408 7.3592 1.6 7.3592H0.8C0.3576 7.3592 0 7.6464 0 8C0 8.3528 0.3576 8.6392 0.8 8.6392H1.6C2.0408 8.6392 2.4 8.3528 2.4 8ZM8 2.4C8.3528 2.4 8.6392 2.0424 8.6392 1.6V0.8C8.6392 0.3576 8.3528 0 8 0C7.6472 0 7.3592 0.3576 7.3592 0.8V1.6C7.3592 2.0424 7.6464 2.4 8 2.4ZM8 13.6C7.6464 13.6 7.3592 13.9576 7.3592 14.4V15.2C7.3592 15.6424 7.6464 16 8 16C8.3528 16 8.6392 15.6424 8.6392 15.2V14.4C8.6392 13.9576 8.3528 13.6 8 13.6ZM13.892 3.0128C14.2048 2.7 14.2552 2.244 14.0056 1.9944C13.756 1.7448 13.2992 1.796 12.988 2.1088L12.428 2.668C12.1152 2.9808 12.0648 3.4368 12.3144 3.6864C12.564 3.936 13.0208 3.8848 13.3328 3.572L13.892 3.0128ZM2.6672 12.4264L2.1072 12.9872C1.7944 13.3 1.744 13.7544 1.9936 14.004C2.2432 14.2536 2.7 14.204 3.0112 13.8912L3.5712 13.332C3.884 13.0192 3.9344 12.5632 3.6848 12.3128C3.4352 12.0624 2.9784 12.1152 2.6672 12.4264ZM3.012 2.108C2.7 1.7952 2.2432 1.744 1.9936 1.9936C1.744 2.2432 1.7952 2.7 2.1064 3.0128L2.6664 3.572C2.9792 3.8848 3.4344 3.936 3.684 3.6864C3.9336 3.4368 3.8832 2.98 3.5712 2.668L3.012 2.108ZM12.4272 13.3328L12.9872 13.892C13.3 14.2048 13.7552 14.2544 14.0048 14.0064C14.2544 13.7568 14.204 13.3 13.8912 12.988L13.332 12.4288C13.0192 12.116 12.5632 12.0648 12.3128 12.3144C12.0624 12.564 12.1144 13.02 12.4272 13.3328Z"
       fill="white"
+    />
+  </svg>
+);
+
+export const SliderSoundSVG = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+  >
+    <path
+      d="M10.6654 5.66602C11.554 6.85136 11.554 9.14736 10.6654 10.3327M12.6654 3.33269C15.324 5.87136 15.34 10.144 12.6654 12.666M1.33203 9.97202V6.02602C1.33203 5.64336 1.6307 5.33269 1.9987 5.33269H4.38936C4.47759 5.33238 4.56483 5.3142 4.64584 5.27925C4.72684 5.24431 4.79993 5.19332 4.8607 5.12936L6.8607 2.87069C7.2807 2.43336 7.9987 2.74336 7.9987 3.36136V12.6374C7.9987 13.26 7.27203 13.5674 6.8547 13.1214L4.86136 10.8754C4.80043 10.8096 4.7266 10.757 4.64448 10.721C4.56236 10.685 4.4737 10.6663 4.38403 10.666H1.9987C1.6307 10.666 1.33203 10.3554 1.33203 9.97202Z"
+      stroke="#E0E0E0"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
+
+export const SliderAirSVG = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+  >
+    <path
+      d="M7.9983 8.00025C7.9983 7.15137 8.30319 6.42203 8.91297 5.81226C9.52275 5.20248 10.2521 4.89759 11.101 4.89759C11.9499 4.89759 12.6792 5.20248 13.289 5.81226C13.8987 6.42203 14.2036 7.15137 14.2036 8.00025H7.9983ZM4.89564 11.1029C4.04675 11.1029 3.31764 10.798 2.7083 10.1883C2.09808 9.57803 1.79297 8.8487 1.79297 8.00025H7.9983C7.9983 8.84914 7.69341 9.57848 7.08364 10.1883C6.47386 10.798 5.74452 11.1029 4.89564 11.1029ZM7.9983 8.00025C7.14941 8.00025 6.42008 7.69537 5.8103 7.08559C5.20052 6.47581 4.89564 5.74648 4.89564 4.89759C4.89564 4.0487 5.20052 3.31937 5.8103 2.70959C6.42008 2.09981 7.14941 1.79492 7.9983 1.79492V8.00025ZM7.9983 14.2056V8.00025C8.84719 8.00025 9.57652 8.30514 10.1863 8.91492C10.7961 9.5247 11.101 10.254 11.101 11.1029C11.101 11.9518 10.7961 12.6811 10.1863 13.2909C9.57652 13.9007 8.84719 14.2056 7.9983 14.2056Z"
+      fill="black"
     />
   </svg>
 );

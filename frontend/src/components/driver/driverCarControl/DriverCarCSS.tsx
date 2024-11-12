@@ -81,11 +81,15 @@ export const CarPowerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding-top: 20px;
+  padding-left: 20px;
+  /* background-color: white; */
 `;
 
 export const CarControlUIDiv = styled.div`
   width: 75%;
   height: 100%;
+  padding-top: 7%;
   padding-right: 25%;
   display: flex;
   justify-content: center;
@@ -93,9 +97,29 @@ export const CarControlUIDiv = styled.div`
 `;
 
 export const CarRightLowerBody = styled.div`
-  width: 100%;
+  width: 80%;
   height: 25%;
-  background-color: silver;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  /* gap: 5px; */
+`;
+
+export const SliderRGBContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  /* gap: 5px; */
+`;
+
+export const SliderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  /* padding: 10px 15px; */
+  gap: 15px;
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 15px;
 `;
 
 export const OnToggleDiv = styled.div`
@@ -106,6 +130,7 @@ export const OnToggleDiv = styled.div`
   align-items: center;
   border-radius: 278.049px;
   background: #00ff47;
+  cursor: pointer;
 `;
 
 export const OffToggleDiv = styled.div`
@@ -116,4 +141,44 @@ export const OffToggleDiv = styled.div`
   border-radius: 278.049px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
 `;
+
+export const ToggleContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOn",
+})<{ isOn: boolean }>`
+  display: flex;
+  align-items: center;
+  width: 57px;
+  height: 30px;
+  border-radius: 278.049px;
+  cursor: pointer;
+  background: ${({ isOn }) => (isOn ? "#00ff47" : "rgba(255, 255, 255, 0.08)")};
+  border: ${({ isOn }) =>
+    isOn ? "none" : "1px solid rgba(255, 255, 255, 0.15)"};
+  padding: ${({ isOn }) => (isOn ? "2px 0px 2px 5px" : "2px 5px 2px 0px")};
+  /* justify-content: ${({ isOn }) => (isOn ? "flex-end" : "flex-start")}; */
+  position: relative;
+  transition:
+    background 0.3s ease,
+    padding 0.3s ease,
+    border 0.3s ease;
+`;
+
+// ToggleCircle (SVG를 감싸는 요소)
+export const ToggleCircle = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOn",
+})<{ isOn: boolean }>`
+  position: absolute;
+  top: 50%;
+  left: ${({ isOn }) => (isOn ? "calc(100% - 36px)" : "0")}; /* 좌우 이동 */
+  transform: translateY(-50%);
+  transition: left 0.3s ease;
+  width: 36px;
+  height: 36px;
+`;
+
+export const ColorPickerContainer = styled.div`
+  position: absolute;
+  z-index: 100;
+`
