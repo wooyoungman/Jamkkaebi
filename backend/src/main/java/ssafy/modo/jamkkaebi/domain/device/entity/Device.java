@@ -1,14 +1,14 @@
 package ssafy.modo.jamkkaebi.domain.device.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ssafy.modo.jamkkaebi.common.entity.BaseEntity;
 import ssafy.modo.jamkkaebi.domain.vehicle.entity.Vehicle;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Device extends BaseEntity {
 

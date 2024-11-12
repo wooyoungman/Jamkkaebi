@@ -3,13 +3,11 @@ package ssafy.modo.jamkkaebi.domain.device.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ssafy.modo.jamkkaebi.common.ApiResponse;
 import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceInfoResponseDto;
 import ssafy.modo.jamkkaebi.domain.device.service.DeviceReadService;
+import ssafy.modo.jamkkaebi.domain.device.service.DeviceWriteService;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,9 +15,15 @@ import ssafy.modo.jamkkaebi.domain.device.service.DeviceReadService;
 public class DeviceController {
 
     private final DeviceReadService deviceReadService;
+    private final DeviceWriteService deviceWriteService;
 
     @GetMapping(path = "/vehicle", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<DeviceInfoResponseDto> getDeviceInfo(@Valid @RequestParam("device_id") String uuid) {
         return ApiResponse.success(deviceReadService.getDeviceInfo(uuid));
+    }
+
+    @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<DeviceInfoResponseDto> createDevice() {
+        return ApiResponse.success(deviceWriteService.createDevice());
     }
 }
