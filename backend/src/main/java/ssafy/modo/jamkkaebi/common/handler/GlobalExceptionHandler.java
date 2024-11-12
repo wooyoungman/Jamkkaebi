@@ -21,6 +21,7 @@ import ssafy.modo.jamkkaebi.common.tmap.exception.InvalidAddressException;
 import ssafy.modo.jamkkaebi.common.tmap.exception.RouteSerializationException;
 import ssafy.modo.jamkkaebi.domain.cargo.exception.CargoDispatchedException;
 import ssafy.modo.jamkkaebi.domain.cargo.exception.CargoNotFoundException;
+import ssafy.modo.jamkkaebi.domain.device.exception.DeviceNotFoundException;
 import ssafy.modo.jamkkaebi.domain.manager.exception.DriverConflictException;
 import ssafy.modo.jamkkaebi.domain.member.exception.*;
 import ssafy.modo.jamkkaebi.domain.vehicle.exception.*;
@@ -220,6 +221,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UnauthorizedControlException.class)
     public ResponseEntity<ApiResponse<Void>> handleUnauthorizedControlException(UnauthorizedControlException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(DeviceNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDeviceNotFoundException(DeviceNotFoundException e) {
         ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
         return ResponseEntity.status(e.getStatus()).body(response);
     }
