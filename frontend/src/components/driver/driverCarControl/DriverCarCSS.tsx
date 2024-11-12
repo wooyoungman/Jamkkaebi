@@ -1,9 +1,5 @@
 import styled from "styled-components";
 import { GlassDiv } from "@/styles/driver/GlassmorphismStyle";
-import {
-  OnToggleEclipseSVG,
-  OffToggleEclipseSVG,
-} from "@/styles/driver/driverCar/DriverCarSVG";
 
 export const CarRightDiv = styled.div`
   width: 65%;
@@ -67,13 +63,45 @@ export const CarRightBody = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  /* background-color: white; */
+`;
+
+export const CarRightUpperBody = styled.div`
+  width: 100%;
+  height: 75%;
+  display: flex;
+`;
+
+export const CarPowerDiv = styled.div`
+  width: 25%;
+  height: 100%;
+  display: flex;
+`;
+
+export const CarPowerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const CarControlUIDiv = styled.div`
+  width: 75%;
+  height: 100%;
+  padding-right: 25%;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+`;
+
+export const CarRightLowerBody = styled.div`
+  width: 100%;
+  height: 25%;
+  background-color: silver;
 `;
 
 export const OnToggleDiv = styled.div`
   display: flex;
   width: 57px;
-  padding: 2.78px;
+  padding-left: 5px;
   justify-content: flex-end;
   align-items: center;
   border-radius: 278.049px;
@@ -83,7 +111,7 @@ export const OnToggleDiv = styled.div`
 export const OffToggleDiv = styled.div`
   display: flex;
   width: 57px;
-  padding: 2.78px;
+  padding-right: 5px;
   align-items: center;
   border-radius: 278.049px;
   border: 1px solid rgba(255, 255, 255, 0.15);

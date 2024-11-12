@@ -1,9 +1,25 @@
-import { CarRightBody } from "./DriverCarCSS";
+import {
+  CarControlUIDiv,
+  CarPowerDiv,
+  CarPowerWrapper,
+  CarRightLowerBody,
+  CarRightUpperBody,
+  OnToggleDiv,
+  OffToggleDiv,
+} from "./DriverCarCSS";
 import { DriverText } from "../driverMain/DriverMainCSS";
 import { useState } from "react";
 import styled, { css } from "styled-components";
-import { GlassDiv } from "@/styles/driver/GlassmorphismStyle";
+import {
+  OnToggleEclipseSVG,
+  OffToggleEclipseSVG,
+} from "@/styles/driver/driverCar/DriverCarSVG";
 
+import OffBulbSVG from "@/styles/driver/driverCar/OffBulbSVG";
+
+const CustomDriverText = styled(DriverText)`
+  text-align: start;
+`;
 // 슬라이더 배경이 되는 GlassDiv 스타일을 추가
 const SliderContainer = styled.div`
   display: flex;
@@ -89,16 +105,37 @@ const CarLightControl: React.FC = () => {
         평상시와 졸음 감지용 조명의 세기를 조절할 수 있으며, <br /> 졸음 감지 시
         조명의 자동 작동 여부를 설정할 수 있습니다.
       </DriverText> */}
-      <SliderContainer>
-        <StyledSlider
-          value={power}
-          min={0}
-          max={100}
-          step={1}
-          onChange={handleChange}
-        />
-        <SliderValue>{power}</SliderValue>
-      </SliderContainer>
+      <CarRightUpperBody>
+        <CarPowerDiv>
+          <CarPowerWrapper>
+            <CustomDriverText fontSize="20px" fontWeight={700}>
+              Power
+            </CustomDriverText>
+            <OffToggleDiv>
+              <OffToggleEclipseSVG />
+            </OffToggleDiv>
+            {/* <OnToggleDiv>
+              <OnToggleEclipseSVG />
+            </OnToggleDiv> */}
+          </CarPowerWrapper>
+        </CarPowerDiv>
+        <CarControlUIDiv>
+          <OffBulbSVG />
+        </CarControlUIDiv>
+      </CarRightUpperBody>
+
+      <CarRightLowerBody>
+        <SliderContainer>
+          <StyledSlider
+            value={power}
+            min={0}
+            max={100}
+            step={1}
+            onChange={handleChange}
+          />
+          <SliderValue>{power}</SliderValue>
+        </SliderContainer>
+      </CarRightLowerBody>
     </>
   );
 };
