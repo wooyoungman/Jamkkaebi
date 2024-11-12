@@ -18,7 +18,14 @@ import DriverListPage from "@/pages/manager/DriverListPage";
 import ReportPage from "@pages/manager/ReportPage";
 import HistoryPage from "@pages/manager/HistoryPage";
 
+// LandingPage
+import LandingPage from "@pages/LandingPage";
+
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LandingPage />,
+  },
   {
     path: "/manager",
     element: <Layout />,
