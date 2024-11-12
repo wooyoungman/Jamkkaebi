@@ -71,6 +71,7 @@
 #     except Exception as e:
 #         print(f"WebSocket Error: {e}")
 from fastapi import FastAPI, WebSocket
+from contextlib import asynccontextmanager
 import serial
 import numpy as np
 import pandas as pd
@@ -78,14 +79,11 @@ import joblib
 from unified_model import UnifiedModel  # UnifiedModel 가져오기
 import asyncio
 
-# FastAPI 앱 생성
-app = FastAPI()
-
 # 모델과 시리얼 포트 초기화 변수
 model = None
 ser = None
 
-@app.on_event("startup")
+@asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifespan 핸들러: 앱의 시작과 종료 이벤트 처리"""
     global model, ser
@@ -101,6 +99,9 @@ async def lifespan(app: FastAPI):
     print("Shutting down application...")
     if ser and ser.is_open:
         ser.close()
+
+# FastAPI 앱 생성
+app = FastAPI(lifespan=lifespan)
 
 # WebSocket 엔드포인트
 @app.websocket("/ws")
