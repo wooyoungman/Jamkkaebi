@@ -44,4 +44,17 @@ public class DeviceWriteService {
                         .build())
                 .build();
     }
+
+    public DeviceInfoResponseDto disconnectDevice(String uuid) {
+
+        Device device = deviceRepository.findById(uuid).orElseThrow(DeviceNotFoundException::new);
+
+        device.disconnectFromVehicle();
+        Device updatedDevice = deviceRepository.save(device);
+
+        return DeviceInfoResponseDto.builder()
+                .uuid(updatedDevice.getUuid())
+                .vehicleInfo(null)
+                .build();
+    }
 }

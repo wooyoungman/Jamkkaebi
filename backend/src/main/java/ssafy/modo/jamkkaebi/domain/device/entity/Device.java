@@ -23,7 +23,7 @@ public class Device extends BaseEntity {
         this.vehicle = vehicle;
     }
 
-    public void disconnectFromVehicle(Vehicle vehicle) {
+    public void disconnectFromVehicle() {
         this.vehicle = null;
     }
 }
