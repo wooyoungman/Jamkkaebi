@@ -1,33 +1,63 @@
 export interface User {
-  id: number;
-  username: string; // 아이디
-  name: string;
-  role?: "MANAGER" | "DRIVER" | "ADMIN";
-  phone: string;
-  employeeId: string;
-  region: string;
+  memberType: "MANAGER" | "DRIVER" | "ADMIN";
+  memberId: number;
+  memberName: string;
+  additionalInfo: null | string;
+}
+
+export interface DriverDetails {
+  phoneNumber: string | null;
+  address: string | null;
+  vehicleNumber: string;
   status: "ON_ROUTE" | "REST" | "IDLE";
   profileImage: string;
 }
 
-export interface Driver extends <User> {
+export type Driver = User & DriverDetails;
+
+export interface DriverResponse {
   driverId: number;
   driverName: string;
   phoneNumber: string | null;
   address: string | null;
+  role: "DRIVER";
+  vehicleNumber: string;
+  status: "ONROUTE" | "REST" | "IDLE";
+  profileImage: string;
 }
+
+// API 응답 구조
+export interface ApiResponse<T> {
+  status: number;
+  message: string;
+  timestamp: string;
+  data: T;
+}
+
+export interface ApiDriverList {
+  count: number;
+  driversType: "UNMANAGED" | "MANAGED";
+  drivers: DriverResponse[];
+}
+
+export const convertToDriver = (res: DriverResponse): Driver => {
+  return {
+    memberId: res.driverId,
+    memberName: res.driverName,
+    memberType: "DRIVER",
+    additionalInfo: null,
+    phoneNumber: res.phoneNumber,
+    address: res.address,
+    vehicleNumber: res.vehicleNumber,
+    status: res.status === "ONROUTE" ? "ON_ROUTE" : res.status,
+    profileImage: res.profileImage,
+  };
+};
 
 export interface DriverList {
   count: number;
   driversType: "UNMANAGED" | "MANAGED";
   drivers: Driver[];
-}
-
-export interface UserInfo {
-  memberType: "MANAGER" | "DRIVER" | "ADMIN";
-  memberId: number;
-  memberName: string;
-  additionalInfo: null | string;
 }
 
 export interface Location {

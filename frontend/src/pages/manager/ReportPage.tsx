@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import PurpleButton from "@/components/manager/PurpleButton";
 import { Share } from "lucide-react";
 import { User } from "@/interfaces/manager";
-import { DUMMY_USERS } from "@interfaces/driveruser";
 import { Line, Bar, Radar } from "react-chartjs-2";
 import {
   Chart as ChartJS,

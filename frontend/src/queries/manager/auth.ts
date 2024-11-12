@@ -5,7 +5,7 @@ import {
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
-  UserInfo,
+  User,
 } from "@interfaces/manager";
 import { queryKeys } from "@queries/index";
 
@@ -26,10 +26,10 @@ export const useLogin = () => {
 };
 
 export const useGetUserInfo = () => {
-  return useQuery<UserInfo>({
+  return useQuery<User>({
     queryKey: queryKeys.auth.user(),
     queryFn: async () => {
-      const res = await axiosInstance.get<UserInfo>("/member/info/simple");
+      const res = await axiosInstance.get<User>("/member/info/simple");
       return res.data;
     },
   });

@@ -7,7 +7,6 @@ import RoutePolyline from "@components/manager/RoutePolyline";
 import DriverInfoModal from "@components/manager/DriverInfoModal";
 import AlertModal from "@components/manager/AlertModal";
 import { MapDriver } from "@/interfaces/manager";
-import { dummyMapDrivers, dummySleepEvent } from "@interfaces/dummydrivers";
 import { useAtom } from "jotai";
 import { mapInstanceAtom } from "@components/manager/MapContainer";
 

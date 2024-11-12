@@ -149,7 +149,7 @@ const ProfileImage = styled.img`
   object-fit: cover;
 `;
 
-const StatusBadge = styled.span<{ status: "운행 중" | "휴일" }>`
+const StatusBadge = styled.span<{ status: "ON_ROUTE" | "REST" | "IDLE" }>`
   display: inline-block;
   width: 100px;
   text-align: center;
@@ -157,10 +157,10 @@ const StatusBadge = styled.span<{ status: "운행 중" | "휴일" }>`
   border-radius: 4px;
   font-size: 14px;
   border: 1px solid
-    ${(props) => (props.status === "운행 중" ? "#00B087" : "#DF0404")};
+    ${(props) => (props.status === "ON_ROUTE" ? "#00B087" : "#DF0404")};
   background: ${(props) =>
-    props.status === "운행 중" ? "#dcfce7" : "#fee2e2"};
-  color: ${(props) => (props.status === "운행 중" ? "#008767" : "#DF0404")};
+    props.status === "ON_ROUTE" ? "#dcfce7" : "#fee2e2"};
+  color: ${(props) => (props.status === "ON_ROUTE" ? "#008767" : "#DF0404")};
 `;
 
 const Pagination = styled.div`
