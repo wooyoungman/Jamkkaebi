@@ -1,34 +1,3 @@
-export interface RegisterRequest {
-  username: string; // 아이디
-  password: string; // 비밀번호
-  name: string; // 사용자 이름
-}
-
-export interface LoginRequest {
-  username: string;
-  password: string;
-}
-
-export interface LoginResponse {
-  memberId: number;
-  grantType: string; // "Bearer"
-  accessToken: string;
-  refreshToken: string;
-}
-
-export interface RegisterRequest {
-  name: string;
-  username: string;
-  password: string;
-  email?: string;
-}
-
-export interface RegisterResponse {
-  name: string;
-  username: string;
-  registerDate: string;
-}
-
 export interface Driver extends Omit<User, "phone" | "name"> {
   driverId: number;
   driverName: string;
@@ -92,4 +61,35 @@ export interface MapDriver {
   route: Location[];
   sleepEvents: number;
   lastUpdate: string;
+}
+
+export interface RegisterRequest {
+  username: string; // 아이디
+  password: string; // 비밀번호
+  name: string; // 사용자 이름
+}
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  memberId: number;
+  grantType: string; // "Bearer"
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface RegisterRequest {
+  name: string;
+  username: string;
+  password: string;
+  email?: string;
+}
+
+export interface RegisterResponse {
+  name: string;
+  username: string;
+  registerDate: string;
 }
