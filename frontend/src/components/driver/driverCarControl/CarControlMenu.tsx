@@ -48,9 +48,7 @@ const CarControlMenu: React.FC<CarControlMenuProps> = ({
           <CarMenuDivBody>
             <AlarmSVG />
             <DriverText color="#E0E0E0" fontSize="18px" fontWeight={700}>
-              졸음
-              <br />
-              감지
+              기타
             </DriverText>
           </CarMenuDivBody>
         </CarMenuDiv>
