@@ -14,12 +14,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
-import ssafy.modo.jamkkaebi.common.tmap.dto.AddressQueryDto;
-import ssafy.modo.jamkkaebi.common.tmap.dto.RouteQueryDto;
+import ssafy.modo.jamkkaebi.common.tmap.dto.request.AddressQueryDto;
+import ssafy.modo.jamkkaebi.common.tmap.dto.request.RouteQueryDto;
 import ssafy.modo.jamkkaebi.common.tmap.exception.InvalidAddressException;
 import ssafy.modo.jamkkaebi.common.tmap.exception.RouteSerializationException;
 import ssafy.modo.jamkkaebi.common.util.RequestUtil;
-import ssafy.modo.jamkkaebi.domain.route.dto.GeoJsonDto;
+import ssafy.modo.jamkkaebi.common.tmap.dto.response.GeoJsonDto;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

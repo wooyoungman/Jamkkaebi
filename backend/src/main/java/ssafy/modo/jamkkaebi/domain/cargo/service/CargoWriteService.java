@@ -21,7 +21,7 @@ import ssafy.modo.jamkkaebi.domain.delivery.service.DeliveryWriteService;
 import ssafy.modo.jamkkaebi.domain.driver.dto.response.DriverInfo;
 import ssafy.modo.jamkkaebi.domain.member.entity.Member;
 import ssafy.modo.jamkkaebi.domain.member.service.MemberReadService;
-import ssafy.modo.jamkkaebi.domain.route.dto.GeoJsonDto;
+import ssafy.modo.jamkkaebi.common.tmap.dto.response.GeoJsonDto;
 import ssafy.modo.jamkkaebi.domain.route.entity.Route;
 import ssafy.modo.jamkkaebi.domain.route.repository.RouteRepository;
 import ssafy.modo.jamkkaebi.domain.vehicle.dto.response.VehicleInfo;
