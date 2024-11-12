@@ -92,7 +92,7 @@ async def lifespan(app: FastAPI):
 
     # 애플리케이션 시작 시 초기화 코드
     print("Initializing application...")
-    model = joblib.load("C:/Users/SSAFY/Desktop/EEG_Test/unified_model2.pkl")
+    model = joblib.load("./unified_model2.pkl")
     ser = serial.Serial('COM6', 115200)
 
     yield
