@@ -83,6 +83,7 @@ import asyncio
 model = None
 ser = None
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifespan 핸들러: 앱의 시작과 종료 이벤트 처리"""
@@ -91,7 +92,7 @@ async def lifespan(app: FastAPI):
     # 애플리케이션 시작 시 초기화 코드
     print("Initializing application...")
     model = joblib.load("./unified_model2.pkl")
-    ser = serial.Serial('COM6', 115200)
+    ser = serial.Serial("COM6", 115200)
 
     yield
 
@@ -100,8 +101,10 @@ async def lifespan(app: FastAPI):
     if ser and ser.is_open:
         ser.close()
 
+
 # FastAPI 앱 생성
 app = FastAPI(lifespan=lifespan)
+
 
 # WebSocket 엔드포인트
 @app.websocket("/ws")
@@ -113,23 +116,37 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             # 시리얼 데이터 읽기
-            line = ser.readline().decode('utf-8').strip()
-            data_values = line.split(',')
+            line = ser.readline().decode("utf-8").strip()
+            data_values = line.split(",")
 
             # 입력 데이터가 올바른 형식인지 확인
             if len(data_values) == 8:  # features 개수 확인
                 # 데이터를 NumPy 배열로 변환
                 data = np.array(data_values, dtype=float).reshape(1, -1)
-                data_df = pd.DataFrame(data, columns=[
-                    'delta', 'theta', 'lowAlpha', 'highAlpha', 'lowBeta', 'highBeta', 'lowGamma', 'highGamma'
-                ])
+                data_df = pd.DataFrame(
+                    data,
+                    columns=[
+                        "delta",
+                        "theta",
+                        "lowAlpha",
+                        "highAlpha",
+                        "lowBeta",
+                        "highBeta",
+                        "lowGamma",
+                        "highGamma",
+                    ],
+                )
 
                 # 모델 예측
                 predictions = model.predict(data_df)
                 response = {
-                    "attention": round(predictions.iloc[0]['attention'], 2),
-                    "meditation": round(predictions.iloc[0]['meditation'], 2),
-                    "classification": "Awake" if predictions.iloc[0]['classification'] == 0 else "Sleep"
+                    "attention": round(predictions.iloc[0]["attention"], 2),
+                    "meditation": round(predictions.iloc[0]["meditation"], 2),
+                    "classification": (
+                        "Awake"
+                        if predictions.iloc[0]["classification"] == 0
+                        else "Sleep"
+                    ),
                 }
 
                 # WebSocket으로 예측 결과 전송
