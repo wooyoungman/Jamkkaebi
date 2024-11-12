@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 interface InputProps {
   type?: string;
-  name: string; // 필수 prop으로 추가
-  value: string; // 필수 prop으로 추가
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // 필수 prop으로 추가
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   helpText?: string;
   helpLink?: string;
@@ -12,9 +12,9 @@ interface InputProps {
 
 const Input = ({
   type = "text",
-  name, // props 추가
-  value, // props 추가
-  onChange, // props 추가
+  name,
+  value,
+  onChange,
   placeholder,
   helpText,
   helpLink,

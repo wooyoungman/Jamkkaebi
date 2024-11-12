@@ -15,7 +15,7 @@ interface RoutePolylineProps {
 const RoutePolyline = ({
   path,
   color = "#FF0000",
-  width = 50,
+  width = 1000,
 }: RoutePolylineProps) => {
   const mapInstance = useAtomValue(mapInstanceAtom);
   const [polyline, setPolyline] = useState<TMapPolyline | null>(null);
@@ -37,8 +37,6 @@ const RoutePolyline = ({
 
     const drawRoute = async () => {
       try {
-        console.log("경로 계산 시작");
-
         const apiKey = import.meta.env.VITE_TMAP_API_KEY;
 
         const requestData = {

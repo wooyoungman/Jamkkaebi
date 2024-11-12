@@ -1,4 +1,16 @@
-export interface Driver extends Omit<User, "phone" | "name"> {
+export interface User {
+  id: number;
+  username: string; // 아이디
+  name: string;
+  role?: "MANAGER" | "DRIVER" | "ADMIN";
+  phone: string;
+  employeeId: string;
+  region: string;
+  status: "ON_ROUTE" | "REST" | "IDLE";
+  profileImage: string;
+}
+
+export interface Driver extends <User> {
   driverId: number;
   driverName: string;
   phoneNumber: string | null;
@@ -18,18 +30,6 @@ export interface UserInfo {
   additionalInfo: null | string;
 }
 
-export interface User {
-  id: number;
-  username: string; // 아이디
-  name: string;
-  role?: "MANAGER" | "DRIVER" | "ADMIN";
-  phone: string;
-  employeeId: string;
-  region: string;
-  status: "운행 중" | "휴일";
-  profileImage: string;
-}
-
 export interface Location {
   lat: number;
   lng: number;
@@ -41,7 +41,6 @@ export interface DrowsyEvent {
   profileImage: string;
   driverName: string;
   age: number;
-  gender: string;
   timestamp: string;
   location: Location;
   drowsyCount: number;

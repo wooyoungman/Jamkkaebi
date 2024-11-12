@@ -24,7 +24,7 @@ const DriverMarker = ({ position, driverId, onClick }: DriverMarkerProps) => {
     const newMarker = new window.Tmapv2.Marker({
       position: markerPosition,
       icon: circlechr,
-      iconSize: new window.Tmapv2.Size(40, 40),
+      iconSize: new window.Tmapv2.Size(55, 55),
       map: mapInstance,
       title: `Driver ${driverId}`,
     });

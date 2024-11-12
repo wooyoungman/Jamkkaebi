@@ -48,7 +48,6 @@ const DriverInfoModal = ({ isOpen, onClose, driver }: DriverInfoModalProps) => {
   );
 };
 
-// 스타일 컴포넌트는 동일하게 유지
 DriverInfoModal.Overlay = styled.div`
   position: fixed;
   top: 0;
