@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ssafy.modo.jamkkaebi.common.ApiResponse;
+import ssafy.modo.jamkkaebi.domain.device.dto.request.DeviceConnectRequestDto;
 import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceInfoResponseDto;
 import ssafy.modo.jamkkaebi.domain.device.service.DeviceReadService;
 import ssafy.modo.jamkkaebi.domain.device.service.DeviceWriteService;
@@ -25,5 +26,11 @@ public class DeviceController {
     @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<DeviceInfoResponseDto> createDevice() {
         return ApiResponse.success(deviceWriteService.createDevice());
+    }
+
+    @PatchMapping(path = "/connect",
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<DeviceInfoResponseDto> connectDevice(@Valid @RequestBody DeviceConnectRequestDto dto) {
+        return ApiResponse.success(deviceWriteService.connectDevice(dto));
     }
 }
