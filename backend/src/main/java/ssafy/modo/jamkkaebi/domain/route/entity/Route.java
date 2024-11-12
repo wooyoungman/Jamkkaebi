@@ -7,7 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import ssafy.modo.jamkkaebi.domain.route.dto.GeoJsonDto;
+import ssafy.modo.jamkkaebi.common.tmap.dto.response.GeoJsonDto;
 
 import java.time.LocalDateTime;
 

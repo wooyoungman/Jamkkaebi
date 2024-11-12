@@ -1,4 +1,4 @@
-package ssafy.modo.jamkkaebi.domain.route.dto;
+package ssafy.modo.jamkkaebi.common.tmap.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
