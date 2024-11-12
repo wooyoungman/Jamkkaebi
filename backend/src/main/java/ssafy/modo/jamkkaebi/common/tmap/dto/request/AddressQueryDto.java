@@ -1,4 +1,4 @@
-package ssafy.modo.jamkkaebi.common.tmap.dto;
+package ssafy.modo.jamkkaebi.common.tmap.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
