@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceInfoResponseDto;
 import ssafy.modo.jamkkaebi.domain.vehicle.entity.ControlType;
 
 @Data
@@ -18,4 +19,5 @@ public class VehicleControlResponseDto {
     private Integer green;
     private Integer blue;
     private Integer brightness;
+    private DeviceInfoResponseDto deviceInfo;
 }
