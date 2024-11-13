@@ -1,21 +1,14 @@
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { atom, useAtom } from "jotai";
+import { mapInstanceAtom } from "@atoms/index";
 
-import { TMap, TMapLatLng, MapOptions } from "@interfaces/Tmap";
-
-export const mapInstanceAtom = atom<TMap | null>(null);
-
-interface MapContainerProps {
-  width?: string;
-  height?: string;
-  initialCenter?: {
-    lat: number;
-    lng: number;
-  };
-  initialZoom?: number;
-  children?: React.ReactNode;
-}
+import {
+  TMap,
+  TMapLatLng,
+  MapOptions,
+  MapContainerProps,
+} from "@interfaces/Tmap";
 
 const MapContainer = ({
   width = "100%",

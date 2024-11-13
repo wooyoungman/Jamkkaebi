@@ -113,4 +113,15 @@ declare global {
   }
 }
 
+export interface MapContainerProps {
+  width?: string;
+  height?: string;
+  initialCenter?: {
+    lat: number;
+    lng: number;
+  };
+  initialZoom?: number;
+  children?: React.ReactNode;
+}
+
 export type TMapInstance = TMap;
