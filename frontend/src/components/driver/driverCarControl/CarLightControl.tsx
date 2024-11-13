@@ -19,7 +19,8 @@ import {
 } from "@/styles/driver/driverCar/DriverCarSVG";
 import BulbSVG from "@/styles/driver/driverCar/BulbSVG";
 import CarPowerSlider from "./CarPowerSlider";
-import OnBulbSVGV2 from "@/styles/driver/driverCar/OnBulbV2.svg?react";
+import OffBulbSVG from "@/styles/driver/driverCar/OffBulb.svg?react";
+// import OffBulbSVG from "@/styles/driver/driverCar/OffBulbNoTailV1.svg?react";
 
 const CustomDriverText = styled(DriverText)`
   text-align: start;
@@ -81,7 +82,9 @@ const CarLightControl: React.FC = () => {
 
   return (
     <>
-      <CarRightUpperBody>
+      <CarRightUpperBody
+        style={{ marginBottom: isOn === false ? "34px" : "0" }}
+      >
         <CarPowerDiv>
           <CarPowerWrapper>
             <CustomDriverText fontSize="20px" fontWeight={700}>
@@ -95,8 +98,12 @@ const CarLightControl: React.FC = () => {
           </CarPowerWrapper>
         </CarPowerDiv>
         <CarControlUIDiv>
-          <BulbSVG isOn={isOn} power={power} selectedRGB={selectedRGB} />
-          {/* <OnBulbSVGV2 /> */}
+          {isOn === false ? (
+            <OffBulbSVG />
+          ) : (
+            // <p>전구</p>
+            <BulbSVG isOn={isOn} power={power} selectedRGB={selectedRGB} />
+          )}
         </CarControlUIDiv>
       </CarRightUpperBody>
 
@@ -106,16 +113,19 @@ const CarLightControl: React.FC = () => {
             color="#FF0000"
             onClick={() => handleEclipseClick("#FF0000")}
             onDoubleClick={(e) => handleEclipseDoubleClick(e, "#FF0000")}
+            isOn={isOn}
           />
           <EclipseRGB
             color="#0000FF"
             onClick={() => handleEclipseClick("#0000FF")}
             onDoubleClick={(e) => handleEclipseDoubleClick(e, "#0000FF")}
+            isOn={isOn}
           />
           <EclipseRGB
             color="#00FF00"
             onClick={() => handleEclipseClick("#00FF00")}
             onDoubleClick={(e) => handleEclipseDoubleClick(e, "#00FF00")}
+            isOn={isOn}
           />
         </SliderRGBContainer>
         <CarPowerSlider

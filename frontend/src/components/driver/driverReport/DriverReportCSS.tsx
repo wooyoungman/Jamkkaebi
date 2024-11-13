@@ -76,7 +76,7 @@ export const DateReportDiv = styled.div`
 
 export const DrivingReportList = styled(CustomGlassDiv)`
   width: 100%;
-  height: 80px;
+  height: 88px;
   padding: 12px;
   box-sizing: border-box;
   display: flex;

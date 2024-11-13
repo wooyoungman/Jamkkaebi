@@ -2,7 +2,7 @@ const BulbSVG: React.FC<{
   isOn: boolean;
   power: number;
   selectedRGB: string;
-}> = ({ isOn, power, selectedRGB }) => {
+}> = ({ isOn = false, power = 0, selectedRGB }) => {
   const isWhite =
     selectedRGB.toLowerCase() === "#ffffff" ||
     selectedRGB.toLowerCase() === "white";

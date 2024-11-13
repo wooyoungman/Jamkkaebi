@@ -73,18 +73,18 @@ const Header: React.FC = () => {
   return (
     <HeaderDiv>
       <CustomDriverText
-        fontSize="30px"
+        fontSize="35px"
         fontWeight={600}
         style={{ marginBottom: "3px" }}
       >
         {time}
       </CustomDriverText>
       <DateContainer>
-        <CustomDriverText color="#696D6E" fontSize="12px" fontWeight={400}>
+        <CustomDriverText color="#696D6E" fontSize="15px" fontWeight={400}>
           {day}
         </CustomDriverText>
         <CustomHRLine />
-        <CustomDriverText color="#696D6E" fontSize="12px" fontWeight={400}>
+        <CustomDriverText color="#696D6E" fontSize="15px" fontWeight={400}>
           {date}
         </CustomDriverText>
       </DateContainer>

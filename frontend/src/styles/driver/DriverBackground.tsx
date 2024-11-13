@@ -15,7 +15,7 @@ export const DriverBackground = styled.div`
   align-items: flex-start;
   width: 1280px;
   height: 800px;
-  gap: 21px;
+  gap: 17px;
   padding: 12px 25px;
   overflow: hidden;
   border-radius: 40px;

@@ -172,21 +172,28 @@ interface EclipseRGBProps {
   color: string; // 색상을 커스텀할 수 있는 prop 추가
   onClick?: (e: React.MouseEvent<SVGElement>) => void;
   onDoubleClick?: (e: React.MouseEvent<SVGElement>) => void;
+  isOn: boolean;
 }
 
-export const EclipseRGB: React.FC<EclipseRGBProps> = ({ color, onClick, onDoubleClick }) => (
+export const EclipseRGB: React.FC<EclipseRGBProps> = ({
+  color,
+  onClick,
+  onDoubleClick,
+  isOn,
+}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="36"
     height="36"
     viewBox="0 0 36 36"
     fill="none"
-    onClick={onClick}
-    onDoubleClick={onDoubleClick}
+    onClick={isOn ? onClick : undefined}
+    onDoubleClick={isOn ? onDoubleClick : undefined}
   >
     <path
       d="M18 3.375C9.9225 3.375 3.375 9.9225 3.375 18C3.375 26.0775 9.9225 32.625 18 32.625C26.0775 32.625 32.625 26.0775 32.625 18C32.625 9.9225 26.0775 3.375 18 3.375Z"
       fill={color} // 기본 색상은 흰색이며, color prop으로 덮어쓰기 가능
+      opacity={isOn ? 1 : 0.6}
     />
   </svg>
 );
