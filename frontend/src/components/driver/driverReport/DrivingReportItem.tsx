@@ -55,19 +55,19 @@ const DrivingReportItem: React.FC<DrivingReportItemProps> = ({
   return (
     <>
       <DrivingReportList onClick={handleOpenModal}>
-        <CustomDriverText fontSize="12px" fontWeight={600}>
+        <CustomDriverText fontSize="14px" fontWeight={600}>
           {arrivalLocation}
         </CustomDriverText>
         <CustomInlineTextDiv>
-          <CustomDriverText color="#E0E0E0" fontSize="10px" fontWeight={500}>
+          <CustomDriverText color="#E0E0E0" fontSize="12px" fontWeight={500}>
             {departureTime} 출발
           </CustomDriverText>
           <CustomHRLine />
-          <CustomDriverText color="#E0E0E0" fontSize="10px" fontWeight={500}>
+          <CustomDriverText color="#E0E0E0" fontSize="12px" fontWeight={500}>
             {distance}
           </CustomDriverText>
           <CustomHRLine />
-          <CustomDriverText color="#E0E0E0" fontSize="10px" fontWeight={500}>
+          <CustomDriverText color="#E0E0E0" fontSize="12px" fontWeight={500}>
             {duration.replace(/:/g, "시간 ")}분 운행
           </CustomDriverText>
         </CustomInlineTextDiv>

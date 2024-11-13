@@ -4,7 +4,7 @@ import CarControlMenu from "./CarControlMenu";
 import CarLightControl from "./CarLightControl";
 import CarSoundControl from "./CarSoundControl";
 import CarAirControl from "./CarAirControl";
-import CarDrowsyControl from "./CarDrowsyControl";
+import CarEctControl from "./CarEctControl";
 
 import { useState } from "react";
 
@@ -19,8 +19,8 @@ const renderControlComponent = () => {
             return <CarSoundControl />
         case "ac":
             return <CarAirControl />
-        case "drowsy":
-            return <CarDrowsyControl />
+        case "ect":
+            return <CarEctControl />
         default:
             return <CarLightControl />
     }

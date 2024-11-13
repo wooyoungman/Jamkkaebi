@@ -53,7 +53,7 @@ const LocationIcon = () => {
           />
         </svg>
       </LocationIconWrapper>
-      <DriverText fontSize="11px" fontWeight={500}>
+      <DriverText fontSize="12px" fontWeight={500}>
         경로
       </DriverText>
     </LocationDiv>
