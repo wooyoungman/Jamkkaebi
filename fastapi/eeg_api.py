@@ -1,127 +1,58 @@
-# from fastapi import FastAPI, WebSocket
-# import serial
-# import numpy as np
-# import pandas as pd
-# import joblib
-# from unified_model import UnifiedModel  # UnifiedModel 가져오기
-# import asyncio
-
-# # FastAPI 앱 생성
-# app = FastAPI()
-
-# # 모델과 시리얼 포트 초기화 변수
-# model = None
-# ser = None
-
-# @app.on_event("startup")
-# async def startup_event():
-#     """애플리케이션 시작 시 실행할 초기화 코드"""
-#     global model, ser
-
-#     # 모델 로드
-#     model = joblib.load("unified_model2.pkl")
-
-#     # 시리얼 포트 초기화
-#     try:
-#         ser = serial.Serial('COM6', 115200)
-#     except serial.SerialException as e:
-#         print(f"Serial initialization failed: {e}")
-#         raise e
-
-# @app.on_event("shutdown")
-# async def shutdown_event():
-#     """애플리케이션 종료 시 실행할 정리 코드"""
-#     global ser
-#     if ser and ser.is_open:
-#         ser.close()
-
-# # WebSocket 엔드포인트
-# @app.websocket("/ws")
-# async def websocket_endpoint(websocket: WebSocket):
-#     """WebSocket 통신 처리"""
-#     await websocket.accept()
-#     global model, ser
-
-#     try:
-#         while True:
-#             # 시리얼 데이터 읽기
-#             line = ser.readline().decode('utf-8').strip()
-#             data_values = line.split(',')
-
-#             # 입력 데이터가 올바른 형식인지 확인
-#             if len(data_values) == 8:  # features 개수 확인
-#                 # 데이터를 NumPy 배열로 변환
-#                 data = np.array(data_values, dtype=float).reshape(1, -1)
-#                 data_df = pd.DataFrame(data, columns=[
-#                     'delta', 'theta', 'lowAlpha', 'highAlpha', 'lowBeta', 'highBeta', 'lowGamma', 'highGamma'
-#                 ])
-
-#                 # 모델 예측
-#                 predictions = model.predict(data_df)
-#                 response = {
-#                     "attention": round(predictions.iloc[0]['attention'], 2),
-#                     "meditation": round(predictions.iloc[0]['meditation'], 2),
-#                     "classification": "Awake" if predictions.iloc[0]['classification'] == 0 else "Sleep"
-#                 }
-
-#                 # WebSocket으로 예측 결과 전송
-#                 await websocket.send_json(response)
-
-#             await asyncio.sleep(0.5)  # 1초에 2번 전송
-#     except Exception as e:
-#         print(f"WebSocket Error: {e}")
 from fastapi import FastAPI, WebSocket
 from contextlib import asynccontextmanager
-import serial
 import numpy as np
 import pandas as pd
 import joblib
-from unified_model import UnifiedModel  # UnifiedModel 가져오기
 import asyncio
-
-# 모델과 시리얼 포트 초기화 변수
-model = None
-ser = None
+import socket
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Lifespan 핸들러: 앱의 시작과 종료 이벤트 처리"""
-    global model, ser
-
-    # 애플리케이션 시작 시 초기화 코드
-    print("Initializing application...")
-    model = joblib.load("./unified_model2.pkl")
-    ser = serial.Serial("COM6", 115200)
-
+    """FastAPI lifespan context manager"""
+    asyncio.create_task(start_tcp_server())
     yield
 
-    # 애플리케이션 종료 시 정리 코드
-    print("Shutting down application...")
-    if ser and ser.is_open:
-        ser.close()
 
-
-# FastAPI 앱 생성
 app = FastAPI(lifespan=lifespan)
+model = joblib.load("./unified_model2.pkl")
+
+# TCP 서버 설정
+TCP_IP = "127.0.0.1"
+TCP_PORT = 9000
+BUFFER_SIZE = 1024
+
+# WebSocket 클라이언트 저장
+websocket_clients = []
 
 
-# WebSocket 엔드포인트
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    """WebSocket 통신 처리"""
+    """WebSocket 클라이언트 통신"""
     await websocket.accept()
-    global model, ser
-
+    websocket_clients.append(websocket)
     try:
         while True:
-            # 시리얼 데이터 읽기
-            line = ser.readline().decode("utf-8").strip()
-            data_values = line.split(",")
+            await asyncio.sleep(1)  # WebSocket 연결 유지
+    except Exception as e:
+        print(f"WebSocket Error: {e}")
+    finally:
+        websocket_clients.remove(websocket)
 
-            # 입력 데이터가 올바른 형식인지 확인
-            if len(data_values) == 8:  # features 개수 확인
-                # 데이터를 NumPy 배열로 변환
+
+async def handle_tcp_connection(conn):
+    """TCP 연결에서 데이터 처리"""
+    try:
+        while True:
+            data = await asyncio.to_thread(conn.recv, BUFFER_SIZE)
+            if not data:
+                break
+            decoded_data = data.decode("utf-8").strip()
+            print(f"Received from TCP: {decoded_data}")
+
+            # 데이터 처리
+            data_values = decoded_data.split(",")
+            if len(data_values) == 8:
                 data = np.array(data_values, dtype=float).reshape(1, -1)
                 data_df = pd.DataFrame(
                     data,
@@ -136,22 +67,42 @@ async def websocket_endpoint(websocket: WebSocket):
                         "highGamma",
                     ],
                 )
-
-                # 모델 예측
                 predictions = model.predict(data_df)
                 response = {
-                    "attention": round(predictions.iloc[0]["attention"], 2),
-                    "meditation": round(predictions.iloc[0]["meditation"], 2),
-                    "classification": (
-                        "Awake"
-                        if predictions.iloc[0]["classification"] == 0
-                        else "Sleep"
-                    ),
+                    "input_data": data_values,
+                    "predictions": {
+                        "attention": predictions.iloc[0]["attention"],
+                        "meditation": predictions.iloc[0]["meditation"],
+                        "classification": (
+                            "Awake"
+                            if predictions.iloc[0]["classification"] == 0
+                            else "Drowsy"
+                        ),
+                    },
                 }
 
-                # WebSocket으로 예측 결과 전송
-                await websocket.send_json(response)
+                # WebSocket 클라이언트로 전송
+                for client in websocket_clients:
+                    try:
+                        print(f"Sending data to WebSocket client: {response}")
+                        await client.send_json(response)
+                    except Exception as e:
+                        print(f"Error sending data to WebSocket: {e}")
 
-            await asyncio.sleep(0.5)  # 500ms 대기 (1초에 2번 전송)
     except Exception as e:
-        print(f"WebSocket Error: {e}")
+        print(f"Error in TCP connection: {e}")
+    finally:
+        conn.close()
+
+
+async def start_tcp_server():
+    """TCP 서버 시작"""
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind((TCP_IP, TCP_PORT))
+    server_socket.listen(5)
+    print(f"TCP Server listening on {TCP_IP}:{TCP_PORT}")
+
+    while True:
+        conn, addr = await asyncio.to_thread(server_socket.accept)
+        print(f"Connection established with {addr}")
+        asyncio.create_task(handle_tcp_connection(conn))
