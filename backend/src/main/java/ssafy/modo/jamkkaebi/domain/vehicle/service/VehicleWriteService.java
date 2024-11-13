@@ -85,7 +85,8 @@ public class VehicleWriteService {
                 .build();
     }
 
-    private VehicleControlResponseDto sendCommand(Device device, VehicleControlRequestDto vehicleDto) throws JsonProcessingException {
+    private VehicleControlResponseDto sendCommand(Device device, VehicleControlRequestDto vehicleDto)
+            throws JsonProcessingException {
 
         // TODO: FastAPI 졸음 판단 결과에 따라 abnormal 값 변화시키기
         RabbitControlRequestDto requestDto = rabbitRequestBuilder(vehicleDto, Boolean.FALSE);
