@@ -1,4 +1,3 @@
-// 로그인 후 user에 대한 상태관리
 import { atom } from "jotai";
 import { User, Driver } from "@interfaces/manager";
 import { TMap } from "@interfaces/Tmap";

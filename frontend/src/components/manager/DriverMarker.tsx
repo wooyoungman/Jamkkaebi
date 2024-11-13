@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAtomValue } from "jotai";
-import { mapInstanceAtom } from "./MapContainer";
+import { mapInstanceAtom } from "@atoms/index";
 import { TMapMarker, TMapLatLng, TMapSize } from "@interfaces/Tmap";
 import circlechr from "@assets/circlechr.png";
 

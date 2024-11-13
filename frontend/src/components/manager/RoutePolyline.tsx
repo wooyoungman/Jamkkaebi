@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAtomValue } from "jotai";
-import { mapInstanceAtom } from "./MapContainer";
+import { mapInstanceAtom } from "@atoms/index";
 import { TMapPolyline } from "@interfaces/Tmap";
 
 interface RoutePolylineProps {

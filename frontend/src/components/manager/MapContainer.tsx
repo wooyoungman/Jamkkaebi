@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 import { mapInstanceAtom } from "@atoms/index";
 
 import {

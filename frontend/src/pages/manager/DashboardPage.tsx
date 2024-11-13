@@ -8,7 +8,7 @@ import DriverInfoModal from "@components/manager/DriverInfoModal";
 import AlertModal from "@components/manager/AlertModal";
 import { MapDriver } from "@/interfaces/manager";
 import { useAtom } from "jotai";
-import { mapInstanceAtom } from "@components/manager/MapContainer";
+import { mapInstanceAtom } from "@atoms/index";
 
 // 드라이버별 경로 색상 설정
 const ROUTE_COLORS = [
