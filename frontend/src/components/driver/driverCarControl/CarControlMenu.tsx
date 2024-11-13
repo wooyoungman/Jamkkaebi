@@ -4,7 +4,7 @@ import {
   CeilingLightSVG,
   SoundSVG,
   AirSVG,
-  AlarmSVG,
+  EtcSVG,
 } from "@/styles/driver/driverCar/DriverCarSVG";
 
 interface CarControlMenuProps {
@@ -44,9 +44,9 @@ const CarControlMenu: React.FC<CarControlMenuProps> = ({
           </CarMenuDivBody>
         </CarMenuDiv>
 
-        <CarMenuDiv onClick={() => setSelectedControl("drowsy")}>
+        <CarMenuDiv onClick={() => setSelectedControl("ect")}>
           <CarMenuDivBody>
-            <AlarmSVG />
+            <EtcSVG />
             <DriverText color="#E0E0E0" fontSize="18px" fontWeight={700}>
               기타
             </DriverText>

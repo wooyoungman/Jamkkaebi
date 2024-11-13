@@ -1,7 +1,12 @@
-const OffBulbSVG: React.FC<{ isOn: boolean }> = ({ isOn }) => {
-  const transitionStyle = {
-    transition: "opacity 0.5s ease, fill-opacity 0.5s ease", // 부드러운 트랜지션 효과
-  };
+const BulbSVG: React.FC<{
+  isOn: boolean;
+  power: number;
+  selectedRGB: string;
+}> = ({ isOn, power, selectedRGB }) => {
+  const isWhite =
+    selectedRGB.toLowerCase() === "#ffffff" ||
+    selectedRGB.toLowerCase() === "white";
+
   return (
     <svg
       width="271"
@@ -17,19 +22,22 @@ const OffBulbSVG: React.FC<{ isOn: boolean }> = ({ isOn }) => {
       >
         <path
           d="M93.3199 102.055C94.6471 93.9433 99.2802 87.6138 101.431 85.463C126.686 81.0385 170.743 86.7535 170.928 86.7535C175.647 92.8003 177.564 105.373 177.933 110.904C178.301 116.004 184.569 133.21 193.417 148.696C206.137 167.684 209.516 184.215 210.377 190.729C212.909 209.901 207.28 223.212 201.528 234.42C182.725 263.732 158.761 274.794 130.926 274.609C103.09 274.425 77.6508 252.856 68.0651 234.42C60.3965 219.672 59.5854 199.147 60.1384 190.729C60.4456 185.321 64.3782 169.344 77.6508 148.696C94.2416 122.887 91.6608 112.194 93.3199 102.055Z"
-          fill="white"
+          fill={isOn ? selectedRGB : "white"}
+          style={{ mixBlendMode: isWhite ? "normal" : "soft-light" }}
         />
       </g>
       <path
         d="M93.3542 101.018C94.6803 93.3667 99.3095 87.3964 101.458 85.3677C126.692 81.1943 170.712 86.5849 170.896 86.5849C175.611 92.2886 177.527 104.148 177.895 109.365C178.264 114.176 184.526 130.406 193.367 145.013C206.076 162.924 209.453 178.516 210.312 184.66C212.842 202.745 207.218 215.3 201.471 225.873C182.684 253.521 158.74 263.955 130.928 263.781C103.116 263.607 77.6984 243.262 68.1207 225.873C60.4586 211.961 59.6482 192.601 60.2008 184.66C60.5077 179.559 64.437 164.489 77.6984 145.013C94.2751 120.668 91.6965 110.582 93.3542 101.018Z"
-        fill="white"
-        fillOpacity={isOn ? "1" : "0.9"}
+        fill={isOn ? selectedRGB : "white"}
+        fillOpacity={isWhite ? "0.9" : "0.7"} // white가 아닐 때만 투명도 적용
+        style={{ mixBlendMode: isWhite ? "normal" : "soft-light" }}
       />
       <path
         d="M97.9961 59.7963C109.6 54.4975 168.355 54.8659 172.96 60.7172V33.0877C171.302 31.0615 166.882 29.9563 162.829 29.9563C148.647 29.7107 119.767 29.3669 111.81 29.9563C103.853 30.5457 99.531 32.2895 98.3645 33.0877C98.2417 42.0519 97.9961 59.9436 97.9961 59.7963Z"
         fill="url(#paint0_linear_453_816)"
       />
       <g style={{ mixBlendMode: "multiply", display: isOn ? "block" : "none" }}>
+        {/* <g style={{ mixBlendMode: "multiply", display: "block" }}> */}
         <path
           d="M97.9961 59.7963C109.6 54.4975 168.355 54.8659 172.96 60.7172V33.0877C171.302 31.0615 166.882 29.9563 162.829 29.9563C148.647 29.7107 119.767 29.3669 111.81 29.9563C103.853 30.5457 99.531 32.2895 98.3645 33.0877C98.2417 42.0519 97.9961 59.9436 97.9961 59.7963Z"
           fill="url(#pattern0_453_816)"
@@ -37,6 +45,7 @@ const OffBulbSVG: React.FC<{ isOn: boolean }> = ({ isOn }) => {
         />
       </g>
       <g style={{ mixBlendMode: "multiply", display: isOn ? "block" : "none" }}>
+        {/* <g style={{ mixBlendMode: "multiply", display: "none" }}> */}
         <path
           d="M97.9961 59.7963C109.6 54.4975 168.355 54.8659 172.96 60.7172V33.0877C171.302 31.0615 166.882 29.9563 162.829 29.9563C148.647 29.7107 119.767 29.3669 111.81 29.9563C103.853 30.5457 99.531 32.2895 98.3645 33.0877C98.2417 42.0519 97.9961 59.9436 97.9961 59.7963Z"
           fill="url(#pattern1_453_816)"
@@ -50,6 +59,12 @@ const OffBulbSVG: React.FC<{ isOn: boolean }> = ({ isOn }) => {
           display: isOn ? "block" : "none",
         }}
       >
+        {/* <g
+        style={{
+          mixBlendMode: "color-dodge",
+          display: "block",
+        }}
+      > */}
         <path
           d="M97.9961 59.7963C109.6 54.4975 168.355 54.8659 172.96 60.7172V33.0877C171.302 31.0615 166.882 29.9563 162.829 29.9563C148.647 29.7107 119.767 29.3669 111.81 29.9563C103.853 30.5457 99.531 32.2895 98.3645 33.0877C98.2417 42.0519 97.9961 59.9436 97.9961 59.7963Z"
           fill="url(#paint1_linear_453_816)"
@@ -116,7 +131,8 @@ const OffBulbSVG: React.FC<{ isOn: boolean }> = ({ isOn }) => {
             result="shape"
           />
           <feGaussianBlur
-            stdDeviation="29.9213"
+            // 변해야 할 지점
+            stdDeviation={isWhite ? 20 + power * 0.3 : 50 - power * 0.3}
             result="effect1_foregroundBlur_453_816"
           />
         </filter>
@@ -289,4 +305,4 @@ const OffBulbSVG: React.FC<{ isOn: boolean }> = ({ isOn }) => {
   );
 };
 
-export default OffBulbSVG;
+export default BulbSVG;

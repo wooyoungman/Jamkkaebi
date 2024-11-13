@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { GlassDiv } from "@/styles/driver/GlassmorphismStyle";
+import { CustomGlassDiv } from "../driverReport/DriverReportCSS";
 
 export const CarRightDiv = styled.div`
   width: 65%;
@@ -181,4 +182,62 @@ export const ToggleCircle = styled.div.withConfig({
 export const ColorPickerContainer = styled.div`
   position: absolute;
   z-index: 100;
-`
+`;
+
+export const CarEctContainer = styled(GlassDiv)`
+  width: 250px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  padding: 40px 20px 30px 20px;
+  box-sizing: border-box;
+  gap: 25px;
+`;
+
+export const CarEctIconContainer = styled(GlassDiv)`
+  display: flex;
+  width: 70px;
+  height: 70px;
+  padding: 15px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  box-sizing: border-box;
+`;
+
+export const CarWindowButtonContainer = styled.div`
+  display: flex;
+  gap: 15px;
+`;
+
+export const CarWindowButton = styled(CustomGlassDiv)`
+  width: 85px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5%;
+
+  cursor: pointer;
+  // 호버 스타일 추가
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 0.2) 100%
+    );
+    transform: scale(1.05); // 살짝 확대되는 효과
+    transition:
+      background 0.3s ease,
+      transform 0.3s ease;
+  }
+`;
+
+export const CarVibrationControlContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;

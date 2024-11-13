@@ -17,8 +17,9 @@ import {
   ToggleEclipseSVG,
   EclipseRGB,
 } from "@/styles/driver/driverCar/DriverCarSVG";
-import OffBulbSVG from "@/styles/driver/driverCar/OffBulbSVG";
+import BulbSVG from "@/styles/driver/driverCar/BulbSVG";
 import CarPowerSlider from "./CarPowerSlider";
+import OnBulbSVGV2 from "@/styles/driver/driverCar/OnBulbV2.svg?react";
 
 const CustomDriverText = styled(DriverText)`
   text-align: start;
@@ -33,6 +34,7 @@ const CarLightControl: React.FC = () => {
   const [selectedRGB, setSelectedRGB] = useState<string>("#ffffff"); // 선택된 RGB 저장 변수
 
   const pickerRef = useRef<HTMLDivElement>(null);
+
   const handleChange = (value: number) => {
     setPower(value);
   };
@@ -41,8 +43,13 @@ const CarLightControl: React.FC = () => {
     setIsOn((prev) => !prev);
   };
 
-  // EclipseRGB 클릭 핸들러
-  const handleEclipseClick = (event: React.MouseEvent, color: string) => {
+  // EclipseRGB 한 번 클릭 핸들러
+  const handleEclipseClick = (color: string) => {
+    setSelectedRGB(color); // 선택된 RGB 값만 저장
+  };
+
+  // EclipseRGB 더블 클릭 핸들러
+  const handleEclipseDoubleClick = (event: React.MouseEvent, color: string) => {
     setInitialColor(color); // 피커 초기 색상 설정
     setShowPicker(true);
     setPickerPosition({ x: event.clientX, y: event.clientY });
@@ -88,29 +95,34 @@ const CarLightControl: React.FC = () => {
           </CarPowerWrapper>
         </CarPowerDiv>
         <CarControlUIDiv>
-          <OffBulbSVG isOn={isOn} />
+          <BulbSVG isOn={isOn} power={power} selectedRGB={selectedRGB} />
+          {/* <OnBulbSVGV2 /> */}
         </CarControlUIDiv>
       </CarRightUpperBody>
 
       <CarRightLowerBody>
         <SliderRGBContainer>
           <EclipseRGB
-            color="red"
-            onClick={(e) => handleEclipseClick(e, "red")}
+            color="#FF0000"
+            onClick={() => handleEclipseClick("#FF0000")}
+            onDoubleClick={(e) => handleEclipseDoubleClick(e, "#FF0000")}
           />
           <EclipseRGB
-            color="blue"
-            onClick={(e) => handleEclipseClick(e, "blue")}
+            color="#0000FF"
+            onClick={() => handleEclipseClick("#0000FF")}
+            onDoubleClick={(e) => handleEclipseDoubleClick(e, "#0000FF")}
           />
           <EclipseRGB
-            color="green"
-            onClick={(e) => handleEclipseClick(e, "green")}
+            color="#00FF00"
+            onClick={() => handleEclipseClick("#00FF00")}
+            onDoubleClick={(e) => handleEclipseDoubleClick(e, "#00FF00")}
           />
         </SliderRGBContainer>
         <CarPowerSlider
           power={power}
           handleChange={(e) => handleChange(e.target.valueAsNumber)}
           powerType="light"
+          isOn={isOn}
         />
       </CarRightLowerBody>
 
