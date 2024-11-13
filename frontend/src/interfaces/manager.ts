@@ -22,19 +22,11 @@ export interface DriverResponse {
   address: string | null;
   role: "DRIVER";
   vehicleNumber: string;
-  status: "ONROUTE" | "REST" | "IDLE";
+  status: "ON_ROUTE" | "REST" | "IDLE";
   profileImage: string;
 }
 
-// API 응답 구조
-export interface ApiResponse<T> {
-  status: number;
-  message: string;
-  timestamp: string;
-  data: T;
-}
-
-export interface ApiDriverList {
+export interface DriverList {
   count: number;
   driversType: "UNMANAGED" | "MANAGED";
   drivers: DriverResponse[];
@@ -49,16 +41,10 @@ export const convertToDriver = (res: DriverResponse): Driver => {
     phoneNumber: res.phoneNumber,
     address: res.address,
     vehicleNumber: res.vehicleNumber,
-    status: res.status === "ONROUTE" ? "ON_ROUTE" : res.status,
+    status: res.status,
     profileImage: res.profileImage,
   };
 };
-
-export interface DriverList {
-  count: number;
-  driversType: "UNMANAGED" | "MANAGED";
-  drivers: Driver[];
-}
 
 export interface Location {
   lat: number;
@@ -67,7 +53,7 @@ export interface Location {
 
 export interface DrowsyEvent {
   id: number;
-  username: string; // 아이디
+  username: string;
   profileImage: string;
   driverName: string;
   age: number;
@@ -76,12 +62,12 @@ export interface DrowsyEvent {
   drowsyCount: number;
   drowsyTime: number;
   fatigueLevel: "양호" | "보통" | "강함";
-  route: MapDriver["route"]; // MapDriver의 route 타입을 재사용
+  route: MapDriver["route"];
 }
 
 export interface MapDriver {
   id: number;
-  username: string; // 아이디
+  username: string;
   name: string;
   vehicleNumber: string;
   status: string;
@@ -92,12 +78,6 @@ export interface MapDriver {
   lastUpdate: string;
 }
 
-export interface RegisterRequest {
-  username: string; // 아이디
-  password: string; // 비밀번호
-  name: string; // 사용자 이름
-}
-
 export interface LoginRequest {
   username: string;
   password: string;
@@ -105,7 +85,7 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   memberId: number;
-  grantType: string; // "Bearer"
+  grantType: string;
   accessToken: string;
   refreshToken: string;
 }

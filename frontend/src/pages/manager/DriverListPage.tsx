@@ -7,6 +7,7 @@ import {
   sortByAtom,
   driverTypeAtom,
 } from "@atoms/index";
+import { Driver } from "@interfaces/manager";
 import {
   Container,
   Header,
@@ -30,7 +31,7 @@ import {
   PaginationButton,
 } from "@styles/manager/DriverListPageStyle";
 
-const ITEMS_PER_PAGE = 8; // 한 페이지당 8명 표시
+const ITEMS_PER_PAGE = 8;
 
 const DriverList = () => {
   const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
@@ -130,7 +131,7 @@ const DriverList = () => {
             </TR>
           </thead>
           <tbody>
-            {paginatedDrivers.map((driver) => (
+            {paginatedDrivers.map((driver: Driver) => (
               <TR
                 key={driver.memberId}
                 onClick={() => handleRowClick(driver.memberId)}
@@ -148,7 +149,11 @@ const DriverList = () => {
                 <TD>{driver.address}</TD>
                 <TD>
                   <StatusBadge status={driver.status}>
-                    {STATUS_DISPLAY[driver.status]}
+                    {
+                      STATUS_DISPLAY[
+                        driver.status as keyof typeof STATUS_DISPLAY
+                      ]
+                    }
                   </StatusBadge>
                 </TD>
               </TR>

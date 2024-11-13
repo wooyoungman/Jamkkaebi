@@ -1,18 +1,12 @@
 import { atom, useAtomValue } from "jotai";
 import { useMemo } from "react";
 import { useDriverList } from "@queries/index";
-import {
-  DriverList,
-  DriverResponse,
-  convertToDriver,
-} from "@interfaces/manager";
+import { Driver, convertToDriver } from "@interfaces/manager";
 
-// Atoms
 export const searchQueryAtom = atom("");
 export const sortByAtom = atom<"latest" | "name">("latest");
 export const driverTypeAtom = atom<"managed" | "unmanaged">("unmanaged");
 
-// Custom Hook
 export const useDriverListWithFilters = () => {
   const searchQuery = useAtomValue(searchQueryAtom);
   const sortBy = useAtomValue(sortByAtom);
@@ -21,16 +15,14 @@ export const useDriverListWithFilters = () => {
   const { data, isLoading, isError } = useDriverList(driverType);
 
   const filteredAndSortedDrivers = useMemo(() => {
-    // drivers가 DriverResponse[] 타입인지 확인
     if (!data?.drivers) return [];
 
-    let filtered = [...data.drivers] as DriverResponse[];
+    let filtered = data.drivers.map(convertToDriver);
 
-    // 검색 적용
     if (searchQuery) {
       filtered = filtered.filter(
-        (driver: DriverResponse) =>
-          driver.driverName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (driver: Driver) =>
+          driver.memberName.toLowerCase().includes(searchQuery.toLowerCase()) ||
           driver.vehicleNumber
             .toLowerCase()
             .includes(searchQuery.toLowerCase()) ||
@@ -38,16 +30,14 @@ export const useDriverListWithFilters = () => {
       );
     }
 
-    // 정렬 적용
-    filtered.sort((a: DriverResponse, b: DriverResponse) => {
+    filtered.sort((a: Driver, b: Driver) => {
       if (sortBy === "latest") {
-        return b.driverId - a.driverId;
+        return b.memberId - a.memberId;
       }
-      return a.driverName.localeCompare(b.driverName);
+      return a.memberName.localeCompare(b.memberName);
     });
 
-    // 필터링된 결과를 Driver 타입으로 변환
-    return filtered.map(convertToDriver);
+    return filtered;
   }, [data?.drivers, searchQuery, sortBy]);
 
   return {
