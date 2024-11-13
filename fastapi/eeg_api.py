@@ -18,7 +18,7 @@ app = FastAPI(lifespan=lifespan)
 model = joblib.load("./unified_model2.pkl")
 
 # TCP 서버 설정
-TCP_IP = "127.0.0.1"
+TCP_IP = "0.0.0.0"
 TCP_PORT = 9000
 BUFFER_SIZE = 1024
 
