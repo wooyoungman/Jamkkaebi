@@ -1,5 +1,6 @@
 package ssafy.modo.jamkkaebi.domain.vehicle.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -27,7 +28,8 @@ public class VehicleController {
     @PatchMapping(path = "/control/command/{vehicleId}",
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<VehicleControlResponseDto> controlCommand(
-            @PathVariable Long vehicleId, @Valid @RequestBody VehicleControlRequestDto dto) {
+            @PathVariable Long vehicleId, @Valid @RequestBody VehicleControlRequestDto dto)
+            throws JsonProcessingException {
         return ApiResponse.success(vehicleWriteService.controlByCommand(vehicleId, dto));
     }
 }

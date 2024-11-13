@@ -1,22 +1,34 @@
 package ssafy.modo.jamkkaebi.domain.vehicle.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.modo.jamkkaebi.common.rabbitmq.service.RoutingKeyService;
 import ssafy.modo.jamkkaebi.common.security.util.SecurityUtil;
+import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceInfoResponseDto;
+import ssafy.modo.jamkkaebi.domain.device.entity.Device;
+import ssafy.modo.jamkkaebi.domain.device.exception.DeviceNotFoundException;
+import ssafy.modo.jamkkaebi.domain.device.repository.DeviceRepository;
 import ssafy.modo.jamkkaebi.domain.member.entity.Member;
 import ssafy.modo.jamkkaebi.domain.member.entity.MemberRole;
 import ssafy.modo.jamkkaebi.domain.member.exception.UserNotFoundException;
 import ssafy.modo.jamkkaebi.domain.member.repository.MemberRepository;
+import ssafy.modo.jamkkaebi.domain.vehicle.dto.request.RabbitControlRequestDto;
 import ssafy.modo.jamkkaebi.domain.vehicle.dto.request.VehicleControlRequestDto;
 import ssafy.modo.jamkkaebi.domain.vehicle.dto.request.VehicleCreateRequestDto;
 import ssafy.modo.jamkkaebi.domain.vehicle.dto.response.VehicleControlResponseDto;
 import ssafy.modo.jamkkaebi.domain.vehicle.dto.response.VehicleCreateResponseDto;
+import ssafy.modo.jamkkaebi.domain.vehicle.dto.response.VehicleInfo;
 import ssafy.modo.jamkkaebi.domain.vehicle.entity.Vehicle;
 import ssafy.modo.jamkkaebi.domain.vehicle.exception.DuplicatedVehicleException;
 import ssafy.modo.jamkkaebi.domain.vehicle.exception.UnauthorizedControlException;
 import ssafy.modo.jamkkaebi.domain.vehicle.repository.VehicleRepository;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -25,6 +37,10 @@ public class VehicleWriteService {
     private final VehicleRepository vehicleRepository;
     private final SecurityUtil securityUtil;
     private final MemberRepository memberRepository;
+    private final DeviceRepository deviceRepository;
+    private final RabbitTemplate rabbitTemplate;
+    private final RoutingKeyService routingKeyService;
+    private final ObjectMapper objectMapper;
 
     public VehicleCreateResponseDto registerVehicle(VehicleCreateRequestDto dto) {
 
@@ -41,7 +57,8 @@ public class VehicleWriteService {
 
     }
 
-    public VehicleControlResponseDto controlByCommand(Long vehicleId, VehicleControlRequestDto dto) {
+    public VehicleControlResponseDto controlByCommand(Long vehicleId, VehicleControlRequestDto dto)
+            throws JsonProcessingException {
 
         Member member = memberRepository.findById(securityUtil.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
@@ -57,20 +74,45 @@ public class VehicleWriteService {
         }
 
         // TODO: 차량의 연결 상태 확인
-        // TODO: 조작 응답 확인
         // TODO: 매니저일 경우 조작 기록 저장
+        return sendCommand(getDevice(vehicleId), dto);
+    }
 
-        return VehicleControlResponseDto.builder()
-                .target(dto.getTarget())
-                .control(dto.getControl())
-                .red(dto.getRed())
-                .green(dto.getGreen())
-                .blue(dto.getBlue())
-                .brightness(dto.getBrightness())
+    private Device getDevice(Long vehicleId) {
+        return deviceRepository.findByVehicleId(vehicleId).orElseThrow(DeviceNotFoundException::new);
+    }
+
+    private RabbitControlRequestDto rabbitRequestBuilder(VehicleControlRequestDto dto, Boolean abnormal) {
+        return RabbitControlRequestDto.builder()
+                .dto(dto)
+                .abnormal(abnormal)
                 .build();
     }
 
-    private boolean sendCommand(VehicleControlRequestDto dto) {
-        return true;
+    private VehicleControlResponseDto sendCommand(Device device, VehicleControlRequestDto vehicleDto)
+            throws JsonProcessingException {
+
+        // TODO: FastAPI 졸음 판단 결과에 따라 abnormal 값 변화시키기
+        RabbitControlRequestDto requestDto = rabbitRequestBuilder(vehicleDto, Boolean.FALSE);
+
+        String routingKey = routingKeyService.routingKeyBuilder(device.getUuid());
+        String message = objectMapper.writeValueAsString(requestDto);
+        rabbitTemplate.convertAndSend("amq.topic", routingKey, message);
+
+        return VehicleControlResponseDto.builder()
+                .target(vehicleDto.getTarget())
+                .control(vehicleDto.getControl())
+                .red(vehicleDto.getRed())
+                .green(vehicleDto.getGreen())
+                .blue(vehicleDto.getBlue())
+                .brightness(vehicleDto.getBrightness())
+                .deviceInfo(DeviceInfoResponseDto.builder()
+                        .uuid(device.getUuid())
+                        .vehicleInfo(VehicleInfo.builder()
+                                .vehicleId(device.getVehicle().getId())
+                                .vehicleNumber(device.getVehicle().getVehicleNumber())
+                                .build())
+                        .build())
+                .build();
     }
 }
