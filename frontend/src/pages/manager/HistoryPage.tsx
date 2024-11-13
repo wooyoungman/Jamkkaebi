@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import styled from "styled-components";
-import { mapInstanceAtom } from "@components/manager/MapContainer";
-import { dummyDrowsyEvents } from "@interfaces/drowsyData";
 import { DrowsyEvent } from "@/interfaces/manager";
 import DriverDetailCard from "@components/manager/DriverDetailCard";
 import MapContainer from "@components/manager/MapContainer";

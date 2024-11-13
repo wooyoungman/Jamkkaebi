@@ -58,8 +58,8 @@ const DriverList = () => {
     nav(`/manager/report/${driverId}`);
   };
 
-  if (isLoading) return <Container>Loading...</Container>;
-  if (isError) return <Container>Error loading drivers</Container>;
+  if (isLoading) return <Container>로딩중...</Container>;
+  if (isError) return <Container>운전자 로딩 에러</Container>;
 
   return (
     <Container>
