@@ -8,4 +8,8 @@ public class RoutingKeyService {
     public String controlRoutingKeyBuilder(String uuid) {
         return "device." + uuid + ".control";
     }
+
+    public String statusRoutingKeyBuilder(String uuid) {
+        return "device." + uuid + ".status";
+    }
 }
