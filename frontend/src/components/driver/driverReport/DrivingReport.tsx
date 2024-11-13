@@ -23,7 +23,7 @@ const DrivingReport: React.FC = () => {
     <>
       {Object.entries(groupedData).map(([date, reports]) => (
         <DateReportDiv key={date}>
-          <CustomDriverText fontSize="12px" fontWeight={600}>
+          <CustomDriverText fontSize="14px" fontWeight={600}>
             {date.replace(/-/g, ".")}
           </CustomDriverText>
           {reports.map((report) => (
