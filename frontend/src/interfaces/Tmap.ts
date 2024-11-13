@@ -29,7 +29,6 @@ export interface TMapLatLng {
 }
 
 export interface TMapMarker {
-  // 메서드
   setMap: (map: TMap | null) => void;
   getPosition: () => TMapLatLng;
   setPosition: (latLng: TMapLatLng) => void;
