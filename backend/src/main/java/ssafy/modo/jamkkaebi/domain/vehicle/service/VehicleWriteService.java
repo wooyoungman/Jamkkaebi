@@ -1,13 +1,11 @@
 package ssafy.modo.jamkkaebi.domain.vehicle.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssafy.modo.jamkkaebi.common.rabbitmq.service.RoutingKeyService;
+import ssafy.modo.jamkkaebi.common.rabbitmq.service.RabbitSendService;
 import ssafy.modo.jamkkaebi.common.security.util.SecurityUtil;
 import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceInfoResponseDto;
 import ssafy.modo.jamkkaebi.domain.device.entity.Device;
@@ -38,9 +36,7 @@ public class VehicleWriteService {
     private final SecurityUtil securityUtil;
     private final MemberRepository memberRepository;
     private final DeviceRepository deviceRepository;
-    private final RabbitTemplate rabbitTemplate;
-    private final RoutingKeyService routingKeyService;
-    private final ObjectMapper objectMapper;
+    private final RabbitSendService rabbitSendService;
 
     public VehicleCreateResponseDto registerVehicle(VehicleCreateRequestDto dto) {
 
@@ -89,15 +85,11 @@ public class VehicleWriteService {
                 .build();
     }
 
-    private VehicleControlResponseDto sendCommand(Device device, VehicleControlRequestDto vehicleDto)
-            throws JsonProcessingException {
+    private VehicleControlResponseDto sendCommand(Device device, VehicleControlRequestDto vehicleDto) throws JsonProcessingException {
 
         // TODO: FastAPI 졸음 판단 결과에 따라 abnormal 값 변화시키기
         RabbitControlRequestDto requestDto = rabbitRequestBuilder(vehicleDto, Boolean.FALSE);
-
-        String routingKey = routingKeyService.routingKeyBuilder(device.getUuid());
-        String message = objectMapper.writeValueAsString(requestDto);
-        rabbitTemplate.convertAndSend("amq.topic", routingKey, message);
+        rabbitSendService.sendCommandToDevice(device.getUuid(), requestDto);
 
         return VehicleControlResponseDto.builder()
                 .target(vehicleDto.getTarget())

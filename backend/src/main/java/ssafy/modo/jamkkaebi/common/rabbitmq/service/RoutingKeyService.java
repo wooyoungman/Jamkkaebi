@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoutingKeyService {
 
-    public String routingKeyBuilder(String uuid) {
+    public String controlRoutingKeyBuilder(String uuid) {
         return "device." + uuid + ".control";
     }
 }
