@@ -22,7 +22,7 @@ public class VehicleControlRequestDto {
     private ControlType target = ControlType.LIGHT;
     @NotNull
     @Builder.Default
-    private Integer control = 0;
+    private Integer control = 1;
     @Nullable
     @Min(0)
     @Max(255)
