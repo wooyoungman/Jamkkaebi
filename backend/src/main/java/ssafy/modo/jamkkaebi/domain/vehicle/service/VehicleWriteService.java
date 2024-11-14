@@ -71,7 +71,13 @@ public class VehicleWriteService {
 
         // TODO: 차량의 연결 상태 확인
         // TODO: 매니저일 경우 조작 기록 저장
-        return sendCommand(getDevice(vehicleId), dto);
+        return sendCommand(getDevice(vehicleId), dto, Boolean.FALSE);
+    }
+
+    public VehicleControlResponseDto sendWakeCommand(Long vehicleId) throws JsonProcessingException {
+
+        VehicleControlRequestDto dto = VehicleControlRequestDto.builder().build();
+        return sendCommand(getDevice(vehicleId), dto, Boolean.TRUE);
     }
 
     private Device getDevice(Long vehicleId) {
@@ -85,11 +91,10 @@ public class VehicleWriteService {
                 .build();
     }
 
-    private VehicleControlResponseDto sendCommand(Device device, VehicleControlRequestDto vehicleDto)
-            throws JsonProcessingException {
+    private VehicleControlResponseDto sendCommand(
+            Device device, VehicleControlRequestDto vehicleDto, Boolean abnormal) throws JsonProcessingException {
 
-        // TODO: FastAPI 졸음 판단 결과에 따라 abnormal 값 변화시키기
-        RabbitControlRequestDto requestDto = rabbitRequestBuilder(vehicleDto, Boolean.FALSE);
+        RabbitControlRequestDto requestDto = rabbitRequestBuilder(vehicleDto, abnormal);
         rabbitSendService.sendCommandToDevice(device.getUuid(), requestDto);
 
         return VehicleControlResponseDto.builder()
