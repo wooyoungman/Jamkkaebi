@@ -34,7 +34,7 @@ async def handle_tcp_connection(reader, writer):
             if not data:
                 break
             decoded_data = data.decode("utf-8").strip()
-            print(f"Received from TCP: {decoded_data}")
+            print(f"Received from TCP: {decoded_data}", flush=True)
 
             data_values = decoded_data.split(",")
             if len(data_values) == 8:
