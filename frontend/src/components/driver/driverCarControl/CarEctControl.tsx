@@ -16,10 +16,16 @@ import {
   VibrationSVG,
 } from "@/styles/driver/driverCar/DriverCarSVG";
 import { DriverText } from "../driverMain/DriverMainCSS";
-import { useState } from "react";
+
 import styled from "styled-components";
 import { CarEctContainer } from "./DriverCarCSS";
 import CarPowerSlider from "./CarPowerSlider";
+
+import { useAtom } from "jotai";
+import {
+  vibrationOnOffAtom,
+  vibrationPowerAtom,
+} from "@/atoms/driver/carControl";
 
 const CustomCarRightBody = styled(CarRightBody)`
   display: flex;
@@ -29,8 +35,8 @@ const CustomCarRightBody = styled(CarRightBody)`
 `;
 
 const CarEctControl: React.FC = () => {
-  const [power, setPower] = useState(50);
-  const [isOn, setIsOn] = useState(false);
+  const [power, setPower] = useAtom(vibrationPowerAtom);
+  const [isOn, setIsOn] = useAtom(vibrationOnOffAtom);
 
   const togglePower = () => {
     setIsOn((prev) => !prev);

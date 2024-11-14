@@ -13,7 +13,9 @@ import CarPowerSlider from "./CarPowerSlider";
 import carSeatImg from "@/assets/carSeatImg.png";
 
 import styled, { keyframes, css } from "styled-components";
-import { useState } from "react";
+
+import { useAtom } from "jotai";
+import { motorOnOffAtom, motorPowerAtom } from "@/atoms/driver/carControl";
 
 // 자연스럽게 흐르는 바람 애니메이션 keyframes 정의
 const flowAir = keyframes`
@@ -57,8 +59,8 @@ const CustomDriverText = styled(DriverText)`
 `;
 
 const CarAirControl: React.FC = () => {
-  const [power, setPower] = useState(50);
-  const [isOn, setIsOn] = useState(false);
+  const [power, setPower] = useAtom(motorPowerAtom);
+  const [isOn, setIsOn] = useAtom(motorOnOffAtom);
 
   const togglePower = () => {
     setIsOn((prev) => !prev);

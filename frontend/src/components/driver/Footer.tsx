@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   CommonButton,
   IconSize,
@@ -26,18 +27,19 @@ const Menu = styled.div`
   width: 65%;
 `;
 
-// 아이콘 컴포넌트와 경로를 함께 관리하는 배열
-const iconComponents = [
-  { component: HomeSvg, path: "/driver" },
-  { component: LocationSvg, path: "/driver/navigation" },
-  { component: CarSvg, path: "/driver/car-control" },
-  { component: PhoneSvg, path: null },
-  { component: ReportSvg, path: "/driver/report" },
-];
-
 const Footer: React.FC = () => {
   const navigate = useNavigate();
+  const { vehicle_id } = useParams<{ vehicle_id: string }>(); 
   const [isPhoneModalOpen, setIsPhoneModalOpen] = useState<boolean>(false);
+
+  // 아이콘과 실제 경로를 포함한 배열
+  const iconComponents = [
+    { component: HomeSvg, path: `/driver/${vehicle_id}` },
+    { component: LocationSvg, path: `/driver/${vehicle_id}/navigation` },
+    { component: CarSvg, path: `/driver/${vehicle_id}/car-control` },
+    { component: PhoneSvg, path: null },
+    { component: ReportSvg, path: `/driver/${vehicle_id}/report` },
+  ];
 
   const handleIconClick = (path: string | null) => {
     if (path) {
