@@ -36,4 +36,8 @@ public class DeviceReadService {
                 .vehicleInfo(vehicleInfo)
                 .build();
     }
+
+    public Device getDevice(Long vehicleId) {
+        return deviceRepository.findByVehicleId(vehicleId).orElseThrow(DeviceNotFoundException::new);
+    }
 }
