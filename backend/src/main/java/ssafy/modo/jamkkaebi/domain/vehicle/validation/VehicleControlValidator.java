@@ -16,7 +16,7 @@ public class VehicleControlValidator implements ConstraintValidator<ValidControl
         int control = dto.getControl();
         return switch (dto.getTarget()) {
             case VIBRATION, MOTOR -> control == 0 || control == 1;
-            case LIGHT -> 0 <= control && control <= 2;
+            case LIGHT -> 0 <= control && control <= 3;
             case WINDOW -> -1 <= control && control <= 1;
         };
     }
