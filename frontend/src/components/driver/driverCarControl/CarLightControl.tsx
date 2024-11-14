@@ -19,7 +19,8 @@ import {
 } from "@/styles/driver/driverCar/DriverCarSVG";
 import BulbSVG from "@/styles/driver/driverCar/BulbSVG";
 import CarPowerSlider from "./CarPowerSlider";
-import OffBulbSVG from "@/styles/driver/driverCar/OffBulb.svg?react";
+// import OffBulbSVG from "@/styles/driver/driverCar/OffBulb.svg?react";
+import OffBulbSVG from "@/styles/driver/driverCar/OffBulbSVG";
 // import OffBulbSVG from "@/styles/driver/driverCar/OffBulbNoTailV1.svg?react";
 
 const CustomDriverText = styled(DriverText)`
