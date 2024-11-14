@@ -1,6 +1,7 @@
 package ssafy.modo.jamkkaebi.domain.driver.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,7 @@ public class DriverController {
 
     private final VehicleReadService vehicleReadService;
 
-    @GetMapping(path = "/vehicle/info")
+    @GetMapping(path = "/vehicle/info", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<VehicleInfo> getVehicleInfo() {
         return ApiResponse.success(vehicleReadService.getVehicleInfo());
     }
