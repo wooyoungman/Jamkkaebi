@@ -10,6 +10,7 @@ import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
+import ssafy.modo.jamkkaebi.common.util.HealthCheckUtil;
 
 @Slf4j
 @Service
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class RabbitReceiveService {
 
     private final Binding binding;
+    private final HealthCheckUtil healthCheckUtil;
 
     @RabbitListener(queues = {"#{anonymousQueue.name}"})
     public void logMessage(String message) {
@@ -28,14 +30,22 @@ public class RabbitReceiveService {
             exchange = @Exchange(value = "amq.topic", type = ExchangeTypes.TOPIC),
             key = "device.#.status"
     ))
-    public boolean deviceHealthCheck(Message message) {
-        String routingKey = message.getMessageProperties().getReceivedRoutingKey();
-        return extractUuidFromRoutingKey(routingKey) != null;
+    public void deviceHealthCheck(Message message) {
+
+        String payload = new String(message.getBody());
+
+        if (payload.equals("HEALTHY")) {
+            String routingKey = message.getMessageProperties().getReceivedRoutingKey();
+            String uuid = extractUuidFromRoutingKey(routingKey);
+            log.debug("Received {} from device {}", payload, uuid);
+
+            healthCheckUtil.completeFuture(uuid, true);
+        }
     }
 
     private String extractUuidFromRoutingKey(String routingKey) {
         String[] parts = routingKey.split("\\.");
-        log.info("Routing key parts: {}", (Object) parts);
+        log.debug("Routing key parts: {}", (Object) parts);
         return parts.length > 1 ? parts[1] : null;
     }
 }
