@@ -10,6 +10,8 @@ import ssafy.modo.jamkkaebi.domain.vehicle.dto.request.VehicleControlRequestDto;
 import ssafy.modo.jamkkaebi.domain.vehicle.dto.request.VehicleCreateRequestDto;
 import ssafy.modo.jamkkaebi.domain.vehicle.dto.response.VehicleControlResponseDto;
 import ssafy.modo.jamkkaebi.domain.vehicle.dto.response.VehicleCreateResponseDto;
+import ssafy.modo.jamkkaebi.domain.vehicle.dto.response.VehicleStatusResponseDto;
+import ssafy.modo.jamkkaebi.domain.vehicle.service.VehicleReadService;
 import ssafy.modo.jamkkaebi.domain.vehicle.service.VehicleWriteService;
 
 @RestController
@@ -18,6 +20,7 @@ import ssafy.modo.jamkkaebi.domain.vehicle.service.VehicleWriteService;
 public class VehicleController {
 
     private final VehicleWriteService vehicleWriteService;
+    private final VehicleReadService vehicleReadService;
 
     @PostMapping(path = "/register",
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,5 +46,10 @@ public class VehicleController {
     public ApiResponse<VehicleControlResponseDto> awakeCommand(@PathVariable Long vehicleId)
             throws JsonProcessingException {
         return ApiResponse.success(vehicleWriteService.sendAWakeCommand(vehicleId));
+    }
+
+    @GetMapping(path = "/status/{vehicleId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<VehicleStatusResponseDto> getVehicleStatus(@PathVariable Long vehicleId) {
+        return ApiResponse.success(vehicleReadService.getVehicleStatus(vehicleId));
     }
 }

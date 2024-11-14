@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ssafy.modo.jamkkaebi.common.ApiResponse;
 import ssafy.modo.jamkkaebi.domain.device.dto.request.DeviceConnectRequestDto;
 import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceInfoResponseDto;
+import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceStatusResponseDto;
 import ssafy.modo.jamkkaebi.domain.device.service.DeviceReadService;
 import ssafy.modo.jamkkaebi.domain.device.service.DeviceWriteService;
 
@@ -47,5 +48,10 @@ public class DeviceController {
 
         JSONObject requestBody = objectMapper.readValue(request, JSONObject.class);
         return ApiResponse.success(deviceWriteService.disconnectDevice((String) requestBody.get("uuid")));
+    }
+
+    @GetMapping(path = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<DeviceStatusResponseDto> getDeviceStatus(@Valid @RequestParam("device_id") String uuid) {
+        return ApiResponse.success(deviceReadService.getDeviceStatus(uuid));
     }
 }

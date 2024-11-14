@@ -9,8 +9,7 @@ import ssafy.modo.jamkkaebi.common.rabbitmq.service.RabbitSendService;
 import ssafy.modo.jamkkaebi.common.security.util.SecurityUtil;
 import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceInfoResponseDto;
 import ssafy.modo.jamkkaebi.domain.device.entity.Device;
-import ssafy.modo.jamkkaebi.domain.device.exception.DeviceNotFoundException;
-import ssafy.modo.jamkkaebi.domain.device.repository.DeviceRepository;
+import ssafy.modo.jamkkaebi.domain.device.service.DeviceReadService;
 import ssafy.modo.jamkkaebi.domain.member.entity.Member;
 import ssafy.modo.jamkkaebi.domain.member.entity.MemberRole;
 import ssafy.modo.jamkkaebi.domain.member.exception.UserNotFoundException;
@@ -36,7 +35,7 @@ public class VehicleWriteService {
     private final VehicleRepository vehicleRepository;
     private final SecurityUtil securityUtil;
     private final MemberRepository memberRepository;
-    private final DeviceRepository deviceRepository;
+    private final DeviceReadService deviceReadService;
     private final RabbitSendService rabbitSendService;
 
     public VehicleCreateResponseDto registerVehicle(VehicleCreateRequestDto dto) {
@@ -72,13 +71,13 @@ public class VehicleWriteService {
 
         // TODO: 차량의 연결 상태 확인
         // TODO: 매니저일 경우 조작 기록 저장
-        return sendCommand(getDevice(vehicleId), dto, Boolean.FALSE);
+        return sendCommand(deviceReadService.getDevice(vehicleId), dto, Boolean.FALSE);
     }
 
     public VehicleControlResponseDto sendWakeCommand(Long vehicleId) throws JsonProcessingException {
 
         VehicleControlRequestDto dto = VehicleControlRequestDto.builder().build();
-        return sendCommand(getDevice(vehicleId), dto, Boolean.TRUE);
+        return sendCommand(deviceReadService.getDevice(vehicleId), dto, Boolean.TRUE);
     }
 
     public VehicleControlResponseDto sendAWakeCommand(Long vehicleId) throws JsonProcessingException {
@@ -86,11 +85,7 @@ public class VehicleWriteService {
         VehicleControlRequestDto dto = VehicleControlRequestDto.builder()
                 .target(ControlType.VIBRATION) // Vibration은 미사용, 자동 제어 해제를 위한 신호로 사용
                 .build();
-        return sendCommand(getDevice(vehicleId), dto, Boolean.FALSE);
-    }
-
-    private Device getDevice(Long vehicleId) {
-        return deviceRepository.findByVehicleId(vehicleId).orElseThrow(DeviceNotFoundException::new);
+        return sendCommand(deviceReadService.getDevice(vehicleId), dto, Boolean.FALSE);
     }
 
     private RabbitControlRequestDto rabbitRequestBuilder(VehicleControlRequestDto dto, Boolean abnormal) {
