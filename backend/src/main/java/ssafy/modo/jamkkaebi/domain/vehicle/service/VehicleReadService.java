@@ -3,7 +3,6 @@ package ssafy.modo.jamkkaebi.domain.vehicle.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssafy.modo.jamkkaebi.common.rabbitmq.service.RabbitSendService;
 import ssafy.modo.jamkkaebi.common.security.util.SecurityUtil;
 import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceInfoDto;
 import ssafy.modo.jamkkaebi.domain.device.entity.Device;
@@ -23,7 +22,6 @@ public class VehicleReadService {
     private final SecurityUtil securityUtil;
     private final VehicleRepository vehicleRepository;
     private final DeviceReadService deviceReadService;
-    private final RabbitSendService rabbitSendService;
 
     public VehicleInfo getVehicleInfo() {
 
@@ -40,7 +38,7 @@ public class VehicleReadService {
 
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(VehicleNotFoundException::new);
         Device device = deviceReadService.getDevice(vehicle.getId());
-        boolean isHealthy = rabbitSendService.sendHealthCheckToDevice(device.getUuid());
+        boolean isHealthy = deviceReadService.isDeviceHealthy(device);
 
         return VehicleStatusResponseDto.builder()
                 .vehicleId(vehicle.getId())

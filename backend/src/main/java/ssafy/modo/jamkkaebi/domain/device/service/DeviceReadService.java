@@ -3,6 +3,7 @@ package ssafy.modo.jamkkaebi.domain.device.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.modo.jamkkaebi.common.rabbitmq.service.RabbitSendService;
 import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceInfoResponseDto;
 import ssafy.modo.jamkkaebi.domain.device.entity.Device;
 import ssafy.modo.jamkkaebi.domain.device.exception.DeviceNotFoundException;
@@ -16,6 +17,7 @@ import ssafy.modo.jamkkaebi.domain.vehicle.entity.Vehicle;
 public class DeviceReadService {
 
     private final DeviceRepository deviceRepository;
+    private final RabbitSendService rabbitSendService;
 
     public DeviceInfoResponseDto getDeviceInfo(String uuid) {
 
@@ -39,5 +41,9 @@ public class DeviceReadService {
 
     public Device getDevice(Long vehicleId) {
         return deviceRepository.findByVehicleId(vehicleId).orElseThrow(DeviceNotFoundException::new);
+    }
+
+    public boolean isDeviceHealthy(Device device) {
+        return rabbitSendService.sendHealthCheckToDevice(device.getUuid());
     }
 }
