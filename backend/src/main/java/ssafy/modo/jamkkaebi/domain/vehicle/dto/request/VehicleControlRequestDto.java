@@ -4,25 +4,43 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ssafy.modo.jamkkaebi.domain.vehicle.entity.ControlType;
 import ssafy.modo.jamkkaebi.domain.vehicle.validation.ValidControlRequest;
 
 @Data
+@Builder
 @ValidControlRequest
 @NoArgsConstructor
+@AllArgsConstructor
 public class VehicleControlRequestDto {
 
-    private ControlType target;
+    @Builder.Default
+    private ControlType target = ControlType.LIGHT;
     @NotNull
-    private Integer control;
-    @Nullable @Min(0) @Max(255)
-    private Integer red;
-    @Nullable @Min(0) @Max(255)
-    private Integer green;
-    @Nullable @Min(0) @Max(255)
-    private Integer blue;
-    @Nullable @Min(0) @Max(100)
-    private Integer brightness;
+    @Builder.Default
+    private Integer control = 0;
+    @Nullable
+    @Min(0)
+    @Max(255)
+    @Builder.Default
+    private Integer red = 0;
+    @Nullable
+    @Min(0)
+    @Max(255)
+    @Builder.Default
+    private Integer green = 0;
+    @Nullable
+    @Min(0)
+    @Max(255)
+    @Builder.Default
+    private Integer blue = 0;
+    @Nullable
+    @Min(0)
+    @Max(100)
+    @Builder.Default
+    private Integer brightness = 0;
 }
