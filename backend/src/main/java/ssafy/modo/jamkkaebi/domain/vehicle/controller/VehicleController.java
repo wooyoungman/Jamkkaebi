@@ -34,7 +34,14 @@ public class VehicleController {
     }
 
     @PostMapping(path = "/control/wake/{vehicleId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiResponse<VehicleControlResponseDto> wakeCommand(@PathVariable Long vehicleId) throws JsonProcessingException {
+    public ApiResponse<VehicleControlResponseDto> wakeCommand(@PathVariable Long vehicleId)
+            throws JsonProcessingException {
         return ApiResponse.success(vehicleWriteService.sendWakeCommand(vehicleId));
+    }
+
+    @PostMapping(path = "/control/awake/{vehicleId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<VehicleControlResponseDto> awakeCommand(@PathVariable Long vehicleId)
+            throws JsonProcessingException {
+        return ApiResponse.success(vehicleWriteService.sendAWakeCommand(vehicleId));
     }
 }

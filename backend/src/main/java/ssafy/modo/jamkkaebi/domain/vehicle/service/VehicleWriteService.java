@@ -21,6 +21,7 @@ import ssafy.modo.jamkkaebi.domain.vehicle.dto.request.VehicleCreateRequestDto;
 import ssafy.modo.jamkkaebi.domain.vehicle.dto.response.VehicleControlResponseDto;
 import ssafy.modo.jamkkaebi.domain.vehicle.dto.response.VehicleCreateResponseDto;
 import ssafy.modo.jamkkaebi.domain.vehicle.dto.response.VehicleInfo;
+import ssafy.modo.jamkkaebi.domain.vehicle.entity.ControlType;
 import ssafy.modo.jamkkaebi.domain.vehicle.entity.Vehicle;
 import ssafy.modo.jamkkaebi.domain.vehicle.exception.DuplicatedVehicleException;
 import ssafy.modo.jamkkaebi.domain.vehicle.exception.UnauthorizedControlException;
@@ -78,6 +79,14 @@ public class VehicleWriteService {
 
         VehicleControlRequestDto dto = VehicleControlRequestDto.builder().build();
         return sendCommand(getDevice(vehicleId), dto, Boolean.TRUE);
+    }
+
+    public VehicleControlResponseDto sendAWakeCommand(Long vehicleId) throws JsonProcessingException {
+
+        VehicleControlRequestDto dto = VehicleControlRequestDto.builder()
+                .target(ControlType.VIBRATION) // Vibration은 미사용, 자동 제어 해제를 위한 신호로 사용
+                .build();
+        return sendCommand(getDevice(vehicleId), dto, Boolean.FALSE);
     }
 
     private Device getDevice(Long vehicleId) {
