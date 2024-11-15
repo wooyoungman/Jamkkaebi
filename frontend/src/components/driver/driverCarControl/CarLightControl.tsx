@@ -7,7 +7,7 @@ import {
   ToggleContainer,
   SliderRGBContainer,
   ToggleCircle,
-  ColorPickerContainer,
+  // ColorPickerContainer,
 } from "./DriverCarCSS";
 import { DriverText } from "../driverMain/DriverMainCSS";
 import { useState, useEffect, useRef } from "react";
@@ -37,16 +37,14 @@ const CustomDriverText = styled(DriverText)`
   text-align: start;
 `;
 
-// ColorPickerContainer를 화면 중앙에 위치시키도록 스타일 설정
-const CenteredColorPickerContainer = styled(ColorPickerContainer)`
-  position: fixed;
-  top: 56%;
-  left: 68%;
-  transform: translate(-50%, -50%);
+// CarRightUpperBody를 기준으로 ColorPickerContainer를 중앙에 위치시키도록 스타일 설정
+const CenteredColorPickerContainer = styled.div`
+  position: absolute; // CarRightUpperBody 내부에서의 절대 위치
+  top: 50%; // 세로 중앙
+  left: 50%; // 가로 중앙
+  transform: translate(-50%, -50%); // 정확히 중앙으로 이동
   z-index: 1000; // 다른 요소보다 위에 나타나도록 설정
   padding: 10px; // 여백 추가
-  border-radius: 8px; // 둥근 모서리 추가
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // 그림자 효과 추가
 `;
 
 // RGB 타입 정의
@@ -238,9 +236,7 @@ const CarLightControl: React.FC = () => {
 
   return (
     <>
-      <CarRightUpperBody
-        style={{ marginBottom: isOn === false ? "34px" : "0" }}
-      >
+      <CarRightUpperBody style={{ position: "relative" }}>
         <CarPowerDiv>
           <CarPowerWrapper>
             <CustomDriverText fontSize="20px" fontWeight={700}>
@@ -253,6 +249,16 @@ const CarLightControl: React.FC = () => {
             </ToggleContainer>
           </CarPowerWrapper>
         </CarPowerDiv>
+
+        {/* 컬러 피커 */}
+        {showPicker && (
+          <CenteredColorPickerContainer ref={pickerRef}>
+            <ColorPicker
+              hue={initialHue} // 초기 hue 값 설정
+              onSelect={handleSelect} // 최종 색상 선택 시 호출
+            />
+          </CenteredColorPickerContainer>
+        )}
         <CarControlUIDiv>
           {isOn === false ? (
             <OffBulbSVG />
@@ -284,7 +290,13 @@ const CarLightControl: React.FC = () => {
             onDoubleClick={handleEclipseDoubleClick}
             isOn={isOn}
           />
-          <EclipsePickerSVG onClick={handlePickerClick} />
+          <EclipseRGB
+            color={{ r: 255, g: 255, b: 255 }}
+            onClick={() => handleEclipseClick({ r: 255, g: 255, b: 255 })}
+            onDoubleClick={handleEclipseDoubleClick}
+            isOn={isOn}
+          />
+          <EclipsePickerSVG onClick={handlePickerClick} isOn={isOn} />
         </SliderRGBContainer>
         <CarPowerSlider
           power={power}
@@ -294,16 +306,6 @@ const CarLightControl: React.FC = () => {
           isOn={isOn}
         />
       </CarRightLowerBody>
-
-      {/* 컬러 피커 */}
-      {showPicker && (
-        <CenteredColorPickerContainer ref={pickerRef}>
-          <ColorPicker
-            hue={initialHue} // 초기 hue 값 설정
-            onSelect={handleSelect} // 최종 색상 선택 시 호출
-          />
-        </CenteredColorPickerContainer>
-      )}
     </>
   );
 };

@@ -208,10 +208,12 @@ export const EclipseRGB: React.FC<EclipseRGBProps> = ({
 // Props 타입 정의
 interface EclipsePickerSVGProps {
   onClick?: () => void; // 클릭 이벤트 핸들러
+  isOn?: boolean;
 }
 
 export const EclipsePickerSVG: React.FC<EclipsePickerSVGProps> = ({
   onClick,
+  isOn,
 }) => (
   <svg
     width="40"
@@ -219,8 +221,8 @@ export const EclipsePickerSVG: React.FC<EclipsePickerSVGProps> = ({
     viewBox="0 0 40 37"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    onClick={onClick}
-    cursor={"pointer"}
+    onClick={isOn ? onClick : undefined}
+    style={{ cursor: isOn ? "pointer" : "default" }}
   >
     <g clip-path="url(#clip0_496_761)">
       <g filter="url(#filter0_d_496_761)">

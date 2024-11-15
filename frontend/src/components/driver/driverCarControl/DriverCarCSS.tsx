@@ -6,7 +6,6 @@ export const CarRightDiv = styled.div`
   width: 65%;
   min-width: 500px;
   padding: 0px 100px;
-  /* background-color: gray; */
 `;
 
 export const CarRightMain = styled.div`
@@ -15,7 +14,6 @@ export const CarRightMain = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  /* background-color: white; */
 `;
 
 export const CarRightMenu = styled.div`
@@ -68,7 +66,8 @@ export const CarRightBody = styled.div`
 
 export const CarRightUpperBody = styled.div`
   width: 100%;
-  height: 75%;
+  height: 80%;
+  /* min-height: 365px; */
   display: flex;
 `;
 
@@ -84,13 +83,26 @@ export const CarPowerWrapper = styled.div`
   gap: 10px;
   padding-top: 20px;
   padding-left: 20px;
-  /* background-color: white; */
 `;
 
 export const CarControlUIDiv = styled.div`
   width: 75%;
   height: 100%;
-  padding-top: 7%;
+  /* padding-top: 40px;
+  padding-right: 25%; */
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  position: absolute; // CarRightUpperBody 내부에서의 절대 위치
+  top: 60%; // 세로 중앙
+  left: 50%; // 가로 중앙
+  transform: translate(-50%, -50%);
+`;
+
+export const CarSeatUIDiv = styled.div`
+  width: 75%;
+  height: 100%;
+  padding-top: 40px;
   padding-right: 25%;
   display: flex;
   justify-content: center;
@@ -99,7 +111,7 @@ export const CarControlUIDiv = styled.div`
 
 export const CarRightLowerBody = styled.div`
   width: 80%;
-  height: 25%;
+  height: 20%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -110,6 +122,7 @@ export const CarRightLowerBody = styled.div`
 export const SliderRGBContainer = styled.div`
   display: flex;
   justify-content: space-around;
+  z-index: 10;
   /* gap: 5px; */
 `;
 
@@ -179,10 +192,10 @@ export const ToggleCircle = styled.div.withConfig({
   height: 36px;
 `;
 
-export const ColorPickerContainer = styled.div`
-  position: absolute;
-  z-index: 100;
-`;
+// export const ColorPickerContainer = styled.div`
+//   position: absolute;
+//   z-index: 100;
+// `;
 
 export const CarEctContainer = styled(GlassDiv)`
   width: 250px;
