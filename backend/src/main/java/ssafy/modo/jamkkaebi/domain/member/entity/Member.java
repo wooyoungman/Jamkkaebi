@@ -1,5 +1,6 @@
 package ssafy.modo.jamkkaebi.domain.member.entity;
 
+import com.mongodb.lang.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -39,13 +40,22 @@ public class Member extends BaseEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private MemberStatus status;
+
+    @NotNull
+    private String phoneNumber;
+
+    @Nullable
+    private String profileImage;
+
+    @NotNull
+    private String region;
+
     // 매니저가 현재 유저로 설정된 Member 목록을 맵핑 -> 현재 유저가 관리하는 driver 목록
     @OneToMany(mappedBy = "manager")
     private Set<ManagerAndDriver> assignedDrivers = new HashSet<>();
-
-    // driver가 현재 유저로 설정된 Member 목록을 맵핑 -> 현재 유저를 관리하는 manager 목록
-    // @OneToMany(mappedBy = "driver")
-    // private Set<AdminAndDriver> assignedManagers = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -58,6 +68,7 @@ public class Member extends BaseEntity implements UserDetails {
         this.username = username;
         this.password = password;
         this.role = MemberRole.DRIVER;
+        this.status = MemberStatus.IDLE;
     }
 
     public MemberRole updateRole() {
