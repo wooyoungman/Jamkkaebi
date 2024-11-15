@@ -18,8 +18,7 @@ import ssafy.modo.jamkkaebi.domain.vehicle.validation.ValidControlRequest;
 @AllArgsConstructor
 public class VehicleControlRequestDto {
 
-    @Builder.Default
-    private ControlType target = ControlType.LIGHT;
+    private ControlType target;
     @NotNull
     @Builder.Default
     private Integer control = 1;

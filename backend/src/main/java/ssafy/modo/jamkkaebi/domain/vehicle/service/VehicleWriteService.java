@@ -76,16 +76,20 @@ public class VehicleWriteService {
 
     public VehicleControlResponseDto sendWakeCommand(Long vehicleId) throws JsonProcessingException {
 
-        VehicleControlRequestDto dto = VehicleControlRequestDto.builder().build();
+        VehicleControlRequestDto dto = VehicleControlRequestDto.builder()
+                .target(ControlType.WAKE)
+                .control(1)
+                .build();
         return sendCommand(deviceReadService.getDevice(vehicleId), dto, Boolean.TRUE);
     }
 
     public VehicleControlResponseDto sendAWakeCommand(Long vehicleId) throws JsonProcessingException {
 
         VehicleControlRequestDto dto = VehicleControlRequestDto.builder()
-                .target(ControlType.VIBRATION) // Vibration은 미사용, 자동 제어 해제를 위한 신호로 사용
+                .target(ControlType.AWAKE)
+                .control(0)
                 .build();
-        return sendCommand(deviceReadService.getDevice(vehicleId), dto, Boolean.FALSE);
+        return sendCommand(deviceReadService.getDevice(vehicleId), dto, Boolean.TRUE);
     }
 
     private RabbitControlRequestDto rabbitRequestBuilder(VehicleControlRequestDto dto, Boolean abnormal) {
