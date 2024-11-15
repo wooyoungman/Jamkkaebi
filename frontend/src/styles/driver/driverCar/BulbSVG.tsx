@@ -82,14 +82,14 @@ const BulbSVG: React.FC<{
         <path
           d="M97.9961 88.1637C109.6 82.8649 168.355 83.2333 172.96 89.0847V62.5603C171.486 60.7612 167.066 59.656 162.829 59.0606C148.279 56.5246 119.767 57.7343 111.81 58.3238C103.853 58.9132 99.531 60.6569 98.3645 61.4551C98.2417 70.4194 97.9961 88.3111 97.9961 88.1637Z"
           fill="url(#pattern2_453_816)"
-          fill-opacity="0.54"
+          fillOpacity="0.54"
         />
       </g>
       <g style={{ mixBlendMode: "multiply" }}>
         <path
           d="M97.9961 88.1637C109.6 82.8649 168.355 83.2333 172.96 89.0847V62.5603C171.67 60.9454 167.434 59.656 162.829 59.0606C147.726 56.5246 119.767 57.7343 111.81 58.3238C103.853 58.9132 99.531 60.6569 98.3645 61.4551C98.2417 70.4194 97.9961 88.3111 97.9961 88.1637Z"
           fill="url(#pattern3_453_816)"
-          fill-opacity="0.3"
+          fillOpacity="0.3"
           style={{ mixBlendMode: "soft-light" }}
         />
       </g>
@@ -110,8 +110,8 @@ const BulbSVG: React.FC<{
       <path
         d="M135.207 8L135.207 25.62"
         stroke="url(#paint7_linear_453_816)"
-        stroke-width="15.266"
-        stroke-linecap="square"
+        strokeWidth="15.266"
+        strokeLinecap="square"
       />
       <defs>
         <filter
@@ -121,9 +121,9 @@ const BulbSVG: React.FC<{
           width="270.685"
           height="310.513"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -188,12 +188,12 @@ const BulbSVG: React.FC<{
           y2="62.1908"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#101010" />
-          <stop offset="0.236123" stop-color="#222222" />
-          <stop offset="0.47444" stop-color="#494B4A" />
-          <stop offset="0.63588" stop-color="#494B4A" />
-          <stop offset="0.812657" stop-color="#222222" />
-          <stop offset="1" stop-color="#101010" />
+          <stop stopColor="#101010" />
+          <stop offset="0.236123" stopColor="#222222" />
+          <stop offset="0.47444" stopColor="#494B4A" />
+          <stop offset="0.63588" stopColor="#494B4A" />
+          <stop offset="0.812657" stopColor="#222222" />
+          <stop offset="1" stopColor="#101010" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_453_816"
@@ -203,12 +203,12 @@ const BulbSVG: React.FC<{
           y2="62.1908"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#101010" />
-          <stop offset="0.236123" stop-color="#222222" />
-          <stop offset="0.47444" stop-color="#494B4A" />
-          <stop offset="0.63588" stop-color="#494B4A" />
-          <stop offset="0.812657" stop-color="#222222" />
-          <stop offset="1" stop-color="#101010" />
+          <stop stopColor="#101010" />
+          <stop offset="0.236123" stopColor="#222222" />
+          <stop offset="0.47444" stopColor="#494B4A" />
+          <stop offset="0.63588" stopColor="#494B4A" />
+          <stop offset="0.812657" stopColor="#222222" />
+          <stop offset="1" stopColor="#101010" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_453_816"
@@ -218,8 +218,8 @@ const BulbSVG: React.FC<{
           y2="46.9447"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#3E3E3E" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="#3E3E3E" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_453_816"
@@ -229,12 +229,12 @@ const BulbSVG: React.FC<{
           y2="90.5582"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#101010" />
-          <stop offset="0.236123" stop-color="#222222" />
-          <stop offset="0.47444" stop-color="#494B4A" />
-          <stop offset="0.63588" stop-color="#494B4A" />
-          <stop offset="0.812657" stop-color="#222222" />
-          <stop offset="1" stop-color="#101010" />
+          <stop stopColor="#101010" />
+          <stop offset="0.236123" stopColor="#222222" />
+          <stop offset="0.47444" stopColor="#494B4A" />
+          <stop offset="0.63588" stopColor="#494B4A" />
+          <stop offset="0.812657" stopColor="#222222" />
+          <stop offset="1" stopColor="#101010" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_453_816"
@@ -244,12 +244,12 @@ const BulbSVG: React.FC<{
           y2="90.5583"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#101010" />
-          <stop offset="0.236123" stop-color="#222222" />
-          <stop offset="0.47444" stop-color="#494B4A" />
-          <stop offset="0.63588" stop-color="#494B4A" />
-          <stop offset="0.812657" stop-color="#222222" />
-          <stop offset="1" stop-color="#101010" />
+          <stop stopColor="#101010" />
+          <stop offset="0.236123" stopColor="#222222" />
+          <stop offset="0.47444" stopColor="#494B4A" />
+          <stop offset="0.63588" stopColor="#494B4A" />
+          <stop offset="0.812657" stopColor="#222222" />
+          <stop offset="1" stopColor="#101010" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_453_816"
@@ -259,8 +259,8 @@ const BulbSVG: React.FC<{
           y2="75.3119"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#3E3E3E" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="#3E3E3E" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint6_linear_453_816"
@@ -270,9 +270,9 @@ const BulbSVG: React.FC<{
           y2="26.6841"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#2B2927" />
-          <stop offset="0.5" stop-color="#575757" />
-          <stop offset="1" stop-color="#2B2927" />
+          <stop stopColor="#2B2927" />
+          <stop offset="0.5" stopColor="#575757" />
+          <stop offset="1" stopColor="#2B2927" />
         </linearGradient>
         <linearGradient
           id="paint7_linear_453_816"
@@ -282,11 +282,11 @@ const BulbSVG: React.FC<{
           y2="25.62"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#060606" />
-          <stop offset="0.166667" stop-color="#101010" />
-          <stop offset="0.442708" stop-color="#2E2E2E" />
-          <stop offset="0.682292" stop-color="#0D0F0E" />
-          <stop offset="1" stop-color="#0D0F0E" />
+          <stop stopColor="#060606" />
+          <stop offset="0.166667" stopColor="#101010" />
+          <stop offset="0.442708" stopColor="#2E2E2E" />
+          <stop offset="0.682292" stopColor="#0D0F0E" />
+          <stop offset="1" stopColor="#0D0F0E" />
         </linearGradient>
         <image
           id="image0_453_816"

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Car, UserCog } from "lucide-react";
 import styled from "styled-components";
+import DriverLogin from "@/components/driver/DriverLogin";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -111,6 +112,9 @@ const LandingPage: React.FC = () => {
 
   return (
     <Container>
+      {/* Driver 관련 엑세스 토큰과 운전자 차량 id 정보 가져오는 컴포넌트 */}
+      <DriverLogin />
+
       <HeaderWrapper>
         <Title>차량 관리 시스템</Title>
         <Subtitle>역할을 선택하여 시작하세요</Subtitle>
