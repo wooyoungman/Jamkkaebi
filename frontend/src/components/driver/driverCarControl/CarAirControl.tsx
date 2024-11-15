@@ -17,6 +17,7 @@ import axios from "axios";
 import { useAtom } from "jotai";
 import { motorOnOffAtom, motorPowerAtom } from "@/atoms/driver/carControl";
 import { vehicleIdAtom, tokenAtom } from "@/atoms/driver/carInfo";
+import { useEffect } from "react";
 
 // 자연스럽게 흐르는 바람 애니메이션 keyframes 정의
 const flowAir = keyframes`
@@ -111,8 +112,11 @@ const CarAirControl: React.FC = () => {
 
   const togglePower = () => {
     setIsOn((prev) => !prev);
-    sendPatchRequest();
   };
+
+  useEffect(() => {
+    sendPatchRequest();
+  }, [isOn]);
 
   return (
     <>

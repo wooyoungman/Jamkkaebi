@@ -16,37 +16,26 @@ import DriverConditionGraph from "./DriverConditionGraph";
 import driverImg from "@/assets/driverImg.png";
 
 import { useAtom } from "jotai";
-import { driverStateDataAtom } from "@/atoms/driver/socket";
-import { useEffect, useState } from "react";
+import { driverStateDataAtom } from "@/atoms/driver/socket"; // atoms.ts 경로에 맞게 수정하세요
+import { useEffect } from "react";
 
 const DriverMainLeft: React.FC = () => {
+  // Jotai에서 WebSocket 데이터를 관리
   const [driverStateData, setDriverStateData] = useAtom(driverStateDataAtom);
-  const [attentionScore, setAttentionScore] = useState<number>(0);
-  const [meditationScore, setMeditationScore] = useState<number>(0);
 
   useEffect(() => {
     // WebSocket 연결 설정
     const socket = new WebSocket("wss://k11c106.p.ssafy.io/fastapi/ws");
 
-    // WebSocket 연결 성공 시
     socket.onopen = () => {
       console.log("WebSocket connection opened");
     };
 
-    // WebSocket 메시지 수신 시
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      // attention과 meditation 값 추출
-      const attention = Math.round(data.predictions?.attention || 0);
-      const meditation = Math.round(data.predictions?.meditation || 0);
-
-      // Jotai atom에 데이터 저장
+      // WebSocket에서 받은 데이터를 Jotai atom에 저장
       setDriverStateData(data);
-
-      // 상태 값 업데이트
-      setAttentionScore(attention);
-      setMeditationScore(meditation);
     };
 
     socket.onerror = (error) => {
@@ -62,6 +51,18 @@ const DriverMainLeft: React.FC = () => {
       socket.close();
     };
   }, [setDriverStateData]);
+
+  // Jotai에서 attention과 meditation 값 가져오기
+  const attentionScore = Math.round(
+    driverStateData?.predictions?.attention || 0
+  );
+  const meditationScore = Math.round(
+    driverStateData?.predictions?.meditation || 0
+  );
+
+  useEffect(() => {
+    console.log("Current driverStateData in Jotai:", driverStateData);
+  }, [driverStateData]);
 
   return (
     <>
@@ -115,12 +116,14 @@ const DriverMainLeft: React.FC = () => {
         </DrivingInfo>
         <ConditionGraphWrapper>
           <ConditionGraphDiv>
+            {/* 집중 지수 그래프 */}
             <DriverConditionGraph
               graphType="concentration"
               score={attentionScore}
             />
           </ConditionGraphDiv>
           <ConditionGraphDiv>
+            {/* 졸음 지수 그래프 */}
             <DriverConditionGraph graphType="drowsy" score={meditationScore} />
           </ConditionGraphDiv>
         </ConditionGraphWrapper>
