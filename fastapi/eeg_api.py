@@ -52,7 +52,7 @@ async def handle_tcp_connection(reader, writer):
                 # 예측
                 predictions = model.predict(data_df)
                 response = {
-                    "brain_data": brain_data,  # 데이터 이름과 값 매핑된 JSON
+                    "brain": brain_data,  # 데이터 이름과 값 매핑된 JSON
                     "predictions": {
                         "attention": predictions.iloc[0]["attention"],
                         "meditation": predictions.iloc[0]["meditation"],
