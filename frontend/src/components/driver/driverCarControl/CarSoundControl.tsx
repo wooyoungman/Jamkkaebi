@@ -76,12 +76,17 @@ const CarSoundControl: React.FC = () => {
   const [isOn, setIsOn] = useAtom(soundOnOffAtom);
   const [power, setPower] = useAtom(soundPowerAtom);
 
-  const togglePower = () => {
-    setIsOn((prev) => !prev);
+  // 슬라이더 변경 후 마우스를 뗄 때 요청 전송
+  const handleSliderChangeEnd = () => {
+    return;
   };
 
   const handleChange = (value: number) => {
     setPower(value);
+  };
+
+  const togglePower = () => {
+    setIsOn((prev) => !prev);
   };
 
   return (
@@ -115,6 +120,7 @@ const CarSoundControl: React.FC = () => {
         <CarPowerSlider
           power={power}
           handleChange={(e) => handleChange(e.target.valueAsNumber)}
+          onMouseUp={handleSliderChangeEnd}
           powerType="sound"
           isOn={isOn}
         />
