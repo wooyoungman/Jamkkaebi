@@ -10,7 +10,7 @@ const DriverLogin: React.FC = () => {
   // Token을 설정하는 useEffect 훅
   useEffect(() => {
     setToken(
-      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpYW1ub3Rkcml2ZXIiLCJ0eXBlIjoiYWNjZXNzIiwiYXV0aG9yaXRpZXMiOiJST0xFX0RSSVZFUiIsImV4cCI6MTczMTY2OTIxNH0.MMBNbps2FnTS7R4GMzvgDPIGuiSk5SLdVd6t28Y2nyE"
+      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpYW1ub3Rkcml2ZXIiLCJ0eXBlIjoiYWNjZXNzIiwiYXV0aG9yaXRpZXMiOiJST0xFX0RSSVZFUiIsImV4cCI6MTczMTc1Nzk5NH0._O7c3lK4CTO0HVsWu4mTeUyZreln08lzknG2g3LqDkw"
     );
   }, [setToken]);
 

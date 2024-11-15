@@ -28,6 +28,7 @@ import {
   windowControlStateAtom,
 } from "@/atoms/driver/carControl";
 import { vehicleIdAtom, tokenAtom } from "@/atoms/driver/carInfo";
+import { useEffect } from "react";
 
 const CustomCarRightBody = styled(CarRightBody)`
   display: flex;
@@ -39,9 +40,7 @@ const CustomCarRightBody = styled(CarRightBody)`
 const CarEctControl: React.FC = () => {
   const [power, setPower] = useAtom(vibrationPowerAtom);
   const [isOn, setIsOn] = useAtom(vibrationOnOffAtom);
-  const [windowControlState, setWindowControlState] = useAtom(
-    windowControlStateAtom
-  );
+  const [, setWindowControlState] = useAtom(windowControlStateAtom);
   const [vehicleId] = useAtom(vehicleIdAtom);
   const [token] = useAtom(tokenAtom);
 
@@ -90,26 +89,29 @@ const CarEctControl: React.FC = () => {
 
   const togglePower = () => {
     setIsOn((prev) => !prev);
+  };
+
+  useEffect(() => {
     const value = isOn ? 1 : 0;
     sendPatchRequest("VIBRATION", value);
-  };
+  }, [isOn]);
 
   // Up 버튼을 누를 때 상태를 1로 변경
   const handleMouseDownUp = () => {
     setWindowControlState(1);
-    sendPatchRequest("WINDOW", windowControlState);
+    sendPatchRequest("WINDOW", 1);
   };
 
   // Down 버튼을 누를 때 상태를 2로 변경
   const handleMouseDownDown = () => {
     setWindowControlState(2);
-    sendPatchRequest("WINDOW", windowControlState);
+    sendPatchRequest("WINDOW", 2);
   };
 
   // 버튼에서 손을 뗄 때 상태를 0으로 재설정
   const handleMouseUp = () => {
     setWindowControlState(0);
-    sendPatchRequest("WINDOW", windowControlState);
+    sendPatchRequest("WINDOW", 0);
   };
 
   return (
