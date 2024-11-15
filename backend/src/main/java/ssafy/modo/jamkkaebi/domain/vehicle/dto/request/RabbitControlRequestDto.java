@@ -32,7 +32,7 @@ public class RabbitControlRequestDto {
 
     private int targetConverter(ControlType type) {
         return switch (type) {
-            case VIBRATION:
+            case VIBRATION, AWAKE, WAKE:
                 yield 0;
             case LIGHT:
                 yield 1;
