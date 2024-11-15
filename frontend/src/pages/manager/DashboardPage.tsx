@@ -9,34 +9,9 @@ import AlertModal from "@components/manager/AlertModal";
 import { mapInstanceAtom } from "@atoms/index";
 import { useDriverList } from "@queries/manager/driver";
 import { useDriversWithRoutes } from "@queries/manager/routes";
+import { DriverState, BrainData } from "@interfaces/manager";
 
-interface DriverState {
-  driver_id: string;
-  drowsy_level: number;
-  concentration_level: number;
-}
-
-interface WsMessageData {
-  driver_id: string;
-  brain: {
-    delta: number;
-    theta: number;
-    lowAlpha: number;
-    highAlpha: number;
-    lowBeta: number;
-    highBeta: number;
-    lowGamma: number;
-    highGamma: number;
-  } | null;
-  muscle: number;
-  predictions: {
-    attention: number;
-    meditation: number;
-    classification: "NORMAL" | "ASLEEP";
-  } | null;
-  coordinate: number[];
-}
-
+// 드라이버별 경로 색상 설정
 const ROUTE_COLORS = [
   "#FF3B3B", // 선명한 빨간색
   "#4B7BFF", // 선명한 파란색
@@ -49,7 +24,8 @@ const ROUTE_COLORS = [
 const MIN_ZOOM = 9;
 const MAX_ZOOM = 16;
 
-const WS_URL = "wss://k11c106.p.ssafy.io/ws/v1/device/data";
+const SPRING_WS_URL = "wss://k11c106.p.ssafy.io/ws/v1/device/data";
+const FASTAPI_WS_URL = "wss://k11c106.p.ssafy.io/fastapi/ws";
 
 // 위도/경도의 최대/최소값을 찾는 함수
 const findBounds = (locations: Array<{ lat: number; lng: number }>) => {
@@ -117,7 +93,8 @@ const DashboardPage = () => {
     eventLocation: "",
   });
   const [mapInstance, setMapInstance] = useAtom(mapInstanceAtom);
-  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const [springSocket, setSpringSocket] = useState<WebSocket | null>(null);
+  const [fastApiSocket, setFastApiSocket] = useState<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [connectionAttempts, setConnectionAttempts] = useState(0);
   const [realtimeDriverStates, setRealtimeDriverStates] = useState<
@@ -126,6 +103,7 @@ const DashboardPage = () => {
   const [realtimeLocations, setRealtimeLocations] = useState<
     Record<string, { lat: number; lng: number }>
   >({});
+  const [needFastApiConnection, setNeedFastApiConnection] = useState(false);
 
   const MAX_RECONNECT_ATTEMPTS = 5;
   const RECONNECT_DELAY = 3000;
@@ -142,56 +120,87 @@ const DashboardPage = () => {
         realtimeLocations[driver.driverId.toString()] || driver.location,
     }));
 
-  const connectWebSocket = useCallback(() => {
+  // FastAPI WebSocket 연결 함수
+  const connectFastApiSocket = useCallback(() => {
+    const newFastApiSocket = new WebSocket(FASTAPI_WS_URL);
+
+    newFastApiSocket.onopen = () => {
+      console.log("FastAPI WebSocket connected");
+    };
+
+    newFastApiSocket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.predictions?.classification) {
+          setRealtimeDriverStates((prev) => {
+            const existingIndex = prev.findIndex(
+              (state) => state.driverId === data.driverId
+            );
+            const newState = {
+              driverId: data.driverId,
+              drowsy_level:
+                data.predictions.classification === "ASLEEP" ? 1 : 0,
+              concentration_level: 1,
+            };
+
+            if (existingIndex >= 0) {
+              const newStates = [...prev];
+              newStates[existingIndex] = newState;
+              return newStates;
+            }
+            return [...prev, newState];
+          });
+        }
+      } catch (error) {
+        console.error("Error parsing FastAPI WebSocket message:", error);
+      }
+    };
+
+    setFastApiSocket(newFastApiSocket);
+  }, []);
+
+  // Spring WebSocket 연결 함수
+  const connectSpringSocket = useCallback(() => {
     if (connectionAttempts >= MAX_RECONNECT_ATTEMPTS) {
       console.log("Max reconnection attempts reached");
       return;
     }
 
     try {
-      const newSocket = new WebSocket(WS_URL);
+      const newSpringSocket = new WebSocket(SPRING_WS_URL);
 
-      newSocket.onopen = () => {
-        console.log("WebSocket connected");
+      newSpringSocket.onopen = () => {
+        console.log("Spring WebSocket connected");
         setIsConnected(true);
         setConnectionAttempts(0);
       };
 
-      newSocket.onmessage = (event) => {
+      newSpringSocket.onmessage = (event) => {
         try {
-          const data = JSON.parse(event.data) as WsMessageData;
+          const data = JSON.parse(event.data) as BrainData;
 
-          // brain & predictions 데이터가 있을 때 상태 처리
-          if (data.predictions) {
-            // 졸음 상태이거나 집중도가 낮을 때 알림
-            if (
-              data.predictions.classification === "ASLEEP" ||
-              data.predictions.attention < 30
-            ) {
-              const driverInfo = driversWithRoutes.find(
-                (d) => d.driverId.toString() === data.driver_id
-              );
+          // 좌표 데이터 처리
+          if (data.coordinate) {
+            setRealtimeLocations((prev) => ({
+              ...prev,
+              [data.driverId]: {
+                lng: data.coordinate[0],
+                lat: data.coordinate[1],
+              },
+            }));
+          }
 
-              if (driverInfo) {
-                setAlertInfo({
-                  driverName: driverInfo.driverName,
-                  eventTime: new Date().toISOString(),
-                  eventLocation: `${driverInfo.deliveryInfo.origin} → ${driverInfo.deliveryInfo.destination}`,
-                });
-                setShowAlert(true);
-              }
-            }
-
-            // 상태 업데이트
+          // classification 데이터 처리
+          if (data.predictions?.classification) {
             setRealtimeDriverStates((prev) => {
               const existingIndex = prev.findIndex(
-                (state) => state.driver_id === data.driver_id
+                (state) => state.driverId === data.driverId
               );
               const newState = {
-                driver_id: data.driver_id,
+                driverId: data.driverId,
                 drowsy_level:
                   data.predictions?.classification === "ASLEEP" ? 1 : 0,
-                concentration_level: (data.predictions?.attention ?? 0) / 100,
+                concentration_level: 1,
               };
 
               if (existingIndex >= 0) {
@@ -201,53 +210,64 @@ const DashboardPage = () => {
               }
               return [...prev, newState];
             });
-          }
-
-          // coordinate 데이터 처리 (predictions와 독립적으로 처리)
-          if (data.coordinate) {
-            setRealtimeLocations((prev) => ({
-              ...prev,
-              [data.driver_id]: {
-                lng: data.coordinate[0],
-                lat: data.coordinate[1],
-              },
-            }));
+          } else {
+            // classification이 없는 경우 FastAPI 연결 필요
+            setNeedFastApiConnection(true);
           }
         } catch (error) {
-          console.error("Error parsing WebSocket message:", error);
+          console.error("Error parsing Spring WebSocket message:", error);
         }
       };
 
-      newSocket.onerror = (error) => {
+      newSpringSocket.onerror = (error) => {
         console.error("WebSocket error:", error);
         setIsConnected(false);
       };
 
-      newSocket.onclose = () => {
+      newSpringSocket.onclose = () => {
         console.log("WebSocket closed");
         setIsConnected(false);
-        setSocket(null);
+        setSpringSocket(null);
 
         if (connectionAttempts < MAX_RECONNECT_ATTEMPTS) {
           setTimeout(() => {
             setConnectionAttempts((prev) => prev + 1);
-            connectWebSocket();
+            connectSpringSocket();
           }, RECONNECT_DELAY);
         }
       };
 
-      setSocket(newSocket);
+      setSpringSocket(newSpringSocket);
     } catch (error) {
-      console.error("Error creating WebSocket:", error);
-      if (connectionAttempts < MAX_RECONNECT_ATTEMPTS) {
-        setTimeout(() => {
-          setConnectionAttempts((prev) => prev + 1);
-          connectWebSocket();
-        }, RECONNECT_DELAY);
-      }
+      console.error("Error creating Spring WebSocket:", error);
     }
-  }, [connectionAttempts, driversWithRoutes]);
+  }, [connectionAttempts]);
 
+  // Spring WebSocket 연결
+  useEffect(() => {
+    connectSpringSocket();
+
+    return () => {
+      if (springSocket && springSocket.readyState === WebSocket.OPEN) {
+        springSocket.close();
+      }
+    };
+  }, [connectSpringSocket]);
+
+  // FastAPI WebSocket 연결 (필요한 경우에만)
+  useEffect(() => {
+    if (needFastApiConnection && !fastApiSocket) {
+      connectFastApiSocket();
+    }
+
+    return () => {
+      if (fastApiSocket && fastApiSocket.readyState === WebSocket.OPEN) {
+        fastApiSocket.close();
+      }
+    };
+  }, [needFastApiConnection, fastApiSocket, connectFastApiSocket]);
+
+  // 지도 최적화
   useEffect(() => {
     if (mapInstance && driversWithRoutes.length > 0) {
       const allPoints = driversWithRoutes.flatMap((driver) => [
@@ -269,16 +289,6 @@ const DashboardPage = () => {
       }, 100);
     }
   }, [mapInstance, driversWithRoutes]);
-
-  useEffect(() => {
-    connectWebSocket();
-
-    return () => {
-      if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.close();
-      }
-    };
-  }, [connectWebSocket]);
 
   const handleDriverClick = (driverId: number) => {
     const driver = driversWithRoutes.find((d) => d.driverId === driverId);
@@ -315,7 +325,7 @@ const DashboardPage = () => {
         >
           {driversWithRoutes.map((driver, index) => {
             const realtimeState = realtimeDriverStates.find(
-              (state) => state.driver_id === driver.driverId.toString()
+              (state) => state.driverId === driver.driverId
             );
 
             return (
@@ -351,7 +361,7 @@ const DashboardPage = () => {
                 driversWithRoutes.find((d) => d.driverId === selectedDriver)!
               }
               realtimeState={realtimeDriverStates.find(
-                (state) => state.driver_id === selectedDriver.toString()
+                (state) => state.driverId === selectedDriver
               )}
             />
           </DashboardPage.DriverOverlay>

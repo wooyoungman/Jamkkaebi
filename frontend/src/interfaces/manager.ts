@@ -47,9 +47,17 @@ export const convertToDriver = (res: DriverResponse): Driver => {
 };
 
 export interface DriverState {
-  driver_id: string;
+  driverId: number;
   drowsy_level: number;
   concentration_level: number;
+}
+
+export interface BrainData {
+  driverId: number;
+  predictions?: {
+    classification: "NORMAL" | "ASLEEP";
+  };
+  coordinate: number[];
 }
 
 // 경로 정보의 좌표와 feature 타입
