@@ -12,10 +12,13 @@ import {
 import { DriverText } from "../driverMain/DriverMainCSS";
 import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { SketchPicker } from "react-color";
+// import { SketchPicker } from "react-color";
+import ColorPicker from "@radial-color-picker/react-color-picker";
+import "@radial-color-picker/react-color-picker/dist/style.css";
 import {
   ToggleEclipseSVG,
   EclipseRGB,
+  EclipsePickerSVG,
 } from "@/styles/driver/driverCar/DriverCarSVG";
 import BulbSVG from "@/styles/driver/driverCar/BulbSVG";
 import CarPowerSlider from "./CarPowerSlider";
@@ -34,15 +37,104 @@ const CustomDriverText = styled(DriverText)`
   text-align: start;
 `;
 
+// ColorPickerContainer를 화면 중앙에 위치시키도록 스타일 설정
+const CenteredColorPickerContainer = styled(ColorPickerContainer)`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000; // 다른 요소보다 위에 나타나도록 설정
+  padding: 10px; // 여백 추가
+  border-radius: 8px; // 둥근 모서리 추가
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // 그림자 효과 추가
+`;
+
+// RGB 타입 정의
+interface RGB {
+  r: number;
+  g: number;
+  b: number;
+}
+
+function rgbToHue(r: number, g: number, b: number): number {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const delta = max - min;
+
+  let hue = 0;
+
+  if (delta === 0) {
+    hue = 0; // 회색 계열 (색상 없음)
+  } else if (max === r) {
+    hue = ((g - b) / delta) % 6;
+  } else if (max === g) {
+    hue = (b - r) / delta + 2;
+  } else if (max === b) {
+    hue = (r - g) / delta + 4;
+  }
+
+  hue = Math.round(hue * 60); // 0-360 범위로 변환
+  if (hue < 0) hue += 360; // 음수 방지
+
+  return hue;
+}
+
+function hueToRgb(hue: number): { r: number; g: number; b: number } {
+  const saturation = 1; // 최대 채도
+  const value = 1; // 최대 밝기
+
+  const c = value * saturation;
+  const x = c * (1 - Math.abs(((hue / 60) % 2) - 1));
+  const m = value - c;
+
+  let r = 0,
+    g = 0,
+    b = 0;
+
+  if (0 <= hue && hue < 60) {
+    r = c;
+    g = x;
+    b = 0;
+  } else if (60 <= hue && hue < 120) {
+    r = x;
+    g = c;
+    b = 0;
+  } else if (120 <= hue && hue < 180) {
+    r = 0;
+    g = c;
+    b = x;
+  } else if (180 <= hue && hue < 240) {
+    r = 0;
+    g = x;
+    b = c;
+  } else if (240 <= hue && hue < 300) {
+    r = x;
+    g = 0;
+    b = c;
+  } else if (300 <= hue && hue < 360) {
+    r = c;
+    g = 0;
+    b = x;
+  }
+
+  r = Math.round((r + m) * 255);
+  g = Math.round((g + m) * 255);
+  b = Math.round((b + m) * 255);
+
+  return { r, g, b };
+}
+
 const CarLightControl: React.FC = () => {
   const [power, setPower] = useAtom(lightPowerAtom);
   const [isOn, setIsOn] = useAtom(lightOnOffAtom);
   const [selectedRGB, setSelectedRGB] = useAtom(lightColorAtom);
+  const initialHue = rgbToHue(selectedRGB.r, selectedRGB.g, selectedRGB.b);
 
   const [showPicker, setShowPicker] = useState(false);
-  const [pickerPosition, setPickerPosition] = useState({ x: 0, y: 0 });
-  // 컬러 피커의 초기 색상
-  // const [initialColor, setInitialColor] = useState("#ffffff");
 
   const [vehicleId] = useAtom(vehicleIdAtom);
   const [token] = useAtom(tokenAtom);
@@ -50,23 +142,23 @@ const CarLightControl: React.FC = () => {
   const pickerRef = useRef<HTMLDivElement>(null);
 
   // axios.patch 요청 함수
-  const sendPatchRequest = (status: number) => {
+  const sendPatchRequest = (status: number, color?: RGB) => {
     const target = "LIGHT";
     const control = status;
 
-    const red = parseInt(selectedRGB.slice(1, 3), 16) || 0;
-    const green = parseInt(selectedRGB.slice(3, 5), 16) || 0;
-    const blue = parseInt(selectedRGB.slice(5, 7), 16) || 0;
+    const { r, g, b } = color || selectedRGB;
 
     const responseData = {
       target,
       control,
-      red,
-      green,
-      blue,
+      red: r,
+      green: g,
+      blue: b,
       brightness: power,
     };
+
     console.log("responseData: ", responseData);
+
     axios
       .patch(
         `https://k11c106.p.ssafy.io/api/v1/vehicle/control/command/${vehicleId}`,
@@ -103,25 +195,23 @@ const CarLightControl: React.FC = () => {
   };
 
   // EclipseRGB 한 번 클릭 핸들러 -> 색상 선택시 요청 전송
-  const handleEclipseClick = (color: string) => {
+  const handleEclipseClick = (color: RGB) => {
     setSelectedRGB(color); // 선택된 RGB 값만 저장
-    sendPatchRequest(2);
+    sendPatchRequest(2, color);
   };
 
   // EclipseRGB 더블 클릭 핸들러
-  const handleEclipseDoubleClick = (event: React.MouseEvent, color: string) => {
+  const handleEclipseDoubleClick = () => {
     // 피커 초기 색상 설정
     // setInitialColor(color);
     setShowPicker(true);
-    setPickerPosition({ x: event.clientX, y: event.clientY });
   };
 
-  // 컬러 피커의 색상 변경 핸들러 -> 색상 선택 시 요청 전송
-  const handleColorChange = (color: any) => {
-    // setInitialColor(color.hex);
-    setSelectedRGB(color.hex); // 선택된 RGB 값만 저장
-    sendPatchRequest(2);
-    console.log("Selected RGB:", color.hex);
+  // 최종 색상 선택 시 호출되는 함수
+  const handleSelect = (hue: number) => {
+    const rgb = hueToRgb(hue); // hue 값을 RGB로 변환
+    setSelectedRGB(rgb); // 변환된 RGB 값을 상태로 설정
+    sendPatchRequest(2, rgb);
   };
 
   useEffect(() => {
@@ -171,23 +261,24 @@ const CarLightControl: React.FC = () => {
       <CarRightLowerBody>
         <SliderRGBContainer>
           <EclipseRGB
-            color="#FF0000"
-            onClick={() => handleEclipseClick("#FF0000")}
-            onDoubleClick={(e) => handleEclipseDoubleClick(e, "#FF0000")}
+            color={{ r: 255, g: 0, b: 0 }}
+            onClick={() => handleEclipseClick({ r: 255, g: 0, b: 0 })}
+            onDoubleClick={handleEclipseDoubleClick}
             isOn={isOn}
           />
           <EclipseRGB
-            color="#0000FF"
-            onClick={() => handleEclipseClick("#0000FF")}
-            onDoubleClick={(e) => handleEclipseDoubleClick(e, "#0000FF")}
+            color={{ r: 0, g: 255, b: 0 }}
+            onClick={() => handleEclipseClick({ r: 0, g: 255, b: 0 })}
+            onDoubleClick={handleEclipseDoubleClick}
             isOn={isOn}
           />
           <EclipseRGB
-            color="#00FF00"
-            onClick={() => handleEclipseClick("#00FF00")}
-            onDoubleClick={(e) => handleEclipseDoubleClick(e, "#00FF00")}
+            color={{ r: 0, g: 0, b: 255 }}
+            onClick={() => handleEclipseClick({ r: 0, g: 0, b: 255 })}
+            onDoubleClick={handleEclipseDoubleClick}
             isOn={isOn}
           />
+          <EclipsePickerSVG />
         </SliderRGBContainer>
         <CarPowerSlider
           power={power}
@@ -200,12 +291,12 @@ const CarLightControl: React.FC = () => {
 
       {/* 컬러 피커 */}
       {showPicker && (
-        <ColorPickerContainer
-          ref={pickerRef}
-          style={{ top: pickerPosition.y, left: pickerPosition.x }}
-        >
-          <SketchPicker color={selectedRGB} onChange={handleColorChange} />
-        </ColorPickerContainer>
+        <CenteredColorPickerContainer ref={pickerRef}>
+          <ColorPicker
+            hue={initialHue} // 초기 hue 값 설정
+            onSelect={handleSelect} // 최종 색상 선택 시 호출
+          />
+        </CenteredColorPickerContainer>
       )}
     </>
   );
