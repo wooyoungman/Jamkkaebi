@@ -46,36 +46,64 @@ export const convertToDriver = (res: DriverResponse): Driver => {
   };
 };
 
-export interface Location {
-  lat: number;
-  lng: number;
+export interface DriverState {
+  driver_id: string;
+  drowsy_level: number;
+  concentration_level: number;
 }
 
-export interface DrowsyEvent {
-  id: number;
-  username: string;
-  profileImage: string;
-  driverName: string;
-  age: number;
-  timestamp: string;
-  location: Location;
-  drowsyCount: number;
-  drowsyTime: number;
-  fatigueLevel: "양호" | "보통" | "강함";
-  route: MapDriver["route"];
+// 경로 정보의 좌표와 feature 타입
+export interface Coordinate {
+  type: string;
+  coordinates: number[] | number[][]; // lat, lng
 }
 
-export interface MapDriver {
-  id: number;
-  username: string;
-  name: string;
-  vehicleNumber: string;
-  status: string;
-  location: Location;
-  lastLocation: string;
-  route: Location[];
-  sleepEvents: number;
-  lastUpdate: string;
+export interface Feature {
+  type: string;
+  geometry: Coordinate;
+  properties: {
+    index: number;
+    pointIndex?: number;
+    lineIndex?: number;
+    pointType?: string;
+    distance?: number;
+    totalDistance?: number;
+  };
+}
+
+// geoJSON 형식
+export interface FeatureCollection {
+  type: string;
+  features: Feature[]; // 경로의 각 구간
+}
+
+export interface DeliveryRecord {
+  deliveryId: number;
+  driverId: number; // --> Driver랑 연결
+  routeId: string;
+  cargoId: number;
+  origin: string;
+  destination: string;
+  length: number;
+  departureDate: string;
+  arrivalDate: string;
+  focusSector: number;
+  sleepSector: number;
+  route_info: FeatureCollection;
+  route_sleep: FeatureCollection; // 졸음 구간
+  route_low_focus: FeatureCollection; // 집중도 낮은 구간
+}
+
+export interface DriverWithRoute extends DriverResponse {
+  location: {
+    lat: number;
+    lng: number;
+  };
+  route: Array<{
+    lat: number;
+    lng: number;
+  }>;
+  deliveryInfo: DeliveryRecord;
 }
 
 export interface LoginRequest {
@@ -102,3 +130,5 @@ export interface RegisterResponse {
   username: string;
   registerDate: string;
 }
+
+// 웹 소켓 관련해서도 타입 정의 필요!

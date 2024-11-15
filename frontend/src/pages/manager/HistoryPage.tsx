@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import styled from "styled-components";
-import { DrowsyEvent } from "@/interfaces/manager";
+// import { DrowsyEvent } from "@/interfaces/manager";
+import { mapInstanceAtom } from "@atoms/index";
 import DriverDetailCard from "@components/manager/DriverDetailCard";
 import MapContainer from "@components/manager/MapContainer";
 import DriverMarker from "@components/manager/DriverMarker";
@@ -59,7 +60,7 @@ const HistoryPage = () => {
   const [selectedHistory, setSelectedHistory] = useState<DrowsyEvent | null>(
     null
   );
-  const [mapInstance] = useAtom(mapInstanceAtom);
+  const [mapInstance, setMapInstance] = useAtom(mapInstanceAtom);
 
   useEffect(() => {
     console.log("HistoryPage mapInstance:", mapInstance);
@@ -86,12 +87,11 @@ const HistoryPage = () => {
   }, [mapInstance]);
 
   const handleCardClick = (history: DrowsyEvent) => {
-    console.log("카드 클릭됨:", history);
     setSelectedHistory(history);
 
     if (mapInstance && window.Tmapv2) {
       const positions = history.route.map(
-        (point) => new window.Tmapv2.LatLng(point.lat, point.lng)
+        (point: any) => new window.Tmapv2.LatLng(point.lat, point.lng)
       );
 
       // 경로의 중간 지점을 중심으로 설정

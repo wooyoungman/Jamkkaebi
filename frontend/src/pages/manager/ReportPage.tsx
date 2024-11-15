@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import PurpleButton from "@/components/manager/PurpleButton";
 import { Share } from "lucide-react";
 import { User } from "@/interfaces/manager";
-import { Line, Bar, Radar } from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -64,19 +64,6 @@ export const ReportPage = () => {
         backgroundColor: "#F59E0B",
         tension: 0.4,
         fill: false,
-      },
-    ],
-  };
-
-  // 운전 분석 임의 데이터
-  const radarData = {
-    labels: ["운전 능력", "피로도", "집중력", "위험도", "안정성", "속도"],
-    datasets: [
-      {
-        data: [85, 70, 90, 65, 80, 75],
-        borderColor: "#38BDF8",
-        backgroundColor: "rgba(56, 189, 248, 0.2)",
-        borderWidth: 2,
       },
     ],
   };

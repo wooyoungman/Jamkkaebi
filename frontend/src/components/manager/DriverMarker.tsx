@@ -10,7 +10,8 @@ interface DriverMarkerProps {
     lng: number;
   };
   driverId: number;
-  onClick?: () => void;
+  onClick: () => void;
+  status?: "normal" | "drowsy" | "low_focus";
 }
 
 const DriverMarker = ({ position, driverId, onClick }: DriverMarkerProps) => {

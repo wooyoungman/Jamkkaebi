@@ -1,14 +1,28 @@
 import styled from "styled-components";
-import { MapDriver } from "@/interfaces/manager";
+import { DriverState, DriverWithRoute } from "@interfaces/manager";
 
 interface DriverInfoModalProps {
   isOpen: boolean;
   onClose: () => void;
-  driver: MapDriver;
+  driver: DriverWithRoute;
+  realtimeState?: DriverState;
 }
 
 const DriverInfoModal = ({ isOpen, onClose, driver }: DriverInfoModalProps) => {
   if (!isOpen) return null;
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  // 졸음 운전 감지 횟수 계산
+  const sleepEvents = driver.deliveryInfo.route_sleep.features.length;
 
   return (
     <DriverInfoModal.Overlay onClick={onClose}>
@@ -20,7 +34,7 @@ const DriverInfoModal = ({ isOpen, onClose, driver }: DriverInfoModalProps) => {
         <DriverInfoModal.Body>
           <div>
             <label>이름:</label>
-            <span>{driver.name}</span>
+            <span>{driver.driverName}</span>
           </div>
           <div>
             <label>차량번호:</label>
@@ -31,17 +45,41 @@ const DriverInfoModal = ({ isOpen, onClose, driver }: DriverInfoModalProps) => {
             <span>{driver.status}</span>
           </div>
           <div>
-            <label>현재위치:</label>
-            <span>{driver.lastLocation}</span>
+            <label>출발지:</label>
+            <span>{driver.deliveryInfo.origin}</span>
+          </div>
+          <div>
+            <label>도착지:</label>
+            <span>{driver.deliveryInfo.destination}</span>
+          </div>
+          <div>
+            <label>출발 시간:</label>
+            <span>{formatDate(driver.deliveryInfo.departureDate)}</span>
+          </div>
+          <div>
+            <label>도착 예정:</label>
+            <span>{formatDate(driver.deliveryInfo.arrivalDate)}</span>
+          </div>
+          <div>
+            <label>총 이동거리:</label>
+            <span>{Math.round(driver.deliveryInfo.length / 1000)}km</span>
           </div>
           <div>
             <label>졸음운전 감지:</label>
-            <span>{driver.sleepEvents}회</span>
+            <span>{sleepEvents}회</span>
           </div>
           <div>
-            <label>최종업데이트:</label>
-            <span>{driver.lastUpdate}</span>
+            <label>낮은 집중도 구간:</label>
+            <span>
+              {driver.deliveryInfo.route_low_focus.features.length}구간
+            </span>
           </div>
+          {driver.phoneNumber && (
+            <div>
+              <label>연락처:</label>
+              <span>{driver.phoneNumber}</span>
+            </div>
+          )}
         </DriverInfoModal.Body>
       </DriverInfoModal.Content>
     </DriverInfoModal.Overlay>
@@ -94,6 +132,12 @@ DriverInfoModal.Body = styled.div`
     label {
       font-weight: bold;
       margin-right: 10px;
+      min-width: 100px;
+      display: inline-block;
+    }
+
+    span {
+      color: #666;
     }
   }
 `;
