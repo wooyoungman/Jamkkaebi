@@ -10,6 +10,7 @@ import {
   PhoneSvg,
   ReportSvg,
 } from "../../styles/driver/MenuButton";
+import DrivingWarningModal from "./DrivingWarningModal";
 
 const FooterDiv = styled.div`
   display: flex;
@@ -24,6 +25,19 @@ const Menu = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 65%;
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 `;
 
 const Footer: React.FC = () => {
@@ -62,11 +76,9 @@ const Footer: React.FC = () => {
       </FooterDiv>
 
       {isPhoneModalOpen && (
-        <div>
-          {/* 모달 콘텐츠를 여기 추가 */}
-          <p>전화 모달</p>
-          <button onClick={() => setIsPhoneModalOpen(false)}>닫기</button>
-        </div>
+        <ModalOverlay>
+          <DrivingWarningModal onClose={() => setIsPhoneModalOpen(false)} />
+        </ModalOverlay>
       )}
     </>
   );

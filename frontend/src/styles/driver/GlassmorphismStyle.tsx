@@ -35,9 +35,10 @@ export interface SizeProps {
 }
 
 export interface LineProps extends SizeProps {
-  position?: "top" | "bottom";
+  position?: "top" | "bottom" | "left" | "right";
   offsetleft?: string;
   offsetRight?: string;
+  offsetTop?: string;
   centered?: boolean;
 }
 
@@ -48,7 +49,7 @@ export interface EclipseDivProps extends SizeProps {
 
 export const Card = styled.div<SizeProps>`
   width: ${(props) => props.cardwidth || "420px"};
-  min-width: 650px;
+  /* min-width: 650px; */
   height: ${(props) => props.cardheight || "600px"};
   position: relative;
   border-radius: 30px;
@@ -84,13 +85,25 @@ export const EclipseDiv = styled.div<EclipseDivProps>`
   width: ${(props) => props.cardwidth || "247px"};
   height: ${(props) => props.cardheight || "77px"};
   flex-shrink: 0;
-  opacity: 0.6;
+  opacity: 1;
   position: absolute;
   ${(props) => (props.top ? `top: ${props.top};` : "")}
   ${(props) => (props.bottom ? `bottom: ${props.bottom};` : "")}
 
   left: 50%;
   transform: translateX(-50%);
+`;
+
+export const RightRedEclipseDiv = styled.div<EclipseDivProps>`
+  position: absolute;
+  top: ${(props) => props.top || "0"}; /* 상단에서 떨어진 거리 */
+  right: 0; /* 우측 끝에 고정 */
+`;
+
+export const LeftRedEclipseDiv = styled.div<EclipseDivProps>`
+  position: absolute;
+  top: ${(props) => props.top || "0"}; /* 상단에서 떨어진 거리 */
+  left: 0; /* 우측 끝에 고정 */
 `;
 
 export const BlueEclipseSVG: React.FC<SizeProps> = ({
@@ -104,7 +117,7 @@ export const BlueEclipseSVG: React.FC<SizeProps> = ({
     viewBox="0 0 528 88"
     fill="none"
   >
-    <ellipse opacity="0.6" cx="50%" cy="50%" rx="50%" ry="50%" fill="#3055E3" />
+    <ellipse opacity="0.8" cx="50%" cy="50%" rx="50%" ry="50%" fill="#3055E3" />
   </svg>
 );
 
@@ -119,7 +132,7 @@ export const GrayEclipseSVG: React.FC<SizeProps> = ({
     viewBox="0 0 528 88"
     fill="none"
   >
-    <ellipse opacity="0.6" cx="50%" cy="50%" rx="50%" ry="50%" fill="#727272" />
+    <ellipse opacity="0.8" cx="50%" cy="50%" rx="50%" ry="50%" fill="#727272" />
   </svg>
 );
 
@@ -147,30 +160,60 @@ export const ModalGlassDiv = styled.div<SizeProps>`
   box-sizing: border-box;
 `;
 
-// export const ReportModalGlassDiv: React.FC = () => {
-//   return (
-//     <Card>
-//       <GrayLine
-//         cardwidth="197px"
-//         opacity={0.6}
-//         position="top"
-//         offsetleft="35px"
-//       />
-//       <EclipseDiv cardwidth="247px" cardheight="77px" top="5px">
-//         <GrayEclipseSVG cardwidth="247px" cardheight="77px" />
-//       </EclipseDiv>
-//       <EclipseDiv cardwidth="247px" cardheight="77px" bottom="15px">
-//         <BlueEclipseSVG cardwidth="247px" cardheight="77px" />
-//       </EclipseDiv>
-//       <GrayLine
-//         cardwidth="289px"
-//         opacity={0.6}
-//         position="bottom"
-//         offsetRight="25px"
-//       />
-//       <ModalGlassDiv />
-//     </Card>
-//   );
-// };
+export const RedLine = styled.hr<LineProps>`
+  width: 1px;
+  height: 20%;
+  opacity: ${(props) => props.opacity || 0.6};
+  border: 0;
+  margin: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 15, 60, 0) 0%,
+    rgba(255, 15, 60, 0.6) 50%,
+    rgba(255, 15, 60, 0) 100%
+  );
+  position: absolute;
+  top: ${(props) => props.offsetTop || "20%"}; /* 상단에서의 위치 */
+  ${(props) =>
+    props.position === "left"
+      ? "left: 0;" /* 좌측 끝에 맞춤 */
+      : "right: 0;"}/* 우측 끝에 맞춤 */
+`;
 
-// export default ReportModalGlassDiv;
+export const RightRedEclipse = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="86"
+    height="85"
+    viewBox="0 0 86 85"
+    fill="none"
+  >
+    <ellipse
+      opacity="0.56"
+      cx="65.5"
+      cy="42.5"
+      rx="65.5"
+      ry="42.5"
+      fill="#FF0F3C"
+    />
+  </svg>
+);
+
+export const LeftRedEclipse = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="83"
+    height="85"
+    viewBox="0 0 83 85"
+    fill="none"
+  >
+    <ellipse
+      opacity="0.56"
+      cx="17.5"
+      cy="42.5"
+      rx="65.5"
+      ry="42.5"
+      fill="#FF0F3C"
+    />
+  </svg>
+);
