@@ -4,8 +4,8 @@ import {
   CarPowerWrapper,
   ToggleContainer,
   ToggleCircle,
-  CarControlUIDiv,
   CarRightLowerBody,
+  CarSeatUIDiv,
 } from "./DriverCarCSS";
 import { ToggleEclipseSVG } from "@/styles/driver/driverCar/DriverCarSVG";
 import { DriverText } from "../driverMain/DriverMainCSS";
@@ -52,7 +52,7 @@ const AirFlow = styled.div<{ isOn: boolean }>`
 // 의자 이미지와 바람 효과 컨테이너
 const SeatContainer = styled.div`
   position: relative;
-  display: inline-block;
+  /* display: inline-block; */
 `;
 
 const CustomDriverText = styled(DriverText)`
@@ -69,9 +69,9 @@ const CarAirControl: React.FC = () => {
   const sendPatchRequest = () => {
     const target = "MOTOR";
     const control = isOn ? 1 : 0;
-    const red = 0
-    const green = 0
-    const blue = 0
+    const red = 0;
+    const green = 0;
+    const blue = 0;
 
     const responseData = {
       target,
@@ -83,22 +83,22 @@ const CarAirControl: React.FC = () => {
     };
     console.log("responseData: ", responseData);
     axios
-    .patch(
-      `https://k11c106.p.ssafy.io/api/v1/vehicle/control/command/${vehicleId}`,
-      responseData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 추가
-        },
-      }
-    )
-    .then((response) => {
-      console.log("Patch request successful:", response.data);
-    })
-    .catch((error) => {
-      console.error("Patch request failed:", error);
-    });
-  }
+      .patch(
+        `https://k11c106.p.ssafy.io/api/v1/vehicle/control/command/${vehicleId}`,
+        responseData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 추가
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Patch request successful:", response.data);
+      })
+      .catch((error) => {
+        console.error("Patch request failed:", error);
+      });
+  };
 
   // 슬라이더 변경 후 마우스를 뗄 때 요청 전송
   const handleSliderChangeEnd = () => {
@@ -129,7 +129,7 @@ const CarAirControl: React.FC = () => {
             </ToggleContainer>
           </CarPowerWrapper>
         </CarPowerDiv>
-        <CarControlUIDiv>
+        <CarSeatUIDiv>
           <SeatContainer>
             <img src={carSeatImg} alt="Car Seat" />
             {isOn && (
@@ -146,7 +146,7 @@ const CarAirControl: React.FC = () => {
               </>
             )}
           </SeatContainer>
-        </CarControlUIDiv>
+        </CarSeatUIDiv>
       </CarRightUpperBody>
       <CarRightLowerBody>
         <CarPowerSlider

@@ -100,7 +100,7 @@ const CarEctControl: React.FC = () => {
     sendPatchRequest("WINDOW", windowControlState);
   };
 
-  // Down 버튼을 누를 때 상태를 -1로 변경
+  // Down 버튼을 누를 때 상태를 2로 변경
   const handleMouseDownDown = () => {
     setWindowControlState(2);
     sendPatchRequest("WINDOW", windowControlState);

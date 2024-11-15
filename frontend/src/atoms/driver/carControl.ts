@@ -7,8 +7,14 @@ export const lightOnOffAtom = atom(false);
 // 빛의 세기 상태 (0-100)
 export const lightPowerAtom = atom(50);
 
+interface RGB {
+  r: number;
+  g: number;
+  b: number;
+}
+
 // 빛의 색상 상태
-export const lightColorAtom = atom("#ffffff");
+export const lightColorAtom = atom<RGB>({ r: 255, g: 255, b: 255 }); // 초기값을 흰색으로 설정
 
 // 음량 전원 상태
 export const soundOnOffAtom = atom(false);
