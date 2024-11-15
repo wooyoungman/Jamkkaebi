@@ -138,5 +138,3 @@ export interface RegisterResponse {
   username: string;
   registerDate: string;
 }
-
-// 웹 소켓 관련해서도 타입 정의 필요!

@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => {
         "@atoms": path.resolve(__dirname, "./src/atoms"),
         "@styles": path.resolve(__dirname, "./src/styles"),
         "@interfaces": path.resolve(__dirname, "./src/interfaces"),
+        "@hooks": path.resolve(__dirname, "./src/hooks"),
       },
     },
   };

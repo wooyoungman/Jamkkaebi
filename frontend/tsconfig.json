@@ -10,7 +10,8 @@
       "@pages/*": ["src/pages/*"],
       "@atoms/*": ["src/atoms/*"],
       "@styles/*": ["src/styles/*"],
-      "@interfaces/*": ["src/interfaces/*"]
+      "@interfaces/*": ["src/interfaces/*"],
+      "@hooks/*": ["src/hooks/*"]
     },
     "target": "ES2020",
     "useDefineForClassFields": true,
