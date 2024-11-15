@@ -38,14 +38,21 @@ async def handle_tcp_connection(reader, writer):
 
             data_values = decoded_data.split(",")
             if len(data_values) == 8:
-                data = np.array(data_values, dtype=float).reshape(1, -1)
-                data_df = pd.DataFrame(data, columns=[
+                # 매핑 데이터 이름과 값
+                feature_names = [
                     "delta", "theta", "lowAlpha", "highAlpha",
                     "lowBeta", "highBeta", "lowGamma", "highGamma"
-                ])
+                ]
+                brain_data = {name: float(value) for name, value in zip(feature_names, data_values)}
+
+                # 데이터프레임 생성
+                data = np.array(data_values, dtype=float).reshape(1, -1)
+                data_df = pd.DataFrame(data, columns=feature_names)
+                
+                # 예측
                 predictions = model.predict(data_df)
                 response = {
-                    "input_data": data_values,
+                    "brain_data": brain_data,  # 데이터 이름과 값 매핑된 JSON
                     "predictions": {
                         "attention": predictions.iloc[0]["attention"],
                         "meditation": predictions.iloc[0]["meditation"],
