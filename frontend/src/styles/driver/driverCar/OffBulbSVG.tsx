@@ -28,7 +28,7 @@ const OffBulbSVG: React.FC = () => {
         <path
           d="M111.076 252.627C86.1803 266.331 60.4811 262.354 48.9064 258.183L51.7768 250.318C61.4686 258.064 82.3436 265.353 107.334 248.277C107.961 249.104 108.613 249.762 109.172 250.325C109.292 250.445 109.407 250.561 109.517 250.674C110.142 251.315 110.665 251.898 111.076 252.627Z"
           stroke="url(#paint4_linear_478_775)"
-          stroke-width="4.39809"
+          strokeWidth="4.39809"
         />
       </g>
       <g filter="url(#filter1_f_478_775)">
@@ -65,22 +65,22 @@ const OffBulbSVG: React.FC = () => {
         d="M38.9961 59.7963C50.5998 54.4975 109.355 54.8659 113.96 60.7172V33.0877C112.302 31.0615 107.882 29.9563 103.829 29.9563C89.6471 29.7107 60.7668 29.3669 52.81 29.9563C44.8532 30.5457 40.531 32.2895 39.3645 33.0877C39.2417 42.0519 38.9961 59.9436 38.9961 59.7963Z"
         fill="url(#paint11_linear_478_775)"
       />
-      <g style={{mixBlendMode: "multiply"}}>
+      <g style={{ mixBlendMode: "multiply" }}>
         <path
           d="M38.9961 59.7963C50.5998 54.4975 109.355 54.8659 113.96 60.7172V33.0877C112.302 31.0615 107.882 29.9563 103.829 29.9563C89.6471 29.7107 60.7668 29.3669 52.81 29.9563C44.8532 30.5457 40.531 32.2895 39.3645 33.0877C39.2417 42.0519 38.9961 59.9436 38.9961 59.7963Z"
           fill="url(#pattern0_478_775)"
-          fill-opacity="0.54"
+          fillOpacity="0.54"
         />
       </g>
-      <g style={{mixBlendMode: "multiply"}}>
+      <g style={{ mixBlendMode: "multiply" }}>
         <path
           d="M38.9961 59.7963C50.5998 54.4975 109.355 54.8659 113.96 60.7172V33.0877C112.302 31.0615 107.882 29.9563 103.829 29.9563C89.6471 29.7107 60.7668 29.3669 52.81 29.9563C44.8532 30.5457 40.531 32.2895 39.3645 33.0877C39.2417 42.0519 38.9961 59.9436 38.9961 59.7963Z"
           fill="url(#pattern1_478_775)"
-          fill-opacity="0.3"
-          style={{mixBlendMode: "soft-light"}}
+          fillOpacity="0.3"
+          style={{ mixBlendMode: "soft-light" }}
         />
       </g>
-      <g style={{mixBlendMode: "color-dodge"}}>
+      <g style={{ mixBlendMode: "color-dodge" }}>
         <path
           d="M38.9961 59.7963C50.5998 54.4975 109.355 54.8659 113.96 60.7172V33.0877C112.302 31.0615 107.882 29.9563 103.829 29.9563C89.6471 29.7107 60.7668 29.3669 52.81 29.9563C44.8532 30.5457 40.531 32.2895 39.3645 33.0877C39.2417 42.0519 38.9961 59.9436 38.9961 59.7963Z"
           fill="url(#paint12_linear_478_775)"
@@ -94,22 +94,22 @@ const OffBulbSVG: React.FC = () => {
         d="M38.9961 88.1637C50.5998 82.8649 109.355 83.2333 113.96 89.0847V62.5603C112.302 60.5341 107.882 59.7169 103.829 59.0606C88.1737 56.5247 60.7668 57.7343 52.81 58.3238C44.8532 58.9132 40.531 60.6569 39.3645 61.4551C39.2417 70.4194 38.9961 88.3111 38.9961 88.1637Z"
         fill="url(#paint14_linear_478_775)"
       />
-      <g style={{mixBlendMode: "multiply"}}>
+      <g style={{ mixBlendMode: "multiply" }}>
         <path
           d="M38.9961 88.1637C50.5998 82.8649 109.355 83.2333 113.96 89.0847V62.5603C112.486 60.7612 108.066 59.656 103.829 59.0606C89.2788 56.5246 60.7668 57.7343 52.81 58.3238C44.8532 58.9132 40.531 60.6569 39.3645 61.4551C39.2417 70.4194 38.9961 88.3111 38.9961 88.1637Z"
           fill="url(#pattern2_478_775)"
-          fill-opacity="0.54"
+          fillOpacity="0.54"
         />
       </g>
-      <g style={{mixBlendMode: "multiply"}}>
+      <g style={{ mixBlendMode: "multiply" }}>
         <path
           d="M38.9961 88.1637C50.5998 82.8649 109.355 83.2333 113.96 89.0847V62.5603C112.67 60.9454 108.434 59.656 103.829 59.0606C88.7262 56.5246 60.7668 57.7343 52.81 58.3238C44.8532 58.9132 40.531 60.6569 39.3645 61.4551C39.2417 70.4194 38.9961 88.3111 38.9961 88.1637Z"
           fill="url(#pattern3_478_775)"
-          fill-opacity="0.3"
-          style={{mixBlendMode: "soft-light"}}
+          fillOpacity="0.3"
+          style={{ mixBlendMode: "soft-light" }}
         />
       </g>
-      <g style={{mixBlendMode: "color-dodge"}}>
+      <g style={{ mixBlendMode: "color-dodge" }}>
         <path
           d="M38.9961 88.1637C50.5998 82.8649 109.355 83.2333 113.96 89.0847V62.5603C112.302 60.577 107.697 59.656 103.829 59.0606C89.463 56.5246 60.7668 57.7343 52.81 58.3238C44.8532 58.9132 40.531 60.6569 39.3645 61.4551C39.2417 70.4194 38.9961 88.3111 38.9961 88.1637Z"
           fill="url(#paint15_linear_478_775)"
@@ -126,8 +126,8 @@ const OffBulbSVG: React.FC = () => {
       <path
         d="M76.207 8L76.207 25.62"
         stroke="url(#paint18_linear_478_775)"
-        stroke-width="15.266"
-        stroke-linecap="square"
+        strokeWidth="15.266"
+        strokeLinecap="square"
       />
       <defs>
         <filter
@@ -137,9 +137,9 @@ const OffBulbSVG: React.FC = () => {
           width="72.753"
           height="24.2256"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -158,9 +158,9 @@ const OffBulbSVG: React.FC = () => {
           width="85.3189"
           height="36.7916"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -224,8 +224,8 @@ const OffBulbSVG: React.FC = () => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(75.6344 207.811) rotate(-90) scale(144.54 122.862)"
         >
-          <stop stop-opacity="0.06" />
-          <stop offset="1" stop-opacity="0" />
+          <stop stopOpacity="0.06" />
+          <stop offset="1" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint1_linear_478_775"
@@ -235,8 +235,8 @@ const OffBulbSVG: React.FC = () => {
           y2="200.189"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="paint2_radial_478_775"
@@ -246,8 +246,8 @@ const OffBulbSVG: React.FC = () => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(9.79279 161.881) rotate(90) scale(16.6644 7.88654)"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint3_linear_478_775"
@@ -257,9 +257,9 @@ const OffBulbSVG: React.FC = () => {
           y2="219.839"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="0.598072" stop-color="white" stop-opacity="0.22" />
-          <stop offset="0.966228" stop-color="white" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="0.598072" stopColor="white" stopOpacity="0.22" />
+          <stop offset="0.966228" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_478_775"
@@ -269,8 +269,8 @@ const OffBulbSVG: React.FC = () => {
           y2="259.333"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.312643" stop-color="white" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop offset="0.312643" stopColor="white" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_478_775"
@@ -280,8 +280,8 @@ const OffBulbSVG: React.FC = () => {
           y2="254.004"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint6_linear_478_775"
@@ -291,8 +291,8 @@ const OffBulbSVG: React.FC = () => {
           y2="193.802"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="1" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint7_linear_478_775"
@@ -302,8 +302,8 @@ const OffBulbSVG: React.FC = () => {
           y2="108.6"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D9D9D9" />
-          <stop offset="1" stop-color="#D9D9D9" stop-opacity="0" />
+          <stop stopColor="#D9D9D9" />
+          <stop offset="1" stopColor="#D9D9D9" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint8_linear_478_775"
@@ -313,8 +313,8 @@ const OffBulbSVG: React.FC = () => {
           y2="108.413"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.175597" stop-color="#D9D9D9" />
-          <stop offset="1" stop-color="#D9D9D9" stop-opacity="0" />
+          <stop offset="0.175597" stopColor="#D9D9D9" />
+          <stop offset="1" stopColor="#D9D9D9" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint9_linear_478_775"
@@ -324,9 +324,9 @@ const OffBulbSVG: React.FC = () => {
           y2="153.561"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="0.44343" stop-color="white" stop-opacity="0" />
-          <stop offset="0.737687" stop-color="white" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="0.44343" stopColor="white" stopOpacity="0" />
+          <stop offset="0.737687" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint10_linear_478_775"
@@ -336,8 +336,8 @@ const OffBulbSVG: React.FC = () => {
           y2="146.928"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint11_linear_478_775"
@@ -347,12 +347,12 @@ const OffBulbSVG: React.FC = () => {
           y2="62.1908"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#101010" />
-          <stop offset="0.236123" stop-color="#222222" />
-          <stop offset="0.47444" stop-color="#494B4A" />
-          <stop offset="0.63588" stop-color="#494B4A" />
-          <stop offset="0.812657" stop-color="#222222" />
-          <stop offset="1" stop-color="#101010" />
+          <stop stopColor="#101010" />
+          <stop offset="0.236123" stopColor="#222222" />
+          <stop offset="0.47444" stopColor="#494B4A" />
+          <stop offset="0.63588" stopColor="#494B4A" />
+          <stop offset="0.812657" stopColor="#222222" />
+          <stop offset="1" stopColor="#101010" />
         </linearGradient>
         <linearGradient
           id="paint12_linear_478_775"
@@ -362,12 +362,12 @@ const OffBulbSVG: React.FC = () => {
           y2="62.1908"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#101010" />
-          <stop offset="0.236123" stop-color="#222222" />
-          <stop offset="0.47444" stop-color="#494B4A" />
-          <stop offset="0.63588" stop-color="#494B4A" />
-          <stop offset="0.812657" stop-color="#222222" />
-          <stop offset="1" stop-color="#101010" />
+          <stop stopColor="#101010" />
+          <stop offset="0.236123" stopColor="#222222" />
+          <stop offset="0.47444" stopColor="#494B4A" />
+          <stop offset="0.63588" stopColor="#494B4A" />
+          <stop offset="0.812657" stopColor="#222222" />
+          <stop offset="1" stopColor="#101010" />
         </linearGradient>
         <linearGradient
           id="paint13_linear_478_775"
@@ -377,8 +377,8 @@ const OffBulbSVG: React.FC = () => {
           y2="46.9447"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#3E3E3E" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="#3E3E3E" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint14_linear_478_775"
@@ -388,12 +388,12 @@ const OffBulbSVG: React.FC = () => {
           y2="90.5582"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#101010" />
-          <stop offset="0.236123" stop-color="#222222" />
-          <stop offset="0.47444" stop-color="#494B4A" />
-          <stop offset="0.63588" stop-color="#494B4A" />
-          <stop offset="0.812657" stop-color="#222222" />
-          <stop offset="1" stop-color="#101010" />
+          <stop stopColor="#101010" />
+          <stop offset="0.236123" stopColor="#222222" />
+          <stop offset="0.47444" stopColor="#494B4A" />
+          <stop offset="0.63588" stopColor="#494B4A" />
+          <stop offset="0.812657" stopColor="#222222" />
+          <stop offset="1" stopColor="#101010" />
         </linearGradient>
         <linearGradient
           id="paint15_linear_478_775"
@@ -403,12 +403,12 @@ const OffBulbSVG: React.FC = () => {
           y2="90.5583"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#101010" />
-          <stop offset="0.236123" stop-color="#222222" />
-          <stop offset="0.47444" stop-color="#494B4A" />
-          <stop offset="0.63588" stop-color="#494B4A" />
-          <stop offset="0.812657" stop-color="#222222" />
-          <stop offset="1" stop-color="#101010" />
+          <stop stopColor="#101010" />
+          <stop offset="0.236123" stopColor="#222222" />
+          <stop offset="0.47444" stopColor="#494B4A" />
+          <stop offset="0.63588" stopColor="#494B4A" />
+          <stop offset="0.812657" stopColor="#222222" />
+          <stop offset="1" stopColor="#101010" />
         </linearGradient>
         <linearGradient
           id="paint16_linear_478_775"
@@ -418,8 +418,8 @@ const OffBulbSVG: React.FC = () => {
           y2="75.3119"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#3E3E3E" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="#3E3E3E" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint17_linear_478_775"
@@ -429,9 +429,9 @@ const OffBulbSVG: React.FC = () => {
           y2="26.6841"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#2B2927" />
-          <stop offset="0.5" stop-color="#575757" />
-          <stop offset="1" stop-color="#2B2927" />
+          <stop stopColor="#2B2927" />
+          <stop offset="0.5" stopColor="#575757" />
+          <stop offset="1" stopColor="#2B2927" />
         </linearGradient>
         <linearGradient
           id="paint18_linear_478_775"
@@ -441,11 +441,11 @@ const OffBulbSVG: React.FC = () => {
           y2="25.62"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#060606" />
-          <stop offset="0.166667" stop-color="#101010" />
-          <stop offset="0.442708" stop-color="#2E2E2E" />
-          <stop offset="0.682292" stop-color="#0D0F0E" />
-          <stop offset="1" stop-color="#0D0F0E" />
+          <stop stopColor="#060606" />
+          <stop offset="0.166667" stopColor="#101010" />
+          <stop offset="0.442708" stopColor="#2E2E2E" />
+          <stop offset="0.682292" stopColor="#0D0F0E" />
+          <stop offset="1" stopColor="#0D0F0E" />
         </linearGradient>
         <image
           id="image0_478_775"

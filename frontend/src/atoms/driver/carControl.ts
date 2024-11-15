@@ -23,9 +23,10 @@ export const motorOnOffAtom = atom(false);
 export const motorPowerAtom = atom(50);
 
 // 창문 리니어 상태
+export const windowControlStateAtom = atom(0);
 
 // 진동 전원 상테
 export const vibrationOnOffAtom = atom(false);
 
 // 진동 세기 상태
-export const vibrationPowerAtom = atom(false);
+export const vibrationPowerAtom = atom(50);

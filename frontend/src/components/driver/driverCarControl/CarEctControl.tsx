@@ -20,12 +20,14 @@ import { DriverText } from "../driverMain/DriverMainCSS";
 import styled from "styled-components";
 import { CarEctContainer } from "./DriverCarCSS";
 import CarPowerSlider from "./CarPowerSlider";
-
+import axios from "axios";
 import { useAtom } from "jotai";
 import {
   vibrationOnOffAtom,
   vibrationPowerAtom,
+  windowControlStateAtom,
 } from "@/atoms/driver/carControl";
+import { vehicleIdAtom, tokenAtom } from "@/atoms/driver/carInfo";
 
 const CustomCarRightBody = styled(CarRightBody)`
   display: flex;
@@ -37,13 +39,77 @@ const CustomCarRightBody = styled(CarRightBody)`
 const CarEctControl: React.FC = () => {
   const [power, setPower] = useAtom(vibrationPowerAtom);
   const [isOn, setIsOn] = useAtom(vibrationOnOffAtom);
+  const [windowControlState, setWindowControlState] = useAtom(
+    windowControlStateAtom
+  );
+  const [vehicleId] = useAtom(vehicleIdAtom);
+  const [token] = useAtom(tokenAtom);
 
-  const togglePower = () => {
-    setIsOn((prev) => !prev);
+  const sendPatchRequest = (state: string, controlValue: number) => {
+    const target = state;
+    const control = controlValue;
+    const red = 0;
+    const green = 0;
+    const blue = 0;
+
+    const responseData = {
+      target,
+      control,
+      red,
+      green,
+      blue,
+      brightness: power,
+    };
+    console.log("responseData: ", responseData);
+    axios
+      .patch(
+        `https://k11c106.p.ssafy.io/api/v1/vehicle/control/command/${vehicleId}`,
+        responseData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 추가
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Patch request successful:", response.data);
+      })
+      .catch((error) => {
+        console.error("Patch request failed:", error);
+      });
+  };
+
+  // 슬라이더 변경 후 마우스를 뗄 때 요청 전송
+  const handleSliderChangeEnd = () => {
+    return;
   };
 
   const handleChange = (value: number) => {
     setPower(value);
+  };
+
+  const togglePower = () => {
+    setIsOn((prev) => !prev);
+    const value = isOn ? 1 : 0;
+    sendPatchRequest("VIBRATION", value);
+  };
+
+  // Up 버튼을 누를 때 상태를 1로 변경
+  const handleMouseDownUp = () => {
+    setWindowControlState(1);
+    sendPatchRequest("WINDOW", windowControlState);
+  };
+
+  // Down 버튼을 누를 때 상태를 -1로 변경
+  const handleMouseDownDown = () => {
+    setWindowControlState(-1);
+    sendPatchRequest("WINDOW", windowControlState);
+  };
+
+  // 버튼에서 손을 뗄 때 상태를 0으로 재설정
+  const handleMouseUp = () => {
+    setWindowControlState(0);
+    sendPatchRequest("WINDOW", windowControlState);
   };
 
   return (
@@ -61,11 +127,17 @@ const CarEctControl: React.FC = () => {
             창문
           </DriverText>
           <CarWindowButtonContainer>
-            <CarWindowButton>
+            <CarWindowButton
+              onMouseDown={handleMouseDownUp}
+              onMouseUp={handleMouseUp}
+            >
               <ButtonWindowSVG />
               <ButtonWindowUpSVG />
             </CarWindowButton>
-            <CarWindowButton>
+            <CarWindowButton
+              onMouseDown={handleMouseDownDown}
+              onMouseUp={handleMouseUp}
+            >
               <ButtonWindowSVG />
               <ButtonWindowDownSVG />
             </CarWindowButton>
@@ -89,7 +161,8 @@ const CarEctControl: React.FC = () => {
             <CarPowerSlider
               power={power}
               handleChange={(e) => handleChange(e.target.valueAsNumber)}
-              powerType="air"
+              onMouseUp={handleSliderChangeEnd}
+              powerType="vibration"
               isOn={isOn}
             />
           </CarVibrationControlContainer>

@@ -4,10 +4,6 @@ import { Car, UserCog } from "lucide-react";
 import styled from "styled-components";
 import DriverLogin from "@/components/driver/DriverLogin";
 
-import { useAtom } from "jotai";
-import { vehicleIdAtom, tokenAtom } from "@/atoms/driver/carInfo";
-import { useEffect } from "react";
-
 const Container = styled.div`
   min-height: 100vh;
   background: linear-gradient(
@@ -109,15 +105,6 @@ type RoleType = "driver" | "manager";
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
-
-  const [vehicleId] = useAtom(vehicleIdAtom);
-  const [token] = useAtom(tokenAtom);
-
-  useEffect(() => {
-    // vehicle_id와 token이 잘 설정되었는지 확인하기 위해 콘솔에 출력
-    console.log("Current Token:", token);
-    console.log("Current Vehicle ID:", vehicleId);
-  }, [token, vehicleId]);
 
   const handleRoleSelect = (role: RoleType): void => {
     navigate(`/${role}`);

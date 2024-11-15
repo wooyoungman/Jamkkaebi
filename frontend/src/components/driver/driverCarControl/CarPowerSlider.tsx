@@ -5,6 +5,7 @@ import {
   SliderLightSVG,
   SliderSoundSVG,
   SliderAirSVG,
+  SliderVibrationSVG,
 } from "@/styles/driver/driverCar/DriverCarSVG";
 
 interface StyledSliderProps {
@@ -95,6 +96,8 @@ const CarPowerSlider: React.FC<CarPowerSliderProps> = ({
         return <SliderSoundSVG />;
       case "air":
         return <SliderAirSVG />;
+      case "vibration":
+        return <SliderVibrationSVG />
       default:
         return null;
     }

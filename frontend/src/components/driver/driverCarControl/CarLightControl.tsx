@@ -9,7 +9,6 @@ import {
   ToggleCircle,
   ColorPickerContainer,
 } from "./DriverCarCSS";
-import { useAtom } from "jotai";
 import { DriverText } from "../driverMain/DriverMainCSS";
 import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
@@ -28,7 +27,8 @@ import {
   lightColorAtom,
 } from "@/atoms/driver/carControl";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useAtom } from "jotai";
+import { vehicleIdAtom, tokenAtom } from "@/atoms/driver/carInfo";
 
 const CustomDriverText = styled(DriverText)`
   text-align: start;
@@ -44,7 +44,9 @@ const CarLightControl: React.FC = () => {
   // 컬러 피커의 초기 색상
   // const [initialColor, setInitialColor] = useState("#ffffff");
 
-  const { vehicle_id } = useParams<{ vehicle_id: string }>();
+  const [vehicleId] = useAtom(vehicleIdAtom);
+  const [token] = useAtom(tokenAtom);
+
   const pickerRef = useRef<HTMLDivElement>(null);
 
   // axios.patch 요청 함수
@@ -56,15 +58,25 @@ const CarLightControl: React.FC = () => {
     const green = parseInt(selectedRGB.slice(3, 5), 16) || 0;
     const blue = parseInt(selectedRGB.slice(5, 7), 16) || 0;
 
+    const responseData = {
+      target,
+      control,
+      red,
+      green,
+      blue,
+      brightness: power,
+    };
+    console.log("responseData: ", responseData);
     axios
-      .patch(`/api/v1/vehicle/control/command/${vehicle_id}`, {
-        target,
-        control,
-        red,
-        green,
-        blue,
-        brightness: power,
-      })
+      .patch(
+        `https://k11c106.p.ssafy.io/api/v1/vehicle/control/command/${vehicleId}`,
+        responseData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 추가
+          },
+        }
+      )
       .then((response) => {
         console.log("Patch request successful:", response.data);
       })
