@@ -40,8 +40,8 @@ const CustomDriverText = styled(DriverText)`
 // ColorPickerContainer를 화면 중앙에 위치시키도록 스타일 설정
 const CenteredColorPickerContainer = styled(ColorPickerContainer)`
   position: fixed;
-  top: 50%;
-  left: 50%;
+  top: 56%;
+  left: 68%;
   transform: translate(-50%, -50%);
   z-index: 1000; // 다른 요소보다 위에 나타나도록 설정
   padding: 10px; // 여백 추가
@@ -207,6 +207,11 @@ const CarLightControl: React.FC = () => {
     setShowPicker(true);
   };
 
+  // EclipsePickerSVG를 클릭했을 때 컬러 피커를 열도록 하는 함수
+  const handlePickerClick = () => {
+    setShowPicker(true);
+  };
+
   // 최종 색상 선택 시 호출되는 함수
   const handleSelect = (hue: number) => {
     const rgb = hueToRgb(hue); // hue 값을 RGB로 변환
@@ -252,8 +257,9 @@ const CarLightControl: React.FC = () => {
           {isOn === false ? (
             <OffBulbSVG />
           ) : (
-            // <p>전구</p>
-            <BulbSVG isOn={isOn} power={power} selectedRGB={selectedRGB} />
+            !showPicker && ( // 컬러피커가 표시되지 않을 때만 전구(BulbSVG)를 렌더링
+              <BulbSVG isOn={isOn} power={power} selectedRGB={selectedRGB} />
+            )
           )}
         </CarControlUIDiv>
       </CarRightUpperBody>
@@ -278,7 +284,7 @@ const CarLightControl: React.FC = () => {
             onDoubleClick={handleEclipseDoubleClick}
             isOn={isOn}
           />
-          <EclipsePickerSVG />
+          <EclipsePickerSVG onClick={handlePickerClick} />
         </SliderRGBContainer>
         <CarPowerSlider
           power={power}
