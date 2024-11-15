@@ -16,15 +16,13 @@ import DriverConditionGraph from "./DriverConditionGraph";
 import driverImg from "@/assets/driverImg.png";
 
 import { useAtom } from "jotai";
-import {
-  driverStateDataAtom,
-  secondDriverStateDataAtom,
-} from "@/atoms/driver/socket";
-import { useEffect } from "react";
+import { driverStateDataAtom } from "@/atoms/driver/socket";
+import { useEffect, useState } from "react";
 
 const DriverMainLeft: React.FC = () => {
   const [driverStateData, setDriverStateData] = useAtom(driverStateDataAtom);
-  // const [secondDriverStateData, setSecondDriverStateData] = useAtom(secondDriverStateDataAtom);
+  const [attentionScore, setAttentionScore] = useState<number>(0);
+  const [meditationScore, setMeditationScore] = useState<number>(0);
 
   useEffect(() => {
     // WebSocket 연결 설정
@@ -32,18 +30,23 @@ const DriverMainLeft: React.FC = () => {
 
     // WebSocket 연결 성공 시
     socket.onopen = () => {
-      console.log("WebSocket connected opened");
+      console.log("WebSocket connection opened");
     };
 
     // WebSocket 메시지 수신 시
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      // 수신한 데이터 콘솔에 출력
-      // console.log("Data received from WebSocket:", data);
+      // attention과 meditation 값 추출
+      const attention = Math.round(data.predictions?.attention || 0);
+      const meditation = Math.round(data.predictions?.meditation || 0);
 
       // Jotai atom에 데이터 저장
       setDriverStateData(data);
+
+      // 상태 값 업데이트
+      setAttentionScore(attention);
+      setMeditationScore(meditation);
     };
 
     socket.onerror = (error) => {
@@ -54,42 +57,11 @@ const DriverMainLeft: React.FC = () => {
       console.log("WebSocket connection closed");
     };
 
-    // 컴포넌트 언마운트 시 Websocket 닫기
+    // 컴포넌트 언마운트 시 WebSocket 닫기
     return () => {
       socket.close();
     };
   }, [setDriverStateData]);
-
-  // useEffect(() => {
-  //   const socket2 = new WebSocket("wss://k11c106.p.ssafy.io/ws/v1/device/data");
-
-  //   socket2.onopen = () => {
-  //     console.log("WebSocket 2 connected opened")
-  //   }
-
-  //   socket2.onmessage = (event) => {
-  //     const data = JSON.parse(event.data)
-  //     console.log("Data received from WebSocket 2:", data);
-  //     setSecondDriverStateData(data)
-  //   }
-
-  //   socket2.onerror = (error) => {
-  //     console.error("WebSocket 2 error: ", error)
-  //   }
-
-  //   socket2.onclose = () => {
-  //     console.log("WebSocket 2 connection closed")
-  //   }
-
-  //   return () => {
-  //     socket2.close()
-  //   }
-  // }, [setSecondDriverStateData])
-
-  // Jotai에 저장된 데이터를 확인
-  useEffect(() => {
-    console.log("Current driverStateData in Jotai:", driverStateData);
-  }, [driverStateData]);
 
   return (
     <>
@@ -143,10 +115,13 @@ const DriverMainLeft: React.FC = () => {
         </DrivingInfo>
         <ConditionGraphWrapper>
           <ConditionGraphDiv>
-            <DriverConditionGraph graphType="concentration" score={34} />
+            <DriverConditionGraph
+              graphType="concentration"
+              score={attentionScore}
+            />
           </ConditionGraphDiv>
           <ConditionGraphDiv>
-            <DriverConditionGraph graphType="drowsy" score={72} />
+            <DriverConditionGraph graphType="drowsy" score={meditationScore} />
           </ConditionGraphDiv>
         </ConditionGraphWrapper>
       </Left>

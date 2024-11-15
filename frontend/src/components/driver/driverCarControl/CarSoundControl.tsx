@@ -39,6 +39,13 @@ const soundWave = keyframes`
 
 // 진동 애니메이션을 적용한 스피커 이미지 스타일
 const SpeakerImgContainer = styled.div<{ isOn: boolean }>`
+  width: 75%;
+  height: 100%;
+  padding-top: 40px;
+  padding-right: 25%;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
   position: relative;
   display: inline-block;
   ${({ isOn }) =>
@@ -51,8 +58,8 @@ const SpeakerImgContainer = styled.div<{ isOn: boolean }>`
 // 음파 효과를 위한 스타일
 const SoundWave = styled.div<{ isOn: boolean; delay: number }>`
   position: absolute;
-  top: 38%;
-  left: 50%;
+  top: 50%;
+  left: 30%;
   width: 60px;
   height: 60px;
   border: 2px solid rgba(255, 255, 255, 0.8);
