@@ -188,9 +188,12 @@ const CarLightControl: React.FC = () => {
   // 전원 토글 시 요청 전송
   const togglePower = () => {
     setIsOn((prev) => !prev);
+  };
+
+  useEffect(() => {
     const status = isOn ? 1 : 0;
     sendPatchRequest(status);
-  };
+  }, [isOn]);
 
   // EclipseRGB 한 번 클릭 핸들러 -> 색상 선택시 요청 전송
   const handleEclipseClick = (color: RGB) => {
