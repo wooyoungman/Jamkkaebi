@@ -56,7 +56,7 @@ async def handle_tcp_connection(reader, writer):
                     "predictions": {
                         "attention": predictions.iloc[0]["attention"],
                         "meditation": predictions.iloc[0]["meditation"],
-                        "classification": "Awake" if predictions.iloc[0]["classification"] == 0 else "Drowsy",
+                        "classification": "NORMAL" if predictions.iloc[0]["classification"] == 0 else "ASLEEP",
                     }
                 }
                 for client in websocket_clients:
