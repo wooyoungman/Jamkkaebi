@@ -5,6 +5,7 @@ import {
   SliderLightSVG,
   SliderSoundSVG,
   SliderAirSVG,
+  SliderVibrationSVG,
 } from "@/styles/driver/driverCar/DriverCarSVG";
 
 interface StyledSliderProps {
@@ -14,6 +15,7 @@ interface StyledSliderProps {
 interface CarPowerSliderProps {
   power: number;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onMouseUp: () => void;
   powerType: string;
   isOn: boolean;
 }
@@ -81,6 +83,7 @@ const SliderValue = styled.div<{ disabled: boolean }>`
 const CarPowerSlider: React.FC<CarPowerSliderProps> = ({
   power,
   handleChange,
+  onMouseUp,
   powerType,
   isOn,
 }) => {
@@ -93,6 +96,8 @@ const CarPowerSlider: React.FC<CarPowerSliderProps> = ({
         return <SliderSoundSVG />;
       case "air":
         return <SliderAirSVG />;
+      case "vibration":
+        return <SliderVibrationSVG />
       default:
         return null;
     }
@@ -107,6 +112,7 @@ const CarPowerSlider: React.FC<CarPowerSliderProps> = ({
         max={100}
         step={1}
         onChange={handleChange}
+        onMouseUp={onMouseUp}
         disabled={!isOn}
       />
       <SliderValue disabled={!isOn}>{power}</SliderValue>

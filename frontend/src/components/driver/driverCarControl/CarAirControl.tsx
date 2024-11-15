@@ -13,7 +13,10 @@ import CarPowerSlider from "./CarPowerSlider";
 import carSeatImg from "@/assets/carSeatImg.png";
 
 import styled, { keyframes, css } from "styled-components";
-import { useState } from "react";
+import axios from "axios";
+import { useAtom } from "jotai";
+import { motorOnOffAtom, motorPowerAtom } from "@/atoms/driver/carControl";
+import { vehicleIdAtom, tokenAtom } from "@/atoms/driver/carInfo";
 
 // 자연스럽게 흐르는 바람 애니메이션 keyframes 정의
 const flowAir = keyframes`
@@ -57,15 +60,58 @@ const CustomDriverText = styled(DriverText)`
 `;
 
 const CarAirControl: React.FC = () => {
-  const [power, setPower] = useState(50);
-  const [isOn, setIsOn] = useState(false);
+  const [power, setPower] = useAtom(motorPowerAtom);
+  const [isOn, setIsOn] = useAtom(motorOnOffAtom);
 
-  const togglePower = () => {
-    setIsOn((prev) => !prev);
+  const [vehicleId] = useAtom(vehicleIdAtom);
+  const [token] = useAtom(tokenAtom);
+
+  const sendPatchRequest = () => {
+    const target = "MOTOR";
+    const control = isOn ? 1 : 0;
+    const red = 0
+    const green = 0
+    const blue = 0
+
+    const responseData = {
+      target,
+      control,
+      red,
+      green,
+      blue,
+      brightness: power,
+    };
+    console.log("responseData: ", responseData);
+    axios
+    .patch(
+      `https://k11c106.p.ssafy.io/api/v1/vehicle/control/command/${vehicleId}`,
+      responseData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 추가
+        },
+      }
+    )
+    .then((response) => {
+      console.log("Patch request successful:", response.data);
+    })
+    .catch((error) => {
+      console.error("Patch request failed:", error);
+    });
+  }
+
+  // 슬라이더 변경 후 마우스를 뗄 때 요청 전송
+  const handleSliderChangeEnd = () => {
+    sendPatchRequest();
   };
 
   const handleChange = (value: number) => {
     setPower(value);
+  };
+
+  const togglePower = () => {
+    setIsOn((prev) => !prev);
+    sendPatchRequest();
   };
 
   return (
@@ -106,6 +152,7 @@ const CarAirControl: React.FC = () => {
         <CarPowerSlider
           power={power}
           handleChange={(e) => handleChange(e.target.valueAsNumber)}
+          onMouseUp={handleSliderChangeEnd}
           powerType="air"
           isOn={isOn}
         />

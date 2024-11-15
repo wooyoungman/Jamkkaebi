@@ -19,48 +19,108 @@ import {
 } from "@/styles/driver/driverCar/DriverCarSVG";
 import BulbSVG from "@/styles/driver/driverCar/BulbSVG";
 import CarPowerSlider from "./CarPowerSlider";
-// import OffBulbSVG from "@/styles/driver/driverCar/OffBulb.svg?react";
 import OffBulbSVG from "@/styles/driver/driverCar/OffBulbSVG";
-// import OffBulbSVG from "@/styles/driver/driverCar/OffBulbNoTailV1.svg?react";
+
+import {
+  lightOnOffAtom,
+  lightPowerAtom,
+  lightColorAtom,
+} from "@/atoms/driver/carControl";
+import axios from "axios";
+import { useAtom } from "jotai";
+import { vehicleIdAtom, tokenAtom } from "@/atoms/driver/carInfo";
 
 const CustomDriverText = styled(DriverText)`
   text-align: start;
 `;
 
 const CarLightControl: React.FC = () => {
-  const [power, setPower] = useState(50);
-  const [isOn, setIsOn] = useState(false);
+  const [power, setPower] = useAtom(lightPowerAtom);
+  const [isOn, setIsOn] = useAtom(lightOnOffAtom);
+  const [selectedRGB, setSelectedRGB] = useAtom(lightColorAtom);
+
   const [showPicker, setShowPicker] = useState(false);
   const [pickerPosition, setPickerPosition] = useState({ x: 0, y: 0 });
-  const [initialColor, setInitialColor] = useState("#ffffff"); // 컬러 피커의 초기 색상
-  const [selectedRGB, setSelectedRGB] = useState<string>("#ffffff"); // 선택된 RGB 저장 변수
+  // 컬러 피커의 초기 색상
+  // const [initialColor, setInitialColor] = useState("#ffffff");
+
+  const [vehicleId] = useAtom(vehicleIdAtom);
+  const [token] = useAtom(tokenAtom);
 
   const pickerRef = useRef<HTMLDivElement>(null);
 
+  // axios.patch 요청 함수
+  const sendPatchRequest = (status: number) => {
+    const target = "LIGHT";
+    const control = status;
+
+    const red = parseInt(selectedRGB.slice(1, 3), 16) || 0;
+    const green = parseInt(selectedRGB.slice(3, 5), 16) || 0;
+    const blue = parseInt(selectedRGB.slice(5, 7), 16) || 0;
+
+    const responseData = {
+      target,
+      control,
+      red,
+      green,
+      blue,
+      brightness: power,
+    };
+    console.log("responseData: ", responseData);
+    axios
+      .patch(
+        `https://k11c106.p.ssafy.io/api/v1/vehicle/control/command/${vehicleId}`,
+        responseData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 추가
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Patch request successful:", response.data);
+      })
+      .catch((error) => {
+        console.error("Patch request failed:", error);
+      });
+  };
+
+  // 슬라이더 변경 후 마우스를 뗄 때 요청 전송
+  const handleSliderChangeEnd = () => {
+    sendPatchRequest(3);
+  };
+
+  // power 변경 핸들러 (슬라이더)
   const handleChange = (value: number) => {
     setPower(value);
   };
 
+  // 전원 토글 시 요청 전송
   const togglePower = () => {
     setIsOn((prev) => !prev);
+    const status = isOn ? 1 : 0;
+    sendPatchRequest(status);
   };
 
-  // EclipseRGB 한 번 클릭 핸들러
+  // EclipseRGB 한 번 클릭 핸들러 -> 색상 선택시 요청 전송
   const handleEclipseClick = (color: string) => {
     setSelectedRGB(color); // 선택된 RGB 값만 저장
+    sendPatchRequest(2);
   };
 
   // EclipseRGB 더블 클릭 핸들러
   const handleEclipseDoubleClick = (event: React.MouseEvent, color: string) => {
-    setInitialColor(color); // 피커 초기 색상 설정
+    // 피커 초기 색상 설정
+    // setInitialColor(color);
     setShowPicker(true);
     setPickerPosition({ x: event.clientX, y: event.clientY });
   };
 
-  // 컬러 피커의 색상 변경 핸들러
+  // 컬러 피커의 색상 변경 핸들러 -> 색상 선택 시 요청 전송
   const handleColorChange = (color: any) => {
+    // setInitialColor(color.hex);
     setSelectedRGB(color.hex); // 선택된 RGB 값만 저장
-    setInitialColor(color.hex);
+    sendPatchRequest(2);
     console.log("Selected RGB:", color.hex);
   };
 
@@ -132,6 +192,7 @@ const CarLightControl: React.FC = () => {
         <CarPowerSlider
           power={power}
           handleChange={(e) => handleChange(e.target.valueAsNumber)}
+          onMouseUp={handleSliderChangeEnd}
           powerType="light"
           isOn={isOn}
         />
@@ -143,7 +204,7 @@ const CarLightControl: React.FC = () => {
           ref={pickerRef}
           style={{ top: pickerPosition.y, left: pickerPosition.x }}
         >
-          <SketchPicker color={initialColor} onChange={handleColorChange} />
+          <SketchPicker color={selectedRGB} onChange={handleColorChange} />
         </ColorPickerContainer>
       )}
     </>

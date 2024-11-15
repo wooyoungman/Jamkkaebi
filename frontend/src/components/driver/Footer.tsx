@@ -26,18 +26,18 @@ const Menu = styled.div`
   width: 65%;
 `;
 
-// 아이콘 컴포넌트와 경로를 함께 관리하는 배열
-const iconComponents = [
-  { component: HomeSvg, path: "/driver" },
-  { component: LocationSvg, path: "/driver/navigation" },
-  { component: CarSvg, path: "/driver/car-control" },
-  { component: PhoneSvg, path: null },
-  { component: ReportSvg, path: "/driver/report" },
-];
-
 const Footer: React.FC = () => {
   const navigate = useNavigate();
   const [isPhoneModalOpen, setIsPhoneModalOpen] = useState<boolean>(false);
+
+  // 아이콘과 실제 경로를 포함한 배열
+  const iconComponents = [
+    { component: HomeSvg, path: `/driver` },
+    { component: LocationSvg, path: `/driver/navigation` },
+    { component: CarSvg, path: `/driver/car-control` },
+    { component: PhoneSvg, path: null },
+    { component: ReportSvg, path: `/driver/report` },
+  ];
 
   const handleIconClick = (path: string | null) => {
     if (path) {

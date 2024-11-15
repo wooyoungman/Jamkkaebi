@@ -12,7 +12,9 @@ import CarPowerSlider from "./CarPowerSlider";
 import carSoundImg from "@/assets/speakerImg.png";
 
 import styled, { keyframes, css } from "styled-components";
-import { useState } from "react";
+
+import { useAtom } from "jotai";
+import { soundOnOffAtom, soundPowerAtom } from "@/atoms/driver/carControl";
 
 // 진동 애니메이션 keyframes 정의
 const vibrate = keyframes`
@@ -71,8 +73,8 @@ const CustomDriverText = styled(DriverText)`
 `;
 
 const CarSoundControl: React.FC = () => {
-  const [power, setPower] = useState(50);
-  const [isOn, setIsOn] = useState(false);
+  const [isOn, setIsOn] = useAtom(soundOnOffAtom);
+  const [power, setPower] = useAtom(soundPowerAtom);
 
   const togglePower = () => {
     setIsOn((prev) => !prev);

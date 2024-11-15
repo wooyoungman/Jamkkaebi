@@ -73,7 +73,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "driver",
+    path: "driver/",
     element: <DriverLayout />,
     children: [
       { path: "", element: <DriverMainPage /> },
