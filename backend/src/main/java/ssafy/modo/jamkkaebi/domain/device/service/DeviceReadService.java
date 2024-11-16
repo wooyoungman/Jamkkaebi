@@ -80,6 +80,15 @@ public class DeviceReadService {
         return deviceRepository.findById(uuid).orElseThrow(DeviceNotFoundException::new);
     }
 
+    public Device getDeviceByDriverId(Long driverId) {
+        return deviceRepository.findByDriverId(driverId).orElse(null);
+    }
+
+    public boolean getDeviceData(Long driverId) {
+        Device device = deviceRepository.findByDriverId(driverId).orElse(null);
+        return device != null && isDeviceHealthy(device);
+    }
+
     public void handleDeviceData(String uuid, byte[] payload) throws IOException {
 
         Delivery delivery = deliveryRepository.findByDeviceUuidAndHasArrivedIsFalse(uuid);
@@ -88,6 +97,10 @@ public class DeviceReadService {
         if (delivery != null) {
             DeviceDataReceiveDto dto = objectMapper.readValue(payload, DeviceDataReceiveDto.class);
             log.info("Received device data and mapped to DTO: {}", dto);
+
+            // TODO: 배송 정보 업데이트
+            // TODO: 웹소켓 구독자 확인
+            // TODO: 웹소켓 구독자에게 DTO 전송
         }
     }
 }
