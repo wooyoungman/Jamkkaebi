@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ssafy.modo.jamkkaebi.common.security.util.SecurityUtil;
+import ssafy.modo.jamkkaebi.common.tmap.dto.response.GeoJsonDto;
 import ssafy.modo.jamkkaebi.common.tmap.service.TmapService;
 import ssafy.modo.jamkkaebi.domain.cargo.dto.request.CargoCreateDto;
 import ssafy.modo.jamkkaebi.domain.cargo.dto.request.CargoDispatchRequestDto;
@@ -16,12 +17,11 @@ import ssafy.modo.jamkkaebi.domain.cargo.exception.CargoDispatchedException;
 import ssafy.modo.jamkkaebi.domain.cargo.exception.CargoNotFoundException;
 import ssafy.modo.jamkkaebi.domain.cargo.repository.CargoRepository;
 import ssafy.modo.jamkkaebi.domain.delivery.entity.Delivery;
-import ssafy.modo.jamkkaebi.domain.delivery.respository.DeliveryRepository;
+import ssafy.modo.jamkkaebi.domain.delivery.service.DeliveryReadService;
 import ssafy.modo.jamkkaebi.domain.delivery.service.DeliveryWriteService;
 import ssafy.modo.jamkkaebi.domain.driver.dto.response.DriverInfo;
 import ssafy.modo.jamkkaebi.domain.member.entity.Member;
 import ssafy.modo.jamkkaebi.domain.member.service.MemberReadService;
-import ssafy.modo.jamkkaebi.common.tmap.dto.response.GeoJsonDto;
 import ssafy.modo.jamkkaebi.domain.route.entity.Route;
 import ssafy.modo.jamkkaebi.domain.route.repository.RouteRepository;
 import ssafy.modo.jamkkaebi.domain.vehicle.dto.response.VehicleInfo;
@@ -43,7 +43,7 @@ public class CargoWriteService {
     private final MemberReadService memberReadService;
     private final DeliveryWriteService deliveryWriteService;
     private final VehicleRepository vehicleRepository;
-    private final DeliveryRepository deliveryRepository;
+    private final DeliveryReadService deliveryReadService;
 
     public CargoCreateResponseDto createCargo(CargoCreateDto dto) throws JsonProcessingException {
 
@@ -102,7 +102,7 @@ public class CargoWriteService {
         Cargo cargo = cargoRepository.findById(dto.getCargoId())
                 .orElseThrow(CargoNotFoundException::new);
 
-        if (isCargoDispatched(cargo.getId())) {
+        if (deliveryReadService.isCargoDispatched(cargo.getId())) {
             throw new CargoDispatchedException();
         } else {
             Map<String, Member> managerAndDriver = memberReadService.findManagerAndDriver(
@@ -132,9 +132,5 @@ public class CargoWriteService {
                             .build())
                     .build();
         }
-    }
-
-    private boolean isCargoDispatched(Long cargoId) {
-        return deliveryRepository.isCargoDispatched(cargoId);
     }
 }
