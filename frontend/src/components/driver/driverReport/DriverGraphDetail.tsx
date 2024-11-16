@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -12,6 +12,8 @@ import {
   Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { useAtom } from "jotai";
+import { driverStateDataAtom } from "@/atoms/driver/socket";
 
 ChartJS.register(
   ArcElement,
@@ -26,25 +28,43 @@ ChartJS.register(
 );
 
 interface DriverGraphDetailProps {
-  xFontSize: number;
+  // xFontSize: number;
   xTickSize: number;
   yFontSize: number;
   yTickSize: number;
 }
 
 const DriverGraphDetail: React.FC<DriverGraphDetailProps> = ({
-  xFontSize,
+  // xFontSize,
   xTickSize,
   yFontSize,
   yTickSize,
 }) => {
-  const labels = Array.from({ length: 25 }, (_, i) => `${i}`);
-  const concentrateValues = Array.from({ length: 25 }, () =>
-    Math.floor(Math.random() * 101)
-  );
+  const [driverStateData] = useAtom(driverStateDataAtom);
 
-  const drowsyeValues = Array.from({ length: 25 }, () =>
-    Math.floor(Math.random() * 101)
+  // 실시간 데이터를 저장할 상태 배열
+  const [attentionValues, setAttentionValues] = useState<number[]>([]);
+  const [meditationValues, setMeditationValues] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (driverStateData?.predictions) {
+      // 집중도(attention) 업데이트
+      setAttentionValues((prev) => {
+        const updated = [...prev, driverStateData.predictions.attention];
+        return updated.slice(-25); // 최근 25개의 데이터만 유지
+      });
+
+      // 졸음도(meditation) 업데이트
+      setMeditationValues((prev) => {
+        const updated = [...prev, driverStateData.predictions.meditation];
+        return updated.slice(-25); // 최근 25개의 데이터만 유지
+      });
+    }
+  }, [driverStateData?.predictions]);
+
+  const labels = Array.from(
+    { length: attentionValues.length },
+    (_, i) => `${i + 1}`
   );
 
   const data = {
@@ -52,21 +72,21 @@ const DriverGraphDetail: React.FC<DriverGraphDetailProps> = ({
     datasets: [
       {
         label: "집중 지수",
-        data: concentrateValues,
+        data: attentionValues,
         borderColor: "rgba(155, 246, 45, 1)",
         backgroundColor: "rgba(155, 246, 45, 0.3)",
         fill: "origin",
-        tension: 0.4,
+        tension: 0.2,
         pointRadius: 0,
         borderWidth: 2,
       },
       {
         label: "졸음 지수",
-        data: drowsyeValues,
+        data: meditationValues,
         borderColor: "rgba(255, 99, 132, 1)",
         backgroundColor: "rgba(255, 99, 132, 0.3)",
         fill: "origin",
-        tension: 0.4,
+        tension: 0.2,
         pointRadius: 0,
         borderWidth: 2,
       },
@@ -89,27 +109,30 @@ const DriverGraphDetail: React.FC<DriverGraphDetailProps> = ({
       },
     },
     scales: {
+      // x: {
+      //   title: {
+      //     display: true,
+      //     text: "시간대",
+      //     color: "#e0e0e0",
+      //     font: {
+      //       size: xFontSize,
+      //     },
+      //   },
+      //   ticks: {
+      //     color: "#e0e0e0",
+      //     font: {
+      //       size: xTickSize,
+      //     },
+      //   },
+      //   grid: {
+      //     display: false,
+      //   },
+      //   border: {
+      //     display: false,
+      //   },
+      // },
       x: {
-        title: {
-          display: true,
-          text: "시간대",
-          color: "#e0e0e0",
-          font: {
-            size: xFontSize,
-          },
-        },
-        ticks: {
-          color: "#e0e0e0",
-          font: {
-            size: xTickSize,
-          },
-        },
-        grid: {
-          display: false,
-        },
-        border: {
-          display: false,
-        },
+        display: false, // x축 완전히 제거
       },
       y: {
         title: {

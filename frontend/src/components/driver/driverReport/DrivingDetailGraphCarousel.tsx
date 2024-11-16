@@ -56,7 +56,7 @@ const DrivingDetailGraphCarousel: React.FC = () => {
       content: (
         <ConditionGraphWrapper>
           <DriverGraphDetail
-            xFontSize={10}
+            // xFontSize={10}
             xTickSize={10}
             yFontSize={10}
             yTickSize={10}
