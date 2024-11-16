@@ -25,12 +25,16 @@ export const useLogin = () => {
 };
 
 export const useGetUserInfo = () => {
+  // 토큰 존재 여부로 로그인 상태 체크
+  const hasToken = !!localStorage.getItem('accessToken');
+  
   return useQuery<User>({
     queryKey: queryKeys.auth.user(),
     queryFn: async () => {
       const res = await axiosInstance.get<User>("/member/info/simple");
       return res.data;
     },
+    enabled: hasToken, // 토큰이 있을 때만 요청
   });
 };
 
