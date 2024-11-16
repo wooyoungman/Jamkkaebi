@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+// import { useState } from "react";
 import {
   CommonButton,
   IconSize,
@@ -10,7 +10,7 @@ import {
   PhoneSvg,
   ReportSvg,
 } from "../../styles/driver/MenuButton";
-import DrivingWarningModal from "./DrivingWarningModal";
+// import DrivingWarningModal from "./DrivingWarningModal";
 
 const FooterDiv = styled.div`
   display: flex;
@@ -27,22 +27,22 @@ const Menu = styled.div`
   width: 65%;
 `;
 
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-`;
+// const ModalOverlay = styled.div`
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   background-color: rgba(0, 0, 0, 0.5);
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   z-index: 1000;
+// `;
 
 const Footer: React.FC = () => {
   const navigate = useNavigate();
-  const [isPhoneModalOpen, setIsPhoneModalOpen] = useState<boolean>(false);
+  // const [isPhoneModalOpen, setIsPhoneModalOpen] = useState<boolean>(false);
 
   // 아이콘과 실제 경로를 포함한 배열
   const iconComponents = [
@@ -56,9 +56,10 @@ const Footer: React.FC = () => {
   const handleIconClick = (path: string | null) => {
     if (path) {
       navigate(path);
-    } else {
-      setIsPhoneModalOpen(true);
     }
+    // else {
+    //   setIsPhoneModalOpen(true);
+    // }
   };
 
   return (
@@ -75,11 +76,11 @@ const Footer: React.FC = () => {
         </Menu>
       </FooterDiv>
 
-      {isPhoneModalOpen && (
+      {/* {isPhoneModalOpen && (
         <ModalOverlay>
           <DrivingWarningModal onClose={() => setIsPhoneModalOpen(false)} />
         </ModalOverlay>
-      )}
+      )} */}
     </>
   );
 };
