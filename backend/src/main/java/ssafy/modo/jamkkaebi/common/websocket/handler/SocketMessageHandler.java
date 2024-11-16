@@ -16,4 +16,8 @@ public class SocketMessageHandler {
     public JSONObject buildJsonMessage(TextMessage message) throws JsonProcessingException {
         return objectMapper.readValue(message.getPayload(), JSONObject.class);
     }
+
+    public String getMessageType(JSONObject message) {
+        return message.get("type").toString();
+    }
 }
