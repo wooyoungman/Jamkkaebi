@@ -5,10 +5,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 import ssafy.modo.jamkkaebi.common.rabbitmq.service.RabbitSendService;
+import ssafy.modo.jamkkaebi.common.websocket.service.SocketSubscriberService;
 import ssafy.modo.jamkkaebi.domain.delivery.entity.Delivery;
 import ssafy.modo.jamkkaebi.domain.delivery.respository.DeliveryRepository;
 import ssafy.modo.jamkkaebi.domain.device.dto.request.DeviceDataReceiveDto;
+import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceDataResponseDto;
 import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceInfoResponseDto;
 import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceStatusResponseDto;
 import ssafy.modo.jamkkaebi.domain.device.entity.Device;
@@ -20,6 +24,7 @@ import ssafy.modo.jamkkaebi.domain.vehicle.entity.Vehicle;
 import ssafy.modo.jamkkaebi.domain.vehicle.repository.VehicleRepository;
 
 import java.io.IOException;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -32,6 +37,7 @@ public class DeviceReadService {
     private final ObjectMapper objectMapper;
     private final DeliveryRepository deliveryRepository;
     private final VehicleRepository vehicleRepository;
+    private final SocketSubscriberService socketSubscriberService;
 
     public DeviceInfoResponseDto getDeviceInfo(String uuid) {
 
@@ -96,11 +102,16 @@ public class DeviceReadService {
 
         if (delivery != null) {
             DeviceDataReceiveDto dto = objectMapper.readValue(payload, DeviceDataReceiveDto.class);
-            log.info("Received device data and mapped to DTO: {}", dto);
+            DeviceDataResponseDto responseDto = new DeviceDataResponseDto(dto);
 
             // TODO: 배송 정보 업데이트
-            // TODO: 웹소켓 구독자 확인
-            // TODO: 웹소켓 구독자에게 DTO 전송
+            // TODO: 차량 정보 업데이트
+
+            Set<WebSocketSession> subscribers = socketSubscriberService.getSubscribersByDeviceId(uuid);
+            for (WebSocketSession subscriber : subscribers) {
+                subscriber.sendMessage(new TextMessage(objectMapper.writeValueAsString(responseDto)));
+                log.info("Message sent to subscriber {}", subscriber.getId());
+            }
         }
     }
 }
