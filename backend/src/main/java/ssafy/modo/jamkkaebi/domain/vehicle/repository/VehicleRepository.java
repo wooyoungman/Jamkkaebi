@@ -30,4 +30,11 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             WHERE v.id = :vehicleId AND md.manager.id = :managerId
             """)
     Boolean isVehicleMappedToDriverOfManager(Long vehicleId, Long managerId);
+
+    @Query("""
+            SELECT v FROM Vehicle v
+            JOIN Device d on d.vehicle = v
+            WHERE d.uuid = :uuid
+            """)
+    Optional<Vehicle> findByDeviceUuid(String uuid);
 }
