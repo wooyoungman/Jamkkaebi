@@ -2,6 +2,7 @@ package ssafy.modo.jamkkaebi.common.websocket.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
 import java.util.Objects;
@@ -13,31 +14,35 @@ import java.util.stream.Collectors;
 @Service
 public class SocketSubscriberService {
 
-    private final Map<String, String> deviceSubscriber = new ConcurrentHashMap<>();
+    private final Map<WebSocketSession, String> deviceSubscriber = new ConcurrentHashMap<>();
 
-    public void putToMap(String sessionId, String deviceId) {
+    public void putToMap(WebSocketSession session, String deviceId) {
 
-        if (!deviceSubscriber.containsKey(sessionId)) {
-            deviceSubscriber.put(sessionId, deviceId);
+        if (!deviceSubscriber.containsKey(session)) {
+            deviceSubscriber.put(session, deviceId);
 
-            log.debug("Session {} has been put to map with key {}", sessionId, deviceId);
-            log.debug("Total subscribers of device {}: {}", deviceId,
-                    getSubscriberByDeviceId(deviceSubscriber, deviceId));
+            log.info("Session {} has been put to map with key {}", session.getId(), deviceId);
+            log.info("Subscribers of device {}: {}", deviceId,
+                    getKeysByValue(deviceSubscriber, deviceId).stream().map(WebSocketSession::getId).toList());
         } else {
-            log.debug("Session {} is already in the map", sessionId);
+            log.info("Session {} is already in the map", session.getId());
         }
     }
 
-    public void removeFromMap(String sessionId) {
-        deviceSubscriber.remove(sessionId);
-        log.debug("Session {} has been removed from map", sessionId);
-        log.debug("Total subscribers: {}", deviceSubscriber.entrySet().stream().map(Map.Entry::getValue).toList());
+    public void removeFromMap(WebSocketSession session) {
+        deviceSubscriber.remove(session);
+        log.info("Session {} has been removed from map", session.getId());
+        log.info("Subscribers: {}", deviceSubscriber.keySet().stream().map(WebSocketSession::getId).toList());
     }
 
-    private static <T, E> Set<T> getSubscriberByDeviceId(Map<T, E> map, E uuid) {
+    public Set<WebSocketSession> getSubscribersByDeviceId(String deviceId) {
+        return getKeysByValue(deviceSubscriber, deviceId);
+    }
+
+    private static <T, E> Set<T> getKeysByValue(Map<T, E> map, E value) {
         return map.entrySet()
                 .stream()
-                .filter(entry -> Objects.equals(entry.getValue(), uuid))
+                .filter(entry -> Objects.equals(entry.getValue(), value))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
     }
