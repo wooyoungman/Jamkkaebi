@@ -12,6 +12,7 @@ import ssafy.modo.jamkkaebi.common.websocket.service.SocketSubscriberService;
 import ssafy.modo.jamkkaebi.domain.delivery.entity.Delivery;
 import ssafy.modo.jamkkaebi.domain.delivery.respository.DeliveryRepository;
 import ssafy.modo.jamkkaebi.domain.device.dto.request.DeviceDataReceiveDto;
+import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceDataResponseDto;
 import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceInfoResponseDto;
 import ssafy.modo.jamkkaebi.domain.device.dto.response.DeviceStatusResponseDto;
 import ssafy.modo.jamkkaebi.domain.device.entity.Device;
@@ -101,13 +102,14 @@ public class DeviceReadService {
 
         if (delivery != null) {
             DeviceDataReceiveDto dto = objectMapper.readValue(payload, DeviceDataReceiveDto.class);
+            DeviceDataResponseDto responseDto = new DeviceDataResponseDto(dto);
 
             // TODO: 배송 정보 업데이트
             // TODO: 차량 정보 업데이트
 
             Set<WebSocketSession> subscribers = socketSubscriberService.getSubscribersByDeviceId(uuid);
             for (WebSocketSession subscriber : subscribers) {
-                subscriber.sendMessage(new TextMessage(objectMapper.writeValueAsString(dto)));
+                subscriber.sendMessage(new TextMessage(objectMapper.writeValueAsString(responseDto)));
                 log.info("Message sent to subscriber {}", subscriber.getId());
             }
         }
