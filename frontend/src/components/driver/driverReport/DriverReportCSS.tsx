@@ -7,12 +7,14 @@ export const CustomGlassDiv = styled(GlassDiv)`
 `;
 
 export const ReportRightDiv = styled.div`
-  width: 63.5%;
-  min-width: 650px;
+  width: 100%;
+  min-width: 940px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
+  padding: 0px 6%;
+  /* background-color: white; */
 `;
 
 export const ReportSummaryDiv = styled(GlassDiv)`
@@ -76,12 +78,11 @@ export const DateReportDiv = styled.div`
 
 export const DrivingReportList = styled(CustomGlassDiv)`
   width: 100%;
-  height: 88px;
   padding: 12px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 
   cursor: pointer;
   // 호버 스타일 추가
@@ -117,7 +118,7 @@ export const DrivingGraphDiv = styled(GlassDiv)`
 `;
 
 export const HRLine = styled.hr`
-  height: 70px;
+  height: 60px;
   background-color: #fff;
   margin: 0;
 `;

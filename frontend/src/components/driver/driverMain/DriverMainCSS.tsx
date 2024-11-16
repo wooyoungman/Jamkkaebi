@@ -53,7 +53,7 @@ export const DriverTextDiv = styled.div`
 export const InlineTextDiv = styled.div<DriverProps>`
   display: flex;
   align-items: baseline;
-  gap: ${(props) => props.gap || "4px"};
+  gap: ${(props) => props.gap || "8px"};
 `;
 
 export const DrivingInfo = styled.div`
