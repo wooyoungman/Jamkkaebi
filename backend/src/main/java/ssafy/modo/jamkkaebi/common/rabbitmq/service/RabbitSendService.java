@@ -38,7 +38,7 @@ public class RabbitSendService {
 
         try {
             rabbitTemplate.convertAndSend("amq.topic", routingKey, "HEALTH_CHECK");
-            return future.get(5, TimeUnit.SECONDS);
+            return future.get(3, TimeUnit.SECONDS);
         } catch (TimeoutException e) {
             healthCheckUtil.timeoutFuture(uuid);
             log.debug("Device {} health check timeout", uuid);

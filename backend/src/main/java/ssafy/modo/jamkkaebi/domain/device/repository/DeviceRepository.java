@@ -12,4 +12,11 @@ public interface DeviceRepository extends JpaRepository<Device, String> {
             SELECT d FROM Device d WHERE d.vehicle.id = :vehicleId
             """)
     Optional<Device> findByVehicleId(Long vehicleId);
+
+    @Query("""
+            SELECT d FROM Device d
+            JOIN Vehicle v ON v.driver.id = :driverId
+            WHERE d.vehicle = v
+            """)
+    Optional<Device> findByDriverId(Long driverId);
 }
