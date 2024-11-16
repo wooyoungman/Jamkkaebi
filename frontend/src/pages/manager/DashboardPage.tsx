@@ -9,6 +9,7 @@ import { useDriverList } from "@queries/manager/driver";
 import { useDriversWithRoutes } from "@queries/manager/routes";
 import { useMapController } from "@/hooks/useMapController";
 import { useWebSocketController } from "@/hooks/useWebSocketController";
+import { useGetUserInfo } from "@queries/index";
 
 const ROUTE_COLORS = [
   "#FF3B3B",
@@ -23,16 +24,15 @@ const DashboardPage = () => {
   const [selectedDriver, setSelectedDriver] = useState<number | null>(null);
   const [showDriverInfo, setShowDriverInfo] = useState(false);
 
+  const { data: userInfo } = useGetUserInfo();
+  const managerId = userInfo?.memberId || 0;
+
   const { data: driverList, isLoading: isLoadingDrivers } =
     useDriverList("managed");
   const driverQueries = useDriversWithRoutes(driverList);
   const driversWithRoutes = driverQueries
     .map((query) => query.data)
-    .filter((data): data is NonNullable<typeof data> => !!data)
-    .map((driver) => ({
-      ...driver,
-      location: realtimeLocations[driver.driverId] || driver.location,
-    }));
+    .filter((data): data is NonNullable<typeof data> => !!data);
 
   const {
     isConnected,
@@ -42,9 +42,14 @@ const DashboardPage = () => {
     showAlert,
     alertInfo,
     setShowAlert,
-  } = useWebSocketController(driversWithRoutes);
+  } = useWebSocketController(managerId, driversWithRoutes);
 
-  const { handleDriverClick } = useMapController(driversWithRoutes);
+  const driversWithRealtimeLocations = driversWithRoutes.map((driver) => ({
+    ...driver,
+    location: realtimeLocations[driver.driverId] || driver.location,
+  }));
+
+  const { handleDriverClick } = useMapController(driversWithRealtimeLocations);
 
   const onDriverClick = (driverId: number) => {
     setSelectedDriver(driverId);
@@ -69,7 +74,7 @@ const DashboardPage = () => {
           height="100%"
           initialCenter={{ lat: 37.5666805, lng: 126.9784147 }}
         >
-          {driversWithRoutes.map((driver, index) => {
+          {driversWithRealtimeLocations.map((driver, index) => {
             const realtimeState = realtimeDriverStates.find(
               (state) => state.driverId === driver.driverId
             );
@@ -104,7 +109,9 @@ const DashboardPage = () => {
               isOpen={showDriverInfo}
               onClose={() => setShowDriverInfo(false)}
               driver={
-                driversWithRoutes.find((d) => d.driverId === selectedDriver)!
+                driversWithRealtimeLocations.find(
+                  (d) => d.driverId === selectedDriver
+                )!
               }
               realtimeState={realtimeDriverStates.find(
                 (state) => state.driverId === selectedDriver
@@ -145,7 +152,7 @@ DashboardPage.DriverOverlay = styled.div`
 
 DashboardPage.ErrorMessage = styled.div`
   position: fixed;
-  top: 20px;
+  top: 100px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #ff4444;
