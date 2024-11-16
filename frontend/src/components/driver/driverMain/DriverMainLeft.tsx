@@ -21,36 +21,7 @@ import { useEffect } from "react";
 
 const DriverMainLeft: React.FC = () => {
   // Jotai에서 WebSocket 데이터를 관리
-  const [driverStateData, setDriverStateData] = useAtom(driverStateDataAtom);
-
-  useEffect(() => {
-    // WebSocket 연결 설정
-    const socket = new WebSocket("wss://k11c106.p.ssafy.io/fastapi/ws");
-
-    socket.onopen = () => {
-      console.log("WebSocket connection opened");
-    };
-
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-
-      // WebSocket에서 받은 데이터를 Jotai atom에 저장
-      setDriverStateData(data);
-    };
-
-    socket.onerror = (error) => {
-      console.error("WebSocket error: ", error);
-    };
-
-    socket.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
-
-    // 컴포넌트 언마운트 시 WebSocket 닫기
-    return () => {
-      socket.close();
-    };
-  }, [setDriverStateData]);
+  const [driverStateData] = useAtom(driverStateDataAtom);
 
   // Jotai에서 attention과 meditation 값 가져오기
   const attentionScore = Math.round(
