@@ -35,12 +35,16 @@ public class RabbitReceiveService {
         String payload = new String(message.getBody());
 
         if (payload.equals("HEALTHY")) {
-            String routingKey = message.getMessageProperties().getReceivedRoutingKey();
+            String routingKey = getRoutingKey(message);
             String uuid = extractUuidFromRoutingKey(routingKey);
             log.debug("Received {} from device {}", payload, uuid);
 
             healthCheckUtil.completeFuture(uuid, true);
         }
+    }
+
+    private String getRoutingKey(Message message) {
+        return message.getMessageProperties().getReceivedRoutingKey();
     }
 
     private String extractUuidFromRoutingKey(String routingKey) {

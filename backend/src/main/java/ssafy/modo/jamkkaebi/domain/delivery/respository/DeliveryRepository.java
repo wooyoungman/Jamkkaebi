@@ -15,4 +15,11 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
     Boolean isCargoDispatched(Long cargoId);
 
     Delivery findFirstByVehicleAndHasArrivedIsFalse(Vehicle vehicle);
+
+    @Query("""
+            SELECT dl FROM Delivery dl
+            JOIN Device d ON dl.vehicle = d.vehicle
+            WHERE d.uuid = :uuid AND dl.hasArrived IS FALSE
+            """)
+    Delivery findByDeviceUuidAndHasArrivedIsFalse(String uuid);
 }
