@@ -16,7 +16,14 @@ const ErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
   );
 };
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false
+    }
+  }
+});
 
 // if (typeof global === "undefined") {
 //   (window as any).global = window;
