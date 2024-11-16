@@ -45,14 +45,14 @@ public class DriverSocketHandler extends TextWebSocketHandler {
             Device device = deviceReadService.getDeviceByDriverId(driverId);
 
             if (deviceReadService.getDeviceData(driverId)) {
-                socketSubscriberService.putToMap(session.getId(), device.getUuid());
+                socketSubscriberService.putToMap(session, device.getUuid());
             }
         }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-        log.info("Closed websocket connection: {}", session.getId());
-        socketSubscriberService.removeFromMap(session.getId());
+        log.info("Closed websocket connection: {}", session);
+        socketSubscriberService.removeFromMap(session);
     }
 }
