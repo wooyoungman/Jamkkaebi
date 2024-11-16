@@ -130,6 +130,15 @@ export const RightBottomWeather = styled(RightBottomDiv)`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  flex-direction: row;
+  padding: 25px;
+  gap: 30px;
+`;
+
+export const WeatherInfoDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 export const ConditionGraphWrapper = styled.div`
