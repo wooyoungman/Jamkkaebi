@@ -1,4 +1,4 @@
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 import numpy as np
 import pandas as pd
 import joblib
@@ -14,25 +14,39 @@ TCP_PORT = 9000
 BUFFER_SIZE = 1024
 
 websocket_clients = []
+tcp_data_available = False  # TCP 데이터 상태 관리
+
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
+    global tcp_data_available
+    if not tcp_data_available:
+        # TCP 데이터가 없으면 웹소켓 연결 거부
+        await websocket.close(code=1001, reason="No TCP data available")
+        print("WebSocket closed due to no TCP data.")
+        return
+
     await websocket.accept()
     websocket_clients.append(websocket)
     try:
         while True:
-            await websocket.receive_text()
-    except Exception as e:
-        print(f"WebSocket Error: {e}")
+            await asyncio.sleep(1)  # 연결 유지
+    except WebSocketDisconnect:
+        print("WebSocket client disconnected.")
     finally:
         websocket_clients.remove(websocket)
 
+
 async def handle_tcp_connection(reader, writer):
+    global tcp_data_available  # TCP 데이터 상태 변수
     try:
         while True:
             data = await reader.read(BUFFER_SIZE)
             if not data:
+                tcp_data_available = False  # TCP 데이터가 없음을 설정
                 break
+
+            tcp_data_available = True  # TCP 데이터 수신 상태 활성화
             decoded_data = data.decode("utf-8").strip()
             print(f"Received from TCP: {decoded_data}", flush=True)
 
@@ -67,8 +81,10 @@ async def handle_tcp_connection(reader, writer):
     except Exception as e:
         print(f"Error in TCP connection: {e}")
     finally:
+        tcp_data_available = False  # TCP 연결 종료 시 데이터 상태 비활성화
         writer.close()
         await writer.wait_closed()
+
 
 async def start_tcp_server():
     server = await asyncio.start_server(handle_tcp_connection, TCP_IP, TCP_PORT)
@@ -76,9 +92,11 @@ async def start_tcp_server():
     async with server:
         await server.serve_forever()
 
+
 @app.on_event("startup")
 async def startup_event():
     asyncio.create_task(start_tcp_server())
+
 
 if __name__ == "__main__":
     import uvicorn
