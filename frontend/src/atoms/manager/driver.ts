@@ -20,20 +20,24 @@ export const useDriverListWithFilters = () => {
     let filtered = data.drivers.map(convertToDriver);
 
     if (searchQuery) {
-      filtered = filtered.filter(
-        (driver: Driver) =>
-          driver.memberName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          driver.vehicleNumber
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase()) ||
-          driver.address?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      filtered = filtered.filter((driver: Driver) => {
+        const searchLower = searchQuery.toLowerCase();
+        
+        // null 체크를 추가하고 optional chaining 사용
+        const nameMatch = driver.memberName?.toLowerCase().includes(searchLower) || false;
+        const vehicleMatch = driver.vehicleNumber?.toLowerCase().includes(searchLower) || false;
+        const addressMatch = driver.address?.toLowerCase().includes(searchLower) || false;
+
+        return nameMatch || vehicleMatch || addressMatch;
+      });
     }
 
     filtered.sort((a: Driver, b: Driver) => {
       if (sortBy === "latest") {
         return b.memberId - a.memberId;
       }
+      // memberName이 null일 수 있으므로 체크 추가
+      if (!a.memberName || !b.memberName) return 0;
       return a.memberName.localeCompare(b.memberName);
     });
 
