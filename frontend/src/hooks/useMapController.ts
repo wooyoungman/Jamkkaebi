@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAtom } from "jotai";
 import { mapInstanceAtom } from "@atoms/index";
 
@@ -63,9 +63,11 @@ const calculateOptimalZoom = (bounds: ReturnType<typeof findBounds>) => {
 
 export const useMapController = (driversWithRoutes: any[]) => {
   const [mapInstance, setMapInstance] = useAtom(mapInstanceAtom);
+  const initialSetupDone = useRef(false);
 
+  // 초기 한 번만 실행되는 맵 설정
   useEffect(() => {
-    if (mapInstance && driversWithRoutes.length > 0) {
+    if (mapInstance && driversWithRoutes.length > 0 && !initialSetupDone.current) {
       const allPoints = driversWithRoutes.flatMap((driver) => [
         driver.location,
         ...driver.route,
@@ -82,6 +84,7 @@ export const useMapController = (driversWithRoutes: any[]) => {
 
       setTimeout(() => {
         mapInstance.setZoom(optimalZoom - 0.5);
+        initialSetupDone.current = true;
       }, 100);
     }
   }, [mapInstance, driversWithRoutes]);

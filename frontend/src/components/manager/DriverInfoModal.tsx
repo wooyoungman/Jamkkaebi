@@ -1,28 +1,15 @@
 import styled from "styled-components";
-import { DriverState, DriverWithRoute } from "@interfaces/manager";
+import { DriverState, RealTimeDriver } from "@interfaces/manager";
 
 interface DriverInfoModalProps {
   isOpen: boolean;
   onClose: () => void;
-  driver: DriverWithRoute;
+  driver: RealTimeDriver;
   realtimeState?: DriverState;
 }
 
-const DriverInfoModal = ({ isOpen, onClose, driver }: DriverInfoModalProps) => {
+const DriverInfoModal = ({ isOpen, onClose, driver, realtimeState }: DriverInfoModalProps) => {
   if (!isOpen) return null;
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString("ko-KR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
-  // 졸음 운전 감지 횟수 계산
-  const sleepEvents = driver.deliveryInfo.route_sleep.features.length;
 
   return (
     <DriverInfoModal.Overlay onClick={onClose}>
@@ -45,35 +32,23 @@ const DriverInfoModal = ({ isOpen, onClose, driver }: DriverInfoModalProps) => {
             <span>{driver.status}</span>
           </div>
           <div>
-            <label>출발지:</label>
-            <span>{driver.deliveryInfo.origin}</span>
-          </div>
-          <div>
-            <label>도착지:</label>
-            <span>{driver.deliveryInfo.destination}</span>
-          </div>
-          <div>
-            <label>출발 시간:</label>
-            <span>{formatDate(driver.deliveryInfo.departureDate)}</span>
-          </div>
-          <div>
-            <label>도착 예정:</label>
-            <span>{formatDate(driver.deliveryInfo.arrivalDate)}</span>
-          </div>
-          <div>
-            <label>총 이동거리:</label>
-            <span>{Math.round(driver.deliveryInfo.length / 1000)}km</span>
-          </div>
-          <div>
-            <label>졸음운전 감지:</label>
-            <span>{sleepEvents}회</span>
-          </div>
-          <div>
-            <label>낮은 집중도 구간:</label>
+            <label>현재 위치:</label>
             <span>
-              {driver.deliveryInfo.route_low_focus.features.length}구간
+              {driver.location.lat.toFixed(6)}, {driver.location.lng.toFixed(6)}
             </span>
           </div>
+          {realtimeState && (
+            <>
+              <div>
+                <label>졸음 수준:</label>
+                <span>{realtimeState.drowsy_level}</span>
+              </div>
+              <div>
+                <label>집중도:</label>
+                <span>{(realtimeState.concentration_level * 100).toFixed(1)}%</span>
+              </div>
+            </>
+          )}
           {driver.phoneNumber && (
             <div>
               <label>연락처:</label>

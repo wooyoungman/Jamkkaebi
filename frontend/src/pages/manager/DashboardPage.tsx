@@ -1,18 +1,18 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import MapContainer from "@components/manager/MapContainer";
 import DriverMarker from "@components/manager/DriverMarker";
 import RoutePolyline from "@components/manager/RoutePolyline";
 import DriverInfoModal from "@components/manager/DriverInfoModal";
 import AlertModal from "@components/manager/AlertModal";
 import { useDriverList } from "@queries/manager/driver";
-import { useDriversWithRoutes } from "@queries/manager/routes";
 import { useMapController } from "@/hooks/useMapController";
 import { useWebSocketController } from "@/hooks/useWebSocketController";
 import { useGetUserInfo } from "@queries/index";
+import { DriverResponse, RealTimeDriver } from "@interfaces/manager";
 
 const ROUTE_COLORS = [
-  "#FF3B3B",
+  "#9361ff",
   "#4B7BFF",
   "#FF2DC2",
   "#7B3DFF",
@@ -23,16 +23,13 @@ const ROUTE_COLORS = [
 const DashboardPage = () => {
   const [selectedDriver, setSelectedDriver] = useState<number | null>(null);
   const [showDriverInfo, setShowDriverInfo] = useState(false);
+  const [driverRoutes, setDriverRoutes] = useState<Record<number, Array<{lat: number; lng: number}>>>({});
+  const isInitialMount = useRef(true);
 
   const { data: userInfo } = useGetUserInfo();
   const managerId = userInfo?.memberId || 0;
 
-  const { data: driverList, isLoading: isLoadingDrivers } =
-    useDriverList("managed");
-  const driverQueries = useDriversWithRoutes(driverList);
-  const driversWithRoutes = driverQueries
-    .map((query) => query.data)
-    .filter((data): data is NonNullable<typeof data> => !!data);
+  const { data: driverList, isLoading: isLoadingDrivers } = useDriverList("managed");
 
   const {
     isConnected,
@@ -42,12 +39,46 @@ const DashboardPage = () => {
     showAlert,
     alertInfo,
     setShowAlert,
-  } = useWebSocketController(managerId, driversWithRoutes);
+  } = useWebSocketController(managerId);
 
-  const driversWithRealtimeLocations = driversWithRoutes.map((driver) => ({
+  // WebSocket으로 받은 위치 데이터를 경로에 추가
+  useEffect(() => {
+    if (!driverList?.drivers) return;
+
+    // 초기 마운트 시에는 실행하지 않음
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    driverList.drivers.forEach((driver: DriverResponse) => {
+      const newLocation = realtimeLocations[driver.driverId];
+      if (!newLocation) return;
+
+      setDriverRoutes(prev => {
+        const currentRoute = prev[driver.driverId] || [];
+        const lastPoint = currentRoute[currentRoute.length - 1];
+
+        // 첫 위치이거나 마지막 위치와 다른 경우만 추가
+        if (!lastPoint || 
+            lastPoint.lat !== newLocation.lat || 
+            lastPoint.lng !== newLocation.lng) {
+          return {
+            ...prev,
+            [driver.driverId]: [...currentRoute, newLocation].slice(-10)
+          };
+        }
+        return prev;
+      });
+    });
+  }, [realtimeLocations, driverList]);
+
+  // 실시간 위치 정보만을 사용하는 드라이버 목록
+  const driversWithRealtimeLocations: RealTimeDriver[] = driverList?.drivers.map((driver: DriverResponse) => ({
     ...driver,
-    location: realtimeLocations[driver.driverId] || driver.location,
-  }));
+    location: realtimeLocations[driver.driverId] || { lat: 37.5666805, lng: 126.9784147 },
+    route: driverRoutes[driver.driverId] || []
+  })) || [];
 
   const { handleDriverClick } = useMapController(driversWithRealtimeLocations);
 
@@ -74,33 +105,33 @@ const DashboardPage = () => {
           height="100%"
           initialCenter={{ lat: 37.5666805, lng: 126.9784147 }}
         >
-          {driversWithRealtimeLocations.map((driver, index) => {
-            const realtimeState = realtimeDriverStates.find(
-              (state) => state.driverId === driver.driverId
-            );
-
-            return (
-              <div key={`driver-group-${driver.driverId}`}>
-                <DriverMarker
-                  position={driver.location}
-                  driverId={driver.driverId}
-                  onClick={() => onDriverClick(driver.driverId)}
-                  status={
-                    realtimeState?.drowsy_level === 1
-                      ? "drowsy"
-                      : (realtimeState?.concentration_level ?? 1) < 0.3
-                        ? "low_focus"
-                        : "normal"
-                  }
-                />
+          {driversWithRealtimeLocations.map((driver, index) => (
+            <div key={`driver-group-${driver.driverId}`}>
+              <DriverMarker
+                position={driver.location}
+                driverId={driver.driverId}
+                onClick={() => onDriverClick(driver.driverId)}
+                status={
+                  realtimeDriverStates.find(
+                    (state) => state.driverId === driver.driverId
+                  )?.drowsy_level === 1
+                    ? "drowsy"
+                    : (realtimeDriverStates.find(
+                        (state) => state.driverId === driver.driverId
+                      )?.concentration_level ?? 1) < 0.3
+                      ? "low_focus"
+                      : "normal"
+                }
+              />
+              {driver.route.length >= 2 && (
                 <RoutePolyline
                   path={driver.route}
                   color={ROUTE_COLORS[index % ROUTE_COLORS.length]}
-                  width={50}
+                  width={15}
                 />
-              </div>
-            );
-          })}
+              )}
+            </div>
+          ))}
         </MapContainer>
 
         {showDriverInfo && selectedDriver && (

@@ -60,6 +60,20 @@ export interface BrainData {
   coordinate: number[];
 }
 
+
+// 실시간 데이터만을 위한 간단한 타입
+export interface RealTimeDriver extends DriverResponse {
+  location: {
+    lat: number;
+    lng: number;
+  };
+  route: Array<{
+    lat: number;
+    lng: number;
+  }>;
+}
+
+
 // 경로 정보의 좌표와 feature 타입
 export interface Coordinate {
   type: string;

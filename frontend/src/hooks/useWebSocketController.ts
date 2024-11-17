@@ -1,8 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
-import { DriverState, BrainData, DriverWithRoute } from "@interfaces/manager";
+import { DriverState, BrainData } from "@interfaces/manager";
 
-const SPRING_WS_URL = "wss://k11c106.p.ssafy.io/ws/v1/device/data";
-const FASTAPI_WS_URL = "wss://k11c106.p.ssafy.io/fastapi/ws";
+const SPRING_WS_URL = "wss://k11c106.p.ssafy.io/ws/v1/manager";
 
 interface WebSocketResponse {
   count: number;
@@ -28,14 +27,12 @@ interface WebSocketResponse {
   }>;
 }
 
-export const useWebSocketController = (managerId: number, driversWithRoutes: DriverWithRoute[]) => {
+export const useWebSocketController = (managerId: number) => {
   const [springSocket, setSpringSocket] = useState<WebSocket | null>(null);
-  const [fastApiSocket, setFastApiSocket] = useState<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [connectionAttempts, setConnectionAttempts] = useState(0);
   const [realtimeDriverStates, setRealtimeDriverStates] = useState<DriverState[]>([]);
   const [realtimeLocations, setRealtimeLocations] = useState<Record<string, { lat: number; lng: number }>>({});
-  const [needFastApiConnection, setNeedFastApiConnection] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertInfo, setAlertInfo] = useState({
     driverName: "",
@@ -58,44 +55,6 @@ export const useWebSocketController = (managerId: number, driversWithRoutes: Dri
     }
   }, [managerId]);
 
-  // FastAPI WebSocket 연결 함수
-  const connectFastApiSocket = useCallback(() => {
-    const newFastApiSocket = new WebSocket(FASTAPI_WS_URL);
-
-    newFastApiSocket.onopen = () => {
-      console.log("FastAPI WebSocket connected");
-      requestData(newFastApiSocket);
-    };
-
-    newFastApiSocket.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data) as BrainData;
-        if (data.predictions?.classification) {
-          setRealtimeDriverStates((prev) => {
-            const existingIndex = prev.findIndex(
-              (state) => state.driverId === data.driverId
-            );
-            const newState: DriverState = {
-              driverId: data.driverId,
-              drowsy_level: data.predictions?.classification === "ASLEEP" ? 1 : 0,
-              concentration_level: 1,
-            };
-
-            if (existingIndex >= 0) {
-              const newStates = [...prev];
-              newStates[existingIndex] = newState;
-              return newStates;
-            }
-            return [...prev, newState];
-          });
-        }
-      } catch (error) {
-        console.error("Error parsing FastAPI WebSocket message:", error);
-      }
-    };
-
-    setFastApiSocket(newFastApiSocket);
-  }, [requestData]);
 
   // Spring WebSocket 연결 함수
   const connectSpringSocket = useCallback(() => {
@@ -158,10 +117,7 @@ export const useWebSocketController = (managerId: number, driversWithRoutes: Dri
                   return newStates;
                 }
                 return [...prev, newState];
-              });
-            } else {
-              setNeedFastApiConnection(true);
-            }
+              });}
           });
         } catch (error) {
           console.error("Error parsing Spring WebSocket message:", error);
@@ -219,18 +175,6 @@ export const useWebSocketController = (managerId: number, driversWithRoutes: Dri
       }
     };
   }, [connectSpringSocket]);
-
-  useEffect(() => {
-    if (needFastApiConnection && !fastApiSocket) {
-      connectFastApiSocket();
-    }
-
-    return () => {
-      if (fastApiSocket && fastApiSocket.readyState === WebSocket.OPEN) {
-        fastApiSocket.close();
-      }
-    };
-  }, [needFastApiConnection, fastApiSocket, connectFastApiSocket]);
 
   return {
     isConnected,

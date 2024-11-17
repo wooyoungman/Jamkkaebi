@@ -1,5 +1,4 @@
 // 졸음 일어났을 때 나오는 알림 모달
-// 추후에 여기서 운전자 쪽 차량 컨트롤 할 수 있는 기능도 추가
 import styled from "styled-components";
 
 interface AlertModalProps {
