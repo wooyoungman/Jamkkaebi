@@ -158,7 +158,7 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
         >
           {/* <CustomModalGlassDiv onClick={(e) => e.stopPropagation()}> */}
           <CloseButton onClick={onClose}>✕</CloseButton>
-          <DriverText fontSize="20px" color="#E0E0E0" fontWeight={700}>
+          <DriverText fontSize="22px" color="#E0E0E0" fontWeight={700}>
             운행 상세 기록
           </DriverText>
           <ReportDetailMain>
@@ -169,7 +169,7 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
               <ReportDetailTextDiv>
                 <CustomDriverText
                   color="#E0E0E0"
-                  fontSize="14px"
+                  fontSize="15px"
                   fontWeight={600}
                 >
                   {formatDate(reportData.date)}

@@ -53,43 +53,40 @@ const DrivingReportItem: React.FC<DrivingReportItemProps> = ({
   };
 
   return (
-    <>
-      <DrivingReportList onClick={handleOpenModal}>
-        <CustomDriverText fontSize="12px" fontWeight={600}>
-          {arrivalLocation}
-        </CustomDriverText>
-        <CustomInlineTextDiv>
-          <CustomDriverText color="#E0E0E0" fontSize="10px" fontWeight={500}>
-            {departureTime} 출발
-          </CustomDriverText>
-          <CustomHRLine />
-          <CustomDriverText color="#E0E0E0" fontSize="10px" fontWeight={500}>
-            {distance}
-          </CustomDriverText>
-          <CustomHRLine />
-          <CustomDriverText color="#E0E0E0" fontSize="10px" fontWeight={500}>
-            {duration.replace(/:/g, "시간 ")}분 운행
-          </CustomDriverText>
-        </CustomInlineTextDiv>
-        <InlineTextDiv>
-          {drowsinessCount === 0 && focusLossCount === 0 ? (
-            <GoodDrivingBadge />
-          ) : (
-            <BadDrivingBadge
-              drowsy={drowsinessCount}
-              focusLoss={focusLossCount}
-            />
-          )}
-        </InlineTextDiv>
-      </DrivingReportList>
-
+    <DrivingReportList onClick={handleOpenModal}>
       {isModalOpen && (
         <DrivingReportDetail
           reportData={reportData}
           onClose={handleCloseModal}
         />
       )}
-    </>
+      <CustomDriverText fontSize="15px" fontWeight={600}>
+        {arrivalLocation}
+      </CustomDriverText>
+      <CustomInlineTextDiv>
+        <CustomDriverText color="#E0E0E0" fontSize="14px" fontWeight={500}>
+          {departureTime} 출발
+        </CustomDriverText>
+        <CustomHRLine />
+        <CustomDriverText color="#E0E0E0" fontSize="14px" fontWeight={500}>
+          {distance}
+        </CustomDriverText>
+        <CustomHRLine />
+        <CustomDriverText color="#E0E0E0" fontSize="14px" fontWeight={500}>
+          {duration.replace(/:/g, "시간 ")}분 운행
+        </CustomDriverText>
+      </CustomInlineTextDiv>
+      <InlineTextDiv>
+        {drowsinessCount === 0 && focusLossCount === 0 ? (
+          <GoodDrivingBadge />
+        ) : (
+          <BadDrivingBadge
+            drowsy={drowsinessCount}
+            focusLoss={focusLossCount}
+          />
+        )}
+      </InlineTextDiv>
+    </DrivingReportList>
   );
 };
 

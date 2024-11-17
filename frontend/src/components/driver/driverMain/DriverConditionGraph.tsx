@@ -87,17 +87,20 @@ const DriverConditionGraph: React.FC<DriverConditionGraphProps> = ({
       <GraphText>
         <DriverText
           color={graphType === "concentration" ? "#9BF62D" : "#FF5172"}
-          fontSize="calc(max(1.1vw, 14px))"
+          // fontSize="calc(max(1.1vw, 14px))"
+          fontSize="20px"
           fontWeight={700}
         >
           {title}
         </DriverText>
-        <DriverText fontSize="calc(max(1.3vw, 17px))" fontWeight={700}>
+        {/* <DriverText fontSize="calc(max(1.3vw, 17px))" fontWeight={700}> */}
+        <DriverText fontSize="25px" fontWeight={700}>
           100
         </DriverText>
         <DriverText
           color={graphType === "concentration" ? "#9BF62D" : "#FF5172"}
-          fontSize="calc(max(4vw, 65px))"
+          // fontSize="calc(max(4vw, 65px))"
+          fontSize="70px"
           fontWeight={700}
           style={{ marginTop: "-0.6vw" }}
         >

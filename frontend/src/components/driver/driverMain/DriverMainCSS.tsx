@@ -53,7 +53,7 @@ export const DriverTextDiv = styled.div`
 export const InlineTextDiv = styled.div<DriverProps>`
   display: flex;
   align-items: baseline;
-  gap: ${(props) => props.gap || "4px"};
+  gap: ${(props) => props.gap || "8px"};
 `;
 
 export const DrivingInfo = styled.div`
@@ -130,6 +130,15 @@ export const RightBottomWeather = styled(RightBottomDiv)`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  flex-direction: row;
+  padding: 25px;
+  gap: 30px;
+`;
+
+export const WeatherInfoDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 export const ConditionGraphWrapper = styled.div`

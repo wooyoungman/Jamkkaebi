@@ -7,12 +7,27 @@ import {
   RightBottomImage,
   RightBottomContent,
   RightBottomWeather,
+  WeatherInfoDiv,
+  InlineTextDiv,
 } from "./DriverMainCSS";
 import RestStoreInfo from "../RestStoreInfo";
 import LocationIcon from "@/styles/driver/LocationIcon";
 import restImg from "@/assets/restImg.png";
 import styled from "styled-components";
 import DriverMap from "../DriverMap";
+import {
+  CloudSVG,
+  LocationSVG,
+} from "@/styles/driver/driverMain/DriverWeatherSVG";
+import { HRLine } from "../driverReport/DriverReportCSS";
+
+const CustomHRLine = styled(HRLine)`
+  height: 12px;
+`;
+
+const CustomInlineTextDiv = styled(InlineTextDiv)`
+  align-items: center;
+`;
 
 const CustomRightBottomDiv = styled(RightBottomDiv)`
   padding: 20px;
@@ -31,7 +46,7 @@ const DriverMainRight: React.FC = () => {
       </RightTop>
       <RightBottom>
         <CustomRightBottomDiv>
-          <CustomDriverText fontSize="20px" fontWeight={700}>
+          <CustomDriverText fontSize="22px" fontWeight={700}>
             근처 휴게시설
           </CustomDriverText>
           <RightBottomMain>
@@ -43,7 +58,32 @@ const DriverMainRight: React.FC = () => {
           </RightBottomMain>
         </CustomRightBottomDiv>
 
-        <RightBottomWeather />
+        <RightBottomWeather>
+          <WeatherInfoDiv>
+            <CustomInlineTextDiv>
+              <LocationSVG />
+              <CustomDriverText fontSize="17px" fontWeight={500}>
+                광주광역시
+              </CustomDriverText>
+            </CustomInlineTextDiv>
+            <CustomDriverText fontSize="30px" fontWeight={500}>
+              구름 많음
+            </CustomDriverText>
+            <CustomDriverText fontSize="40px" fontWeight={600}>
+              8°C
+            </CustomDriverText>
+            <CustomInlineTextDiv gap="7px">
+              <CustomDriverText fontSize="13px" fontWeight={400}>
+                TuesDay
+              </CustomDriverText>
+              <CustomHRLine />
+              <CustomDriverText fontSize="13px" fontWeight={400}>
+                19 Nov 2024
+              </CustomDriverText>
+            </CustomInlineTextDiv>
+          </WeatherInfoDiv>
+          <CloudSVG />
+        </RightBottomWeather>
       </RightBottom>
     </>
   );

@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { DriverText } from "@/components/driver/driverMain/DriverMainCSS";
 
 const GoodDrivingTag = styled.div`
-  width: 50px;
-  height: 16px;
-  padding: 4px 4px;
+  /* width: 55px; */
+  /* height: 18px; */
+  padding: 3px 4px;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -16,7 +16,7 @@ const GoodDrivingTag = styled.div`
 export const GoodDrivingBadge = () => {
   return (
     <GoodDrivingTag>
-      <DriverText color="#10A957" fontSize="10px" fontWeight={400}>
+      <DriverText color="#10A957" fontSize="14px" fontWeight={400}>
         정상 운행
       </DriverText>
     </GoodDrivingTag>
@@ -29,7 +29,7 @@ interface BadDrivingProps {
 }
 
 const BadDrivingTag = styled.div`
-  height: 16px;
+  /* height: 16px; */
   padding: 4px 4px;
   box-sizing: border-box;
   display: flex;
@@ -47,14 +47,14 @@ export const BadDrivingBadge: React.FC<BadDrivingProps> = ({
     <>
       {drowsy > 0 && (
         <BadDrivingTag>
-          <DriverText color="#FF5E5E" fontSize="10px" fontWeight={400}>
+          <DriverText color="#FF5E5E" fontSize="14px" fontWeight={400}>
             졸음 {drowsy}회
           </DriverText>
         </BadDrivingTag>
       )}
       {focusLoss > 0 && (
         <BadDrivingTag>
-          <DriverText color="#FF5E5E" fontSize="10px" fontWeight={400}>
+          <DriverText color="#FF5E5E" fontSize="14px" fontWeight={400}>
             집중 저하 {focusLoss}회
           </DriverText>
         </BadDrivingTag>
