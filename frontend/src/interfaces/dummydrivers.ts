@@ -1,30 +1,26 @@
-import { User, DrowsyEvent, MapDriver } from "./manager";
+import { DrowsyEvent, MapDriver, DriverResponse } from "./manager";
 
-// User 데이터
-export const dummyUsers: User[] = [
+// Driver 데이터
+export const dummyDrivers: DriverResponse[] = [
   {
-    id: 1,
-    username: "driver1",
-    name: "김운전",
+    driverId: 1,
+    driverName: "김운전",
+    phoneNumber: "010-1234-5678",
+    address: "서울시 중구 세종대로 110",
     role: "DRIVER",
-    phone: "010-1234-5678",
-    employeeId: "EMP001",
-    region: "서울",
-    status: "운행 중",
-    profileImage:
-      "https://api.dicebear.com/7.x/avataaars/svg?seed=KimDriving&backgroundColor=b6e3f4",
+    vehicleNumber: "서울 123가 4567",
+    status: "ON_ROUTE",
+    profileImage: "https://api.dicebear.com/7.x/avataaars/svg?seed=KimDriving&backgroundColor=b6e3f4",
   },
   {
-    id: 2,
-    username: "driver2",
-    name: "이안전",
+    driverId: 2,
+    driverName: "이안전",
+    phoneNumber: "010-2345-6789",
+    address: "서울시 송파구 올림픽로 300",
     role: "DRIVER",
-    phone: "010-2345-6789",
-    employeeId: "EMP002",
-    region: "경기",
-    status: "휴일",
-    profileImage:
-      "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeSafety&backgroundColor=b6e3f4",
+    vehicleNumber: "서울 456나 7890",
+    status: "REST",
+    profileImage: "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeSafety&backgroundColor=b6e3f4",
   },
 ];
 
@@ -33,8 +29,7 @@ export const dummyDrowsyEvents: DrowsyEvent[] = [
   {
     id: 1,
     username: "driver1",
-    profileImage:
-      "https://api.dicebear.com/7.x/avataaars/svg?seed=KimDriving&backgroundColor=b6e3f4",
+    profileImage: "https://api.dicebear.com/7.x/avataaars/svg?seed=KimDriving&backgroundColor=b6e3f4",
     driverName: "김운전",
     age: 45,
     gender: "남성",
@@ -57,8 +52,7 @@ export const dummyDrowsyEvents: DrowsyEvent[] = [
   {
     id: 2,
     username: "driver2",
-    profileImage:
-      "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeSafety&backgroundColor=b6e3f4",
+    profileImage: "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeSafety&backgroundColor=b6e3f4",
     driverName: "이안전",
     age: 38,
     gender: "남성",
@@ -87,7 +81,7 @@ export const dummyMapDrivers: MapDriver[] = [
     username: "driver1",
     name: "김운전",
     vehicleNumber: "서울 123가 4567",
-    status: "운행중",
+    status: "ON_ROUTE",
     location: {
       lat: 37.5666805,
       lng: 126.9784147,
@@ -108,7 +102,7 @@ export const dummyMapDrivers: MapDriver[] = [
     username: "driver2",
     name: "이안전",
     vehicleNumber: "서울 456나 7890",
-    status: "운행중",
+    status: "REST",
     location: {
       lat: 37.5208085,
       lng: 127.1076804,

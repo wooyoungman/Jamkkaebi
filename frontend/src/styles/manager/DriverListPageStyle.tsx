@@ -11,24 +11,30 @@ const Container = styled.div`
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  justify-content: flext-start;
+  align-items: center;
   margin-bottom: 32px;
+  gap: 24px;
 `;
 
 const TitleSection = styled.div`
   flex-shrink: 0;
+  margin-right: auto;
 `;
 
 const SearchSection = styled.div`
   display: flex;
   gap: 8px;
-  min-width: 0;
+  margin-left: auto;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
 `;
 
 const SearchWrapper = styled.div`
-  width: 240px;
+  width: 320px;
   position: relative;
+  flex-shrink: 0;
 `;
 
 const SearchInput = styled.input`
@@ -74,7 +80,9 @@ const SubTitle = styled.h2`
 `;
 
 const SelectWrapper = styled.div`
-  width: 200px;
+  width: 280px;
+  gap: 8px;
+  display: flex;
 `;
 
 const StyledSelect = styled.select`
@@ -149,7 +157,7 @@ const ProfileImage = styled.img`
   object-fit: cover;
 `;
 
-const StatusBadge = styled.span<{ status: "운행 중" | "휴일" }>`
+const StatusBadge = styled.span<{ status: "ON_ROUTE" | "REST" | "IDLE" }>`
   display: inline-block;
   width: 100px;
   text-align: center;
@@ -157,10 +165,10 @@ const StatusBadge = styled.span<{ status: "운행 중" | "휴일" }>`
   border-radius: 4px;
   font-size: 14px;
   border: 1px solid
-    ${(props) => (props.status === "운행 중" ? "#00B087" : "#DF0404")};
+    ${(props) => (props.status === "ON_ROUTE" ? "#00B087" : "#DF0404")};
   background: ${(props) =>
-    props.status === "운행 중" ? "#dcfce7" : "#fee2e2"};
-  color: ${(props) => (props.status === "운행 중" ? "#008767" : "#DF0404")};
+    props.status === "ON_ROUTE" ? "#dcfce7" : "#fee2e2"};
+  color: ${(props) => (props.status === "ON_ROUTE" ? "#008767" : "#DF0404")};
 `;
 
 const Pagination = styled.div`

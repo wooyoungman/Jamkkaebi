@@ -1,11 +1,10 @@
+import { dummyDrivers } from "@interfaces/dummydrivers";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import PurpleButton from "@/components/manager/PurpleButton";
 import { Share } from "lucide-react";
-import { User } from "@/interfaces/manager";
-import { DUMMY_USERS } from "@interfaces/driveruser";
-import { Line, Bar, Radar } from "react-chartjs-2";
+import { DriverResponse } from "@/interfaces/manager";
+import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -33,13 +32,46 @@ ChartJS.register(
   Legend
 );
 
+import {
+  Container,
+  HeaderSection,
+  ButtonWrapper,
+  DriverProfile,
+  ProfileImage,
+  DriverName,
+  ReportTitle,
+  StatsContainer,
+  TopStats,
+  MainContent,
+  StatCard,
+  WorkLogCard,
+  IconWrapper,
+  Label,
+  Value,
+  Unit,
+  Change,
+  WorkLogTitle,
+  LogGrid,
+  LogItem,
+  LogLabel,
+  LogValue,
+  ChartsGrid,
+  ChartCard,
+  ChartHeader,
+  ChartTitle,
+  TabGroup,
+  Tab,
+  RadarWrapper,
+} from '@styles/manager/ReportPageStyle'
+
+
 export const ReportPage = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data: driver } = useQuery<User>({
+  const { data: driver } = useQuery<DriverResponse>({
     queryKey: ["driver", id],
     queryFn: () => {
-      const foundDriver = DUMMY_USERS.find((user) => user.id === Number(id));
+      const foundDriver = dummyDrivers.find((driver) => driver.driverId === Number(id));
       if (!foundDriver) throw new Error("Driver not found");
       return foundDriver;
     },
@@ -53,7 +85,7 @@ export const ReportPage = () => {
       {
         label: "운전 시간",
         data: [200, 180, 276, 230, 190, 180, 170],
-        borderColor: "#22C55E", // 초록색으로 변경
+        borderColor: "#22C55E",
         backgroundColor: "#22C55E",
         tension: 0.4,
         fill: false,
@@ -61,23 +93,10 @@ export const ReportPage = () => {
       {
         label: "휴식 시간",
         data: [100, 90, 150, 120, 100, 90, 85],
-        borderColor: "#F59E0B", // 주황색으로 변경
+        borderColor: "#F59E0B",
         backgroundColor: "#F59E0B",
         tension: 0.4,
         fill: false,
-      },
-    ],
-  };
-
-  // 운전 분석 임의 데이터
-  const radarData = {
-    labels: ["운전 능력", "피로도", "집중력", "위험도", "안정성", "속도"],
-    datasets: [
-      {
-        data: [85, 70, 90, 65, 80, 75],
-        borderColor: "#38BDF8",
-        backgroundColor: "rgba(56, 189, 248, 0.2)",
-        borderWidth: 2,
       },
     ],
   };
@@ -283,54 +302,46 @@ export const ReportPage = () => {
       <HeaderSection>
         <div>
           <DriverProfile>
-            <ProfileImage src={driver.profileImage} alt={driver.name} />
+            <ProfileImage src={driver.profileImage} alt={driver.driverName} />
             <div>
-              <DriverName>{driver.name} 기사님</DriverName>
+              <DriverName>{driver.driverName} 기사님</DriverName>
               <ReportTitle>운전 보고서</ReportTitle>
             </div>
           </DriverProfile>
           <TopStats>
             <StatCard>
-              <IconWrapper>👤</IconWrapper>
+              <IconWrapper>🚗</IconWrapper>
               <div>
-                <Label>총 주행거리</Label>
-                <Value>
-                  2,924<Unit>km</Unit>
-                </Value>
-                <Change positive>▲ 124km</Change>
+                <Label>차량 번호</Label>
+                <Value>{driver.vehicleNumber}</Value>
               </div>
             </StatCard>
 
             <StatCard>
-              <IconWrapper>⏰</IconWrapper>
+              <IconWrapper>📱</IconWrapper>
               <div>
-                <Label>일일 근무 시간</Label>
-                <Value>
-                  9<Unit>H</Unit> 4<Unit>M</Unit>
-                </Value>
-                <Change negative>▼ 10%</Change>
+                <Label>연락처</Label>
+                <Value>{driver.phoneNumber || "미등록"}</Value>
               </div>
             </StatCard>
 
             <StatCard>
-              <IconWrapper>📊</IconWrapper>
+              <IconWrapper>📍</IconWrapper>
               <div>
-                <Label>평균 집중지수</Label>
-                <Value>
-                  86<Unit>점</Unit>
-                </Value>
-                <Change positive>▲ 10점</Change>
+                <Label>주소</Label>
+                <Value>{driver.address || "미등록"}</Value>
               </div>
             </StatCard>
 
             <StatCard>
-              <IconWrapper>🔒</IconWrapper>
+              <IconWrapper>⚡</IconWrapper>
               <div>
-                <Label>평균 졸음지수</Label>
+                <Label>현재 상태</Label>
                 <Value>
-                  65<Unit>점</Unit>
+                  {driver.status === "ON_ROUTE" && "운행중"}
+                  {driver.status === "REST" && "휴식중"}
+                  {driver.status === "IDLE" && "대기중"}
                 </Value>
-                <Change negative>▼ 10점</Change>
               </div>
             </StatCard>
           </TopStats>
@@ -347,27 +358,28 @@ export const ReportPage = () => {
           <WorkLogTitle>근무 일지</WorkLogTitle>
           <LogGrid>
             <LogItem>
-              <LogLabel>주행거리</LogLabel>
-              <LogValue>2924km</LogValue>
+              <LogLabel>차량 번호</LogLabel>
+              <LogValue>{driver.vehicleNumber}</LogValue>
             </LogItem>
             <LogItem>
-              <LogLabel>시간당 주행거리</LogLabel>
-              <LogValue>324.8km</LogValue>
+              <LogLabel>연락처</LogLabel>
+              <LogValue>{driver.phoneNumber || "미등록"}</LogValue>
             </LogItem>
             <LogItem>
-              <LogLabel>출근시간</LogLabel>
-              <LogValue>AM 3시 10분</LogValue>
+              <LogLabel>주소</LogLabel>
+              <LogValue>{driver.address || "미등록"}</LogValue>
             </LogItem>
             <LogItem>
-              <LogLabel>퇴근시간</LogLabel>
-              <LogValue>PM 2시 34분</LogValue>
-            </LogItem>
-            <LogItem>
-              <LogLabel>휴식시간</LogLabel>
-              <LogValue>2시간 20분</LogValue>
+              <LogLabel>현재 상태</LogLabel>
+              <LogValue>
+                {driver.status === "ON_ROUTE" && "운행중"}
+                {driver.status === "REST" && "휴식중"}
+                {driver.status === "IDLE" && "대기중"}
+              </LogValue>
             </LogItem>
           </LogGrid>
         </WorkLogCard>
+
         <MainContent>
           <ChartsGrid>
             <ChartCard>
@@ -424,214 +436,6 @@ export const ReportPage = () => {
   );
 };
 
-const Container = styled.div`
-  padding: 2rem;
-  background: #f8fafc;
-`;
 
-const HeaderSection = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #f0efff;
-  padding: 1rem 1.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1.5rem;
-`;
-
-// PurpleButton의 스타일을 덮어씌우기
-const ButtonWrapper = styled.div`
-  width: 150px;
-  height: 50px;
-  button {
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    font-size: 20px;
-    box-shadow: none;
-  }
-`;
-const DriverProfile = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
-
-const ProfileImage = styled.img`
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-`;
-
-const DriverName = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0;
-`;
-
-const ReportTitle = styled.h3`
-  font-size: 35px;
-  font-weight: semibold;
-  margin: 0;
-`;
-
-const StatsContainer = styled.div`
-  display: grid;
-  grid-template-columns: 300px 1fr; // 300px 고정 + 나머지 공간
-  gap: 1.5rem;
-  align-items: start;
-`;
-
-const TopStats = styled.div`
-  display: flex;
-  flex-direction: row; // 가로 배치
-  gap: 1rem;
-  margin-top: 1.5rem; // DriverProfile과의 간격
-  flex-wrap: wrap; // 필요시 줄바꿈
-`;
-
-const MainContent = styled.div`
-  flex: 1; // 남은 공간을 모두 차지하도록 설정
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  min-width: 0; // 필요한 경우 축소될 수 있도록 설정
-`;
-
-const StatCard = styled.div`
-  padding: 1.25rem;
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  border-radius: 0.5rem;
-  flex: 1; // 동일한 너비로 분배
-  min-width: 250px; // 최소 너비 설정
-`;
-
-const WorkLogCard = styled.div`
-  background: #f0efff;
-  padding: 2rem; // 패딩 좀 더 여유있게
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  height: 100%; // 세로로 꽉 차게
-`;
-
-const IconWrapper = styled.div`
-  font-size: 1.5rem;
-`;
-
-const Label = styled.div`
-  font-size: 0.875rem;
-  color: #64748b;
-  margin-bottom: 0.25rem;
-`;
-
-const Value = styled.div`
-  font-size: 1.5rem;
-  font-weight: 600;
-  display: flex;
-  align-items: baseline;
-  gap: 0.25rem;
-`;
-
-const Unit = styled.span`
-  font-size: 0.875rem;
-  font-weight: normal;
-  color: #64748b;
-`;
-
-const Change = styled.div<{ positive?: boolean; negative?: boolean }>`
-  font-size: 0.875rem;
-  color: ${(props) => {
-    if (props.positive) return "#10B981";
-    if (props.negative) return "#EF4444";
-    return "#64748B";
-  }};
-  margin-top: 0.25rem;
-`;
-
-const WorkLogTitle = styled.h4`
-  font-size: 1.25rem; // 제목 크기 증가
-  color: #1e293b;
-  font-weight: 600;
-  margin: 0 0 2rem 0; // 아래 여백 증가
-`;
-
-const LogGrid = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-const LogItem = styled.div`
-  display: flex;
-  flex-direction: column; // 세로로 배치
-  gap: 0.5rem; // 라벨과 값 사이 간격
-`;
-
-const LogLabel = styled.span`
-  color: #64748b;
-  font-size: 0.875rem;
-`;
-
-const LogValue = styled.span`
-  font-weight: 600; // 좀 더 굵게
-  font-size: 1.25rem; // 크기 증가
-  color: #1e293b; // 진한 색상
-`;
-
-const ChartsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-`;
-
-const ChartCard = styled.div`
-  background: white;
-  padding: 1.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-`;
-
-const ChartHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 1.5rem;
-`;
-
-const ChartTitle = styled.h4`
-  font-size: 1.25rem;
-  color: #1e293b;
-  margin: 0;
-  font-weight: 600;
-`;
-
-const TabGroup = styled.div`
-  display: flex;
-  gap: 0.5rem;
-`;
-
-const Tab = styled.button<{ active?: boolean }>`
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-  border: none;
-  background: ${(props) => (props.active ? "#4F46E5" : "transparent")};
-  color: ${(props) => (props.active ? "white" : "#64748B")};
-  border-radius: 0.375rem;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    background: ${(props) => (props.active ? "#4338CA" : "#F1F5F9")};
-  }
-`;
-
-const RadarWrapper = styled.div`
-  width: 70%;
-  margin: 0 auto;
-  padding: 1rem 0;
-`;
 
 export default ReportPage;

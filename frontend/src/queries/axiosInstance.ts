@@ -29,7 +29,7 @@ axiosInstance.interceptors.response.use(
         case 401:
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
-          window.location.href = "/login";
+          window.location.href = "/manager";
           throw new Error("아이디/비밀번호를 확인해주세요.");
         case 409:
           throw new Error("이미 사용중인 아이디입니다.");

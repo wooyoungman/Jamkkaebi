@@ -145,12 +145,12 @@ const LandingPage: React.FC = () => {
             </IconWrapper>
             <CardTitle variant="manager">관리자</CardTitle>
             <CardText variant="manager">
-              • 대시보드
+              • 운전자 관리 대시보드
               <br />
-              • 운전자 관리
+              • 운전자 리스트
               <br />
-              • 보고서 확인
-              <br />• 이력 관리
+              • 운전자별 레포트
+              <br />• 졸음 히스토리
             </CardText>
           </StyledCardContent>
         </StyledCard>

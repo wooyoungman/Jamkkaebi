@@ -1,9 +1,13 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { atomWithQuery } from "jotai-tanstack-query";
-import { DUMMY_USERS } from "@interfaces/driveruser";
+import {
+  useDriverListWithFilters,
+  searchQueryAtom,
+  sortByAtom,
+  driverTypeAtom,
+} from "@atoms/index";
+import { Driver } from "@interfaces/manager";
 import {
   Container,
   Header,
@@ -27,47 +31,44 @@ import {
   PaginationButton,
 } from "@styles/manager/DriverListPageStyle";
 
-const queryClient = new QueryClient();
+const ITEMS_PER_PAGE = 8;
 
-const usersAtom = atomWithQuery(() => ({
-  queryKey: ["users"],
-  queryFn: async () => DUMMY_USERS,
-}));
-
-const ITEMS_PER_PAGE = 8; // 한 페이지당 8명 표시
-
-const DriverListContent = () => {
-  const nav = useNavigate();
-  const [usersQuery] = useAtom(usersAtom);
+const DriverList = () => {
+  const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
+  const [sortBy, setSortBy] = useAtom(sortByAtom);
+  const [driverType, setDriverType] = useAtom(driverTypeAtom);
   const [currentPage, setCurrentPage] = useState(1);
+  const nav = useNavigate();
+  const STATUS_DISPLAY = {
+    ON_ROUTE: "운행 중",
+    REST: "휴식 중",
+    IDLE: "휴일", // 운행 중 아님
+  } as const;
 
-  const users = usersQuery.data || [];
+  const { drivers, isLoading, isError } = useDriverListWithFilters();
 
-  // 페이지네이션 계산
-  const totalPages = Math.ceil(users.length / ITEMS_PER_PAGE);
-  const paginatedUsers = useMemo(() => {
+  const paginatedDrivers = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    return users.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [users, currentPage]);
+    return drivers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [drivers, currentPage]);
 
-  if (usersQuery.isLoading) {
-    return <Container>Loading...</Container>;
-  }
+  const totalPages = Math.ceil(drivers.length / ITEMS_PER_PAGE);
 
-  if (usersQuery.isError) {
-    return <Container>Error loading users</Container>;
-  }
-
-  const handleRowClick = (userId: number) => {
-    nav(`/manager/report/${userId}`);
+  const handleRowClick = (driverId: number) => {
+    nav(`/manager/report/${driverId}`);
   };
+
+  if (isLoading) return <Container>로딩중...</Container>;
+  if (isError) return <Container>관리자 외에는 운전자를 조회할 수 없습니다.</Container>;
 
   return (
     <Container>
       <Header>
         <TitleSection>
           <Title>전체 운전자</Title>
-          <SubTitle>재직 중인 운전자</SubTitle>
+          <SubTitle>
+            {driverType === "managed" ? "관리 중인 운전자" : "미관리 운전자"}
+          </SubTitle>
         </TitleSection>
 
         <SearchSection>
@@ -89,11 +90,29 @@ const DriverListContent = () => {
                 />
               </svg>
             </SearchIcon>
-            <SearchInput placeholder="검색" />
+            <SearchInput
+              placeholder="검색"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </SearchWrapper>
           <SelectWrapper>
-            <StyledSelect>
-              <option>정렬 - 최신 등록순</option>
+            <StyledSelect
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as "latest" | "name")}
+            >
+              <option value="latest">최신 등록순</option>
+              <option value="name">이름순</option>
+            </StyledSelect>
+
+            <StyledSelect
+              value={driverType}
+              onChange={(e) =>
+                setDriverType(e.target.value as "managed" | "unmanaged")
+              }
+            >
+              <option value="managed">관리 중</option>
+              <option value="unmanaged">미관리</option>
             </StyledSelect>
           </SelectWrapper>
         </SearchSection>
@@ -112,24 +131,30 @@ const DriverListContent = () => {
             </TR>
           </thead>
           <tbody>
-            {paginatedUsers.map((user) => (
+            {paginatedDrivers.map((driver: Driver) => (
               <TR
-                key={user.id}
-                onClick={() => handleRowClick(user.id)}
+                key={driver.memberId}
+                onClick={() => handleRowClick(driver.memberId)}
                 style={{ cursor: "pointer" }}
               >
                 <TD>
                   <ProfileImage
-                    src={user.profileImage}
-                    alt={`${user.name} 프로필`}
+                    src={driver.profileImage}
+                    alt={`${driver.memberName} 프로필`}
                   />
                 </TD>
-                <TD>{user.name}</TD>
-                <TD>{user.phone}</TD>
-                <TD>{user.employeeId}</TD>
-                <TD>{user.region}</TD>
+                <TD>{driver.memberName}</TD>
+                <TD>{driver.phoneNumber}</TD>
+                <TD>{driver.vehicleNumber}</TD>
+                <TD>{driver.address}</TD>
                 <TD>
-                  <StatusBadge status={user.status}>{user.status}</StatusBadge>
+                  <StatusBadge status={driver.status}>
+                    {
+                      STATUS_DISPLAY[
+                        driver.status as keyof typeof STATUS_DISPLAY
+                      ]
+                    }
+                  </StatusBadge>
                 </TD>
               </TR>
             ))}
@@ -163,14 +188,6 @@ const DriverListContent = () => {
         </PaginationButton>
       </Pagination>
     </Container>
-  );
-};
-
-const DriverList = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <DriverListContent />
-    </QueryClientProvider>
   );
 };
 

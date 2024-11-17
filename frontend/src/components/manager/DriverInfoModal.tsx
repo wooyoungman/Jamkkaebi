@@ -1,13 +1,14 @@
 import styled from "styled-components";
-import { MapDriver } from "@/interfaces/manager";
+import { DriverState, RealTimeDriver } from "@interfaces/manager";
 
 interface DriverInfoModalProps {
   isOpen: boolean;
   onClose: () => void;
-  driver: MapDriver;
+  driver: RealTimeDriver;
+  realtimeState?: DriverState;
 }
 
-const DriverInfoModal = ({ isOpen, onClose, driver }: DriverInfoModalProps) => {
+const DriverInfoModal = ({ isOpen, onClose, driver, realtimeState }: DriverInfoModalProps) => {
   if (!isOpen) return null;
 
   return (
@@ -20,7 +21,7 @@ const DriverInfoModal = ({ isOpen, onClose, driver }: DriverInfoModalProps) => {
         <DriverInfoModal.Body>
           <div>
             <label>이름:</label>
-            <span>{driver.name}</span>
+            <span>{driver.driverName}</span>
           </div>
           <div>
             <label>차량번호:</label>
@@ -31,24 +32,35 @@ const DriverInfoModal = ({ isOpen, onClose, driver }: DriverInfoModalProps) => {
             <span>{driver.status}</span>
           </div>
           <div>
-            <label>현재위치:</label>
-            <span>{driver.lastLocation}</span>
+            <label>현재 위치:</label>
+            <span>
+              {driver.location.lat.toFixed(6)}, {driver.location.lng.toFixed(6)}
+            </span>
           </div>
-          <div>
-            <label>졸음운전 감지:</label>
-            <span>{driver.sleepEvents}회</span>
-          </div>
-          <div>
-            <label>최종업데이트:</label>
-            <span>{driver.lastUpdate}</span>
-          </div>
+          {realtimeState && (
+            <>
+              <div>
+                <label>졸음 수준:</label>
+                <span>{realtimeState.drowsy_level}</span>
+              </div>
+              <div>
+                <label>집중도:</label>
+                <span>{(realtimeState.concentration_level * 100).toFixed(1)}%</span>
+              </div>
+            </>
+          )}
+          {driver.phoneNumber && (
+            <div>
+              <label>연락처:</label>
+              <span>{driver.phoneNumber}</span>
+            </div>
+          )}
         </DriverInfoModal.Body>
       </DriverInfoModal.Content>
     </DriverInfoModal.Overlay>
   );
 };
 
-// 스타일 컴포넌트는 동일하게 유지
 DriverInfoModal.Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -95,6 +107,12 @@ DriverInfoModal.Body = styled.div`
     label {
       font-weight: bold;
       margin-right: 10px;
+      min-width: 100px;
+      display: inline-block;
+    }
+
+    span {
+      color: #666;
     }
   }
 `;

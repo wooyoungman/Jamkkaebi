@@ -1,23 +1,24 @@
 import styled from "styled-components";
+import { InputHTMLAttributes } from "react";
 
-interface InputProps {
-  type?: string;
-  name: string; // 필수 prop으로 추가
-  value: string; // 필수 prop으로 추가
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // 필수 prop으로 추가
-  placeholder?: string;
+// HTML input 속성들을 확장하면서 필수 props 정의
+interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'name' | 'value' | 'onChange'> {
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   helpText?: string;
   helpLink?: string;
 }
 
 const Input = ({
   type = "text",
-  name, // props 추가
-  value, // props 추가
-  onChange, // props 추가
+  name,
+  value,
+  onChange,
   placeholder,
   helpText,
   helpLink,
+  ...restProps  // 나머지 HTML input 속성들을 받음
 }: InputProps) => {
   return (
     <InputContainer>
@@ -27,6 +28,7 @@ const Input = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        {...restProps}  // 나머지 props 전달
       />
       {helpText && helpLink && <HelpText href={helpLink}>{helpText}</HelpText>}
     </InputContainer>

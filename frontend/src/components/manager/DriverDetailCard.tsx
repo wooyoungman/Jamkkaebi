@@ -18,9 +18,7 @@ const DriverDetailCard = ({
         <ProfileImage src={event.profileImage} alt={event.driverName} />
         <UserInfo>
           <NameText>{event.driverName}</NameText>
-          <SubInfo>
-            {event.age} / {event.gender}
-          </SubInfo>
+          <SubInfo>{event.age}</SubInfo>
         </UserInfo>
         <TimeStamp>
           <span>발생일시</span>

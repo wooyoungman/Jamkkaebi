@@ -29,7 +29,6 @@ export interface TMapLatLng {
 }
 
 export interface TMapMarker {
-  // 메서드
   setMap: (map: TMap | null) => void;
   getPosition: () => TMapLatLng;
   setPosition: (latLng: TMapLatLng) => void;
@@ -111,6 +110,17 @@ declare global {
       };
     };
   }
+}
+
+export interface MapContainerProps {
+  width?: string;
+  height?: string;
+  initialCenter?: {
+    lat: number;
+    lng: number;
+  };
+  initialZoom?: number;
+  children?: React.ReactNode;
 }
 
 export type TMapInstance = TMap;
