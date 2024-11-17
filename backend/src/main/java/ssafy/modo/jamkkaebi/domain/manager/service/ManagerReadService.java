@@ -22,8 +22,10 @@ public class ManagerReadService {
         return SimpleDriverInfo.builder()
                 .driverId(driver.getId())
                 .driverName(driver.getName())
-                .address(null)
-                .phoneNumber(null)
+                .region(driver.getRegion())
+                .profileImage(driver.getProfileImage())
+                .phoneNumber(driver.getPhoneNumber())
+                .status(driver.getStatus())
                 .build();
     }
 
