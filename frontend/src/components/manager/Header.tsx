@@ -97,7 +97,13 @@ const Header = () => {
         {auth.isAuthenticated && (
           <UserSection>
             <UserInfo>
-              <UserName>{userInfo?.memberName ?? ""} 관리자님</UserName>
+            {userInfo?.memberType && (
+            <UserName>
+              {userInfo?.memberName ?? ""}{" "}
+              {userInfo.memberType === "MANAGER" ? "관리자님" : "운전자님"}
+            </UserName>
+          )}
+
               <IconButton>
                 <UserCircle size={32} />
               </IconButton>

@@ -59,7 +59,7 @@ const DriverList = () => {
   };
 
   if (isLoading) return <Container>로딩중...</Container>;
-  if (isError) return <Container>운전자 로딩 에러</Container>;
+  if (isError) return <Container>관리자 외에는 운전자를 조회할 수 없습니다.</Container>;
 
   return (
     <Container>
