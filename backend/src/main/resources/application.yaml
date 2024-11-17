@@ -23,7 +23,7 @@ spring:
       repositories:
         bootstrap-mode: deferred
   jpa:
-    show-sql: true
+    show-sql: ${SPRING_JPA_SHOWSQL}
     hibernate:
       ddl-auto: ${SPRING_JPA_HIBERNATE_DDLAUTO}
       naming:
