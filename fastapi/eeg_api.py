@@ -13,60 +13,61 @@ TCP_IP = "0.0.0.0"
 TCP_PORT = 9000
 BUFFER_SIZE = 1024
 
-websocket_clients = []
 tcp_data_available = False  # TCP 데이터 상태 관리
-
-# TCP에서 수신된 데이터를 저장하는 전역 변수
-latest_tcp_data = None
+tcp_data_lock = asyncio.Lock()  # 상태 보호를 위한 Lock
+latest_tcp_data = None  # TCP 데이터 저장
 
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-    websocket_clients.append(websocket)
     try:
         while True:
             # 클라이언트로부터 메시지 수신
             message = await websocket.receive_text()
             if message == "GET":
-                # TCP 데이터가 유효한지 확인
-                if tcp_data_available and latest_tcp_data:
-                    # 예측 데이터 생성
-                    feature_names = [
-                        "delta", "theta", "lowAlpha", "highAlpha",
-                        "lowBeta", "highBeta", "lowGamma", "highGamma"
-                    ]
-                    brain_data = {name: float(value) for name, value in zip(feature_names, latest_tcp_data)}
+                while True:
+                    # TCP 데이터가 지속적으로 들어오고 있는지 확인
+                    async with tcp_data_lock:
+                        if tcp_data_available and latest_tcp_data:
+                            # TCP 데이터가 유효하면 데이터를 계속 전송
+                            feature_names = [
+                                "delta", "theta", "lowAlpha", "highAlpha",
+                                "lowBeta", "highBeta", "lowGamma", "highGamma"
+                            ]
+                            brain_data = {name: float(value) for name, value in zip(feature_names, latest_tcp_data)}
 
-                    # 데이터프레임 생성
-                    data = np.array(latest_tcp_data, dtype=float).reshape(1, -1)
-                    data_df = pd.DataFrame(data, columns=feature_names)
+                            # 데이터프레임 생성
+                            data = np.array(latest_tcp_data, dtype=float).reshape(1, -1)
+                            data_df = pd.DataFrame(data, columns=feature_names)
 
-                    # 모델 예측
-                    predictions = model.predict(data_df)
-                    prediction_response = {
-                        "brain": brain_data,
-                        "predictions": {
-                            "attention": predictions.iloc[0]["attention"],
-                            "meditation": predictions.iloc[0]["meditation"],
-                            "classification": "NORMAL" if predictions.iloc[0]["classification"] == 0 else "ASLEEP",
-                        }
-                    }
-                    # 응답 전송
-                    await websocket.send_json({"response": True})
-                    await websocket.send_json(prediction_response)
-                else:
-                    # TCP 데이터가 없을 때
-                    await websocket.send_json({"response": False})
-                    await websocket.close(code=1001, reason="No TCP data available")
+                            # 모델 예측
+                            predictions = model.predict(data_df)
+                            prediction_response = {
+                                "brain": brain_data,
+                                "predictions": {
+                                    "attention": predictions.iloc[0]["attention"],
+                                    "meditation": predictions.iloc[0]["meditation"],
+                                    "classification": "NORMAL" if predictions.iloc[0]["classification"] == 0 else "ASLEEP",
+                                }
+                            }
+                            # 응답 전송
+                            await websocket.send_json({"response": True})
+                            await websocket.send_json(prediction_response)
+                        else:
+                            # TCP 데이터가 없으면 연결 종료
+                            await websocket.send_json({"response": False})
+                            await websocket.close(code=1001, reason="No TCP data available")
+                            break
+                    await asyncio.sleep(1)  # 데이터 전송 간격
             else:
-                # 잘못된 메시지 처리
+                # 잘못된 요청 처리
                 await websocket.send_json({"response": False})
                 await websocket.close(code=1001, reason="Invalid WebSocket message")
     except WebSocketDisconnect:
         print("WebSocket client disconnected.")
     finally:
-        websocket_clients.remove(websocket)
+        await websocket.close()
 
 
 async def handle_tcp_connection(reader, writer):
@@ -75,20 +76,20 @@ async def handle_tcp_connection(reader, writer):
         while True:
             data = await reader.read(BUFFER_SIZE)
             if not data:
-                tcp_data_available = False
+                async with tcp_data_lock:
+                    tcp_data_available = False  # TCP 데이터 수신 중단
                 break
 
-            tcp_data_available = True
-            decoded_data = data.decode("utf-8").strip()
-            print(f"Received from TCP: {decoded_data}", flush=True)
-
-            # TCP 데이터를 배열로 변환
-            latest_tcp_data = list(map(float, decoded_data.split(",")))
+            async with tcp_data_lock:
+                tcp_data_available = True  # TCP 데이터 수신 활성화
+                latest_tcp_data = list(map(float, data.decode("utf-8").strip().split(",")))
+            print(f"Received from TCP: {data.decode('utf-8').strip()}", flush=True)
     except Exception as e:
         print(f"Error in TCP connection: {e}")
     finally:
-        tcp_data_available = False
-        latest_tcp_data = None
+        async with tcp_data_lock:
+            tcp_data_available = False  # TCP 연결 종료 시 상태 초기화
+            latest_tcp_data = None
         writer.close()
         await writer.wait_closed()
 
