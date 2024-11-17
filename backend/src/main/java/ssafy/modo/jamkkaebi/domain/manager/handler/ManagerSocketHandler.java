@@ -64,7 +64,7 @@ public class ManagerSocketHandler extends TextWebSocketHandler {
             });
 
             managerDeviceMap.put(session, deviceSet);
-            log.info("Device list: {}", deviceSet);
+            log.info("Manager device list: {}", deviceSet);
         }
     }
 
@@ -72,7 +72,7 @@ public class ManagerSocketHandler extends TextWebSocketHandler {
     public void broadcastToManagerConsole() {
 
         if (managerDeviceMap.isEmpty()) {
-            log.info("No managers are connected, not sending data.");
+            log.debug("No managers are connected, not sending data.");
             return;
         }
 
@@ -114,7 +114,7 @@ public class ManagerSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-        log.info("Closed websocket connection for manager: {}", session);
+        log.debug("Closed websocket connection for manager: {}", session);
         managerDeviceMap.remove(session);
     }
 }
