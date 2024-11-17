@@ -21,6 +21,8 @@ import ssafy.modo.jamkkaebi.common.tmap.exception.InvalidAddressException;
 import ssafy.modo.jamkkaebi.common.tmap.exception.RouteSerializationException;
 import ssafy.modo.jamkkaebi.domain.cargo.exception.CargoDispatchedException;
 import ssafy.modo.jamkkaebi.domain.cargo.exception.CargoNotFoundException;
+import ssafy.modo.jamkkaebi.domain.delivery.exception.DeliveryDispatchedException;
+import ssafy.modo.jamkkaebi.domain.delivery.exception.DeliveryNotFoundException;
 import ssafy.modo.jamkkaebi.domain.device.exception.DeviceNotFoundException;
 import ssafy.modo.jamkkaebi.domain.manager.exception.DriverConflictException;
 import ssafy.modo.jamkkaebi.domain.member.exception.*;
@@ -227,6 +229,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DeviceNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleDeviceNotFoundException(DeviceNotFoundException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(DeliveryNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDeliveryNotFoundException(DeliveryNotFoundException e) {
+        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(DeliveryDispatchedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDeliveryDispatchedException(DeliveryDispatchedException e) {
         ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
         return ResponseEntity.status(e.getStatus()).body(response);
     }
