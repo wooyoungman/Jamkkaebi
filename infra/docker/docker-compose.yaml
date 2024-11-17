@@ -89,6 +89,34 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - mysql_data:/var/lib/mysql
+  rabbitmq:
+    container_name: rabbitmq
+    hostname: ssafy-c106
+    image: rabbitmq:4-management-alpine
+    labels:
+      caddy: k11c106.p.ssafy.io
+      caddy.0_handle_path: /rabbit/console/*
+      caddy.0_handle_path.reverse_proxy: "{{upstreams 15672}}"
+      caddy.0_redir: /rabbit/console /rabbit/console/
+      caddy.1_handle: /rabbit/ws*
+      caddy.1_handle.reverse_proxy: "{{ upstreams 15675 }}"
+      caddy_1: localhost:1883
+      caddy_1.reverse_proxy: "{{upstreams 1883}}"
+      caddy_2: localhost:35551
+      caddy_2.reverse_proxy: "{{upstreams 5672}}"
+    networks:
+      - caddy
+    ports:
+      - 1883:1883
+      - 35551:5672
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: 
+      RABBITMQ_DEFAULT_PASS: 
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - /etc/localtime:/etc/localtime:ro
+    command: /bin/bash -c "rabbitmq-plugins enable --offline rabbitmq_mqtt rabbitmq_web_mqtt; rabbitmq-server"
 
 volumes:
   caddy_data:
@@ -103,6 +131,8 @@ volumes:
     name: mongodb_data
   mongodb_config:
     name: mongodb_config
+  rabbitmq_data:
+    name: rabbitmq_data
 
 networks:
   caddy:
