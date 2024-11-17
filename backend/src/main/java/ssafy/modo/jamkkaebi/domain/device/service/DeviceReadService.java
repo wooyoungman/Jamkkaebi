@@ -115,6 +115,8 @@ public class DeviceReadService {
                 subscriber.sendMessage(new TextMessage(objectMapper.writeValueAsString(responseDto)));
                 log.info("Message sent to subscriber {}", subscriber.getId());
             }
+        } else {
+            log.info("Delivery information mapped to device {} is not available", uuid);
         }
     }
 }
