@@ -24,9 +24,11 @@ public class Delivery extends BaseEntity {
     private Long id;
 
     @OneToOne
+    @JoinColumn(name = "cargo_id", referencedColumnName = "id")
     private Cargo cargo;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
     private Vehicle vehicle;
 
     @NotNull

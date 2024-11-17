@@ -1,12 +1,10 @@
 package ssafy.modo.jamkkaebi.domain.cargo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import ssafy.modo.jamkkaebi.common.entity.BaseEntity;
+import ssafy.modo.jamkkaebi.domain.delivery.entity.Delivery;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +18,9 @@ public class Cargo extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(mappedBy = "cargo")
+    private Delivery delivery;
 
     @NotNull
     private String cargoInfo;
