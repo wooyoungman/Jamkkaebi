@@ -30,9 +30,8 @@ public class MemberWriteService {
 
         Member member = memberRepository.save(
                 Member.builder()
-                        .username(registerDto.getUsername())
+                        .dto(registerDto)
                         .password(passwordEncoder.encode(registerDto.getPassword()))
-                        .name(registerDto.getName())
                         .build());
 
         return RegisterSuccessDto.builder()
