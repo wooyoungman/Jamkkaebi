@@ -1,9 +1,11 @@
 package ssafy.modo.jamkkaebi.domain.manager.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ssafy.modo.jamkkaebi.common.ApiResponse;
+import ssafy.modo.jamkkaebi.domain.delivery.dto.response.DeliveryDetailResponseDto;
 import ssafy.modo.jamkkaebi.domain.manager.dto.request.VehicleMapRequestDto;
 import ssafy.modo.jamkkaebi.domain.manager.dto.response.DriversResponseDto;
 import ssafy.modo.jamkkaebi.domain.manager.dto.response.ManageConnectResponseDto;
@@ -45,5 +47,11 @@ public class ManagerController {
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<VehicleMapResponseDto> mapVehicleToDriver(@RequestBody VehicleMapRequestDto dto) {
         return ApiResponse.success(managerWriteService.mapVehicleToDriver(dto));
+    }
+
+    @GetMapping(path = "/driver/delivery", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<DeliveryDetailResponseDto> getCurrentVehicleInfo(
+            @Valid @RequestParam("driver_id") Long driverId) {
+        return ApiResponse.success(managerReadService.getDriverDeliveryInfo(driverId));
     }
 }

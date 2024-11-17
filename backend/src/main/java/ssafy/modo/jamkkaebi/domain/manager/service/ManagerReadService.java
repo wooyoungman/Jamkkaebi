@@ -3,12 +3,17 @@ package ssafy.modo.jamkkaebi.domain.manager.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ssafy.modo.jamkkaebi.common.security.util.SecurityUtil;
+import ssafy.modo.jamkkaebi.domain.delivery.dto.response.DeliveryDetailResponseDto;
+import ssafy.modo.jamkkaebi.domain.delivery.entity.Delivery;
+import ssafy.modo.jamkkaebi.domain.delivery.respository.DeliveryRepository;
+import ssafy.modo.jamkkaebi.domain.delivery.service.DeliveryReadService;
 import ssafy.modo.jamkkaebi.domain.manager.dto.response.DriversResponseDto;
 import ssafy.modo.jamkkaebi.domain.manager.dto.response.SimpleDriverInfo;
 import ssafy.modo.jamkkaebi.domain.manager.entity.DriversType;
 import ssafy.modo.jamkkaebi.domain.member.entity.Member;
 import ssafy.modo.jamkkaebi.domain.member.repository.MemberRepository;
 import ssafy.modo.jamkkaebi.domain.vehicle.entity.Vehicle;
+import ssafy.modo.jamkkaebi.domain.vehicle.exception.VehicleNotFoundException;
 import ssafy.modo.jamkkaebi.domain.vehicle.repository.VehicleRepository;
 
 import java.util.List;
@@ -20,6 +25,8 @@ public class ManagerReadService {
     private final MemberRepository memberRepository;
     private final VehicleRepository vehicleRepository;
     private final SecurityUtil securityUtil;
+    private final DeliveryRepository deliveryRepository;
+    private final DeliveryReadService deliveryReadService;
 
     private static SimpleDriverInfo setDriverInfo(Member driver, Vehicle vehicle) {
         return SimpleDriverInfo.builder()
@@ -65,5 +72,12 @@ public class ManagerReadService {
                 .driversType(DriversType.UNMANAGED)
                 .drivers(drivers)
                 .build();
+    }
+
+    public DeliveryDetailResponseDto getDriverDeliveryInfo(Long driverId) {
+
+        Vehicle vehicle = vehicleRepository.findByDriverId(driverId).orElseThrow(VehicleNotFoundException::new);
+        Delivery delivery = deliveryRepository.findFirstByVehicleAndHasArrivedIsFalse(vehicle);
+        return deliveryReadService.getDeliveryDetail(delivery);
     }
 }
