@@ -1,3 +1,4 @@
+import json
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 import numpy as np
 import pandas as pd
@@ -25,9 +26,17 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             # 클라이언트로부터 메시지 수신
             message = await websocket.receive_text()
-            if message == "GET":
+            try:
+                # JSON 메시지 파싱
+                message_data = json.loads(message)
+            except json.JSONDecodeError:
+                await websocket.send_json({"response": False, "error": "Invalid JSON"})
+                await websocket.close(code=1003, reason="Invalid JSON format")
+                return
+
+            # 메시지가 "type": "GET"인지 확인
+            if message_data.get("type") == "GET":
                 while True:
-                    # TCP 데이터가 지속적으로 들어오고 있는지 확인
                     async with tcp_data_lock:
                         if tcp_data_available and latest_tcp_data:
                             # TCP 데이터가 유효하면 데이터를 계속 전송
@@ -62,8 +71,8 @@ async def websocket_endpoint(websocket: WebSocket):
                     await asyncio.sleep(1)  # 데이터 전송 간격
             else:
                 # 잘못된 요청 처리
-                await websocket.send_json({"response": False})
-                await websocket.close(code=1001, reason="Invalid WebSocket message")
+                await websocket.send_json({"response": False, "error": "Invalid request type"})
+                await websocket.close(code=1003, reason="Invalid request type")
     except WebSocketDisconnect:
         print("WebSocket client disconnected.")
     finally:
