@@ -49,9 +49,9 @@ public class SecurityConfig implements WebMvcConfigurer {
                     config.setAllowCredentials(true);
                     return config;
                 }))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // TODO: API에 맞춰 Security 필터 씌우기
                         .requestMatchers(
                                 new AntPathRequestMatcher("/**", HttpMethod.PUT.toString()),
                                 new AntPathRequestMatcher("/**", HttpMethod.DELETE.toString())
@@ -62,6 +62,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/v1/member/update").hasRole("ADMIN")
                         .requestMatchers("/api/v1/manager/**").hasAnyRole("ADMIN", "MANAGER")
                         .requestMatchers("/ws/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
