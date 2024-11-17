@@ -104,9 +104,12 @@ public class DeviceReadService {
             DeviceDataReceiveDto dto = objectMapper.readValue(payload, DeviceDataReceiveDto.class);
             DeviceDataResponseDto responseDto = new DeviceDataResponseDto(dto);
 
+            socketSubscriberService.putToDeviceDataMap(dto.getUuid(), responseDto);
+
             // TODO: 배송 정보 업데이트
             // TODO: 차량 정보 업데이트
 
+            // TODO: 운전자 대시보드 구독 정보를 SocketSubscriberService 에 통합하기
             Set<WebSocketSession> subscribers = socketSubscriberService.getSubscribersByDeviceId(uuid);
             for (WebSocketSession subscriber : subscribers) {
                 subscriber.sendMessage(new TextMessage(objectMapper.writeValueAsString(responseDto)));

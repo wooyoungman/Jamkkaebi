@@ -39,6 +39,10 @@ public class ManagerReadService {
                 .build();
     }
 
+    public List<Member> getManagedDrivers(Long managerId) {
+        return memberRepository.findManagedDriver(managerId);
+    }
+
     public DriversResponseDto getUnmanagedDrivers() {
 
         List<SimpleDriverInfo> drivers = memberRepository.findUnmanagedDriver()
