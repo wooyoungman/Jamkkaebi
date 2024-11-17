@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ssafy.modo.jamkkaebi.common.entity.BaseEntity;
+import ssafy.modo.jamkkaebi.domain.member.dto.request.RegisterDto;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -63,12 +64,15 @@ public class Member extends BaseEntity implements UserDetails {
     }
 
     @Builder
-    public Member(String name, String username, String password) {
-        this.name = name;
-        this.username = username;
+    public Member(RegisterDto dto, String password) {
+        this.name = dto.getName();
+        this.username = dto.getUsername();
         this.password = password;
         this.role = MemberRole.DRIVER;
         this.status = MemberStatus.IDLE;
+        this.phoneNumber = dto.getPhoneNumber();
+        this.profileImage = (dto.getProfileImage() != null) ? dto.getProfileImage() : null;
+        this.region = dto.getRegion();
     }
 
     public MemberRole updateRole() {
