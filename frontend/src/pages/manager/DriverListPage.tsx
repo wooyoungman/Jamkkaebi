@@ -41,8 +41,8 @@ const DriverList = () => {
   const nav = useNavigate();
   const STATUS_DISPLAY = {
     ON_ROUTE: "운행 중",
-    REST: "휴일",
-    IDLE: "대기",
+    REST: "휴식 중",
+    IDLE: "휴일", // 운행 중 아님
   } as const;
 
   const { drivers, isLoading, isError } = useDriverListWithFilters();
