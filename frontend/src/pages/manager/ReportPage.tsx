@@ -354,7 +354,7 @@ export const ReportPage = () => {
       </HeaderSection>
 
       <StatsContainer>
-        <WorkLogCard>
+        {/* <WorkLogCard>
           <WorkLogTitle>근무 일지</WorkLogTitle>
           <LogGrid>
             <LogItem>
@@ -378,7 +378,7 @@ export const ReportPage = () => {
               </LogValue>
             </LogItem>
           </LogGrid>
-        </WorkLogCard>
+        </WorkLogCard> */}
 
         <MainContent>
           <ChartsGrid>

@@ -54,7 +54,6 @@ const ReportTitle = styled.h3`
 
 const StatsContainer = styled.div`
   display: grid;
-  grid-template-columns: 300px 1fr; // 300px 고정 + 나머지 공간
   gap: 1.5rem;
   align-items: start;
 `;
