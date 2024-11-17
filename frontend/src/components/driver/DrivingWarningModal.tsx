@@ -17,10 +17,15 @@ import { WarningSVG } from "@/styles/driver/WarningModal";
 import { DriverText } from "./driverMain/DriverMainCSS";
 import { ButtonDiv } from "./driverReport/DriverReportCSS";
 import { useAtom } from "jotai";
-import { driverStateDataAtom } from "@/atoms/driver/socket";
+import {
+  driverStateDataAtom,
+  isFastAPISuccessAtom,
+  serverDriverStateDataAtom,
+} from "@/atoms/driver/socket";
 import { vehicleIdAtom, tokenAtom } from "@/atoms/driver/carInfo";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import wakeUp from "@/assets/wakeUp.wav";
 
 // 화면 중앙 정렬을 위한 스타일 적용
 const ModalWrapper = styled.div`
@@ -55,23 +60,58 @@ const CustomButtonDiv = styled(ButtonDiv)`
 
 const DrivingWarningModal: React.FC = () => {
   const [driverStateData] = useAtom(driverStateDataAtom);
+  const [serverDriverStateData] = useAtom(serverDriverStateDataAtom);
+  const [isFastAPISuccess] = useAtom(isFastAPISuccessAtom);
+
   const [vehicleId] = useAtom(vehicleIdAtom);
   const [token] = useAtom(tokenAtom);
+
   const [isVisible, setIsVisible] = useState(false);
   const wakeRoutineTriggered = useRef(false); // `executeWakeRoutine` 실행 여부 추적
+  const audioInterval = useRef<NodeJS.Timeout | null>(null);
+
+  // 현재 사용할 데이터 결정
+  const activeData = isFastAPISuccess ? driverStateData : serverDriverStateData;
+
+  // // 경고 음성 재생 함수
+  // const playWarningVoice = (message: string) => {
+  //   const utterance = new SpeechSynthesisUtterance(message);
+  //   utterance.lang = "ko-KR"; // 한국어 설정
+  //   utterance.rate = 1; // 기본 속도
+  //   utterance.pitch = 1; // 기본 톤
+  //   utterance.volume = 1; // 최대 음량
+  //   window.speechSynthesis.speak(utterance);
+  // };
+
+  // 경고 음성 재생 함수
+  const playWarningSound = () => {
+    const audio = new Audio(wakeUp);
+    audio.play().catch((error) => {
+      console.error("Audio playback failed:", error);
+    });
+  };
 
   useEffect(() => {
     if (
-      driverStateData?.predictions.classification === "ASLEEP" &&
+      activeData?.predictions.classification === "ASLEEP" &&
       vehicleId &&
       token &&
       !wakeRoutineTriggered.current // `executeWakeRoutine`이 실행되지 않은 경우만 실행
     ) {
+      console.log("졸음이 감지되었습니다!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
       setIsVisible(true);
       wakeRoutineTriggered.current = true; // `executeWakeRoutine` 실행 상태로 설정
+
+      // playWarningVoice("졸음이 감지되었습니다. 휴식을 취하세요.");
+
+      // 음성 반복 재생 설정
+      audioInterval.current = setInterval(() => {
+        playWarningSound();
+      }, 2000); // 2초 간격으로 재생
+
       executeWakeRoutine(vehicleId, token); // API 호출
     }
-  }, [driverStateData?.predictions.classification, vehicleId, token]);
+  }, [activeData?.predictions.classification, vehicleId, token]);
 
   const executeWakeRoutine = async (vehicleId: string, token: string) => {
     try {
@@ -107,6 +147,12 @@ const DrivingWarningModal: React.FC = () => {
     } finally {
       setIsVisible(false); // 모달 닫기
       wakeRoutineTriggered.current = false; // 다음 감지를 위해 초기화
+
+      // 음성 반복 재생 중단
+      if (audioInterval.current) {
+        clearInterval(audioInterval.current);
+        audioInterval.current = null;
+      }
     }
   };
 

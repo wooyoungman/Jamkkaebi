@@ -16,24 +16,34 @@ import DriverConditionGraph from "./DriverConditionGraph";
 import driverImg from "@/assets/driverImg.png";
 
 import { useAtom } from "jotai";
-import { driverStateDataAtom } from "@/atoms/driver/socket"; // atoms.ts 경로에 맞게 수정하세요
+import {
+  driverStateDataAtom,
+  isFastAPISuccessAtom,
+  serverDriverStateDataAtom,
+} from "@/atoms/driver/socket"; // atoms.ts 경로에 맞게 수정하세요
 import { useEffect } from "react";
 
 const DriverMainLeft: React.FC = () => {
   // Jotai에서 WebSocket 데이터를 관리
   const [driverStateData] = useAtom(driverStateDataAtom);
+  const [serverDriverStateData] = useAtom(serverDriverStateDataAtom);
+  const [isFastAPISuccess] = useAtom(isFastAPISuccessAtom);
+
+  // 현재 사용할 데이터 결정
+  const activeData = isFastAPISuccess ? driverStateData : serverDriverStateData;
 
   // Jotai에서 attention과 meditation 값 가져오기
-  const attentionScore = Math.round(
-    driverStateData?.predictions?.attention || 0
-  );
-  const meditationScore = Math.round(
-    driverStateData?.predictions?.meditation || 0
-  );
+  const attentionScore = Math.round(activeData?.predictions?.attention || 0);
+  const meditationScore = Math.round(activeData?.predictions?.meditation || 0);
 
+  // 현재 활성화된 데이터만 console에 출력
   useEffect(() => {
-    console.log("Current driverStateData in Jotai:", driverStateData);
-  }, [driverStateData]);
+    if (isFastAPISuccess) {
+      console.log("Active Data (FastAPI):", driverStateData);
+    } else {
+      console.log("Active Data (Spring Server):", serverDriverStateData);
+    }
+  }, [isFastAPISuccess, driverStateData, serverDriverStateData]);
 
   return (
     <>

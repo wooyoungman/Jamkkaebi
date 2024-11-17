@@ -13,7 +13,11 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { useAtom } from "jotai";
-import { driverStateDataAtom } from "@/atoms/driver/socket";
+import {
+  driverStateDataAtom,
+  isFastAPISuccessAtom,
+  serverDriverStateDataAtom,
+} from "@/atoms/driver/socket";
 
 ChartJS.register(
   ArcElement,
@@ -41,26 +45,37 @@ const DriverGraphDetail: React.FC<DriverGraphDetailProps> = ({
   yTickSize,
 }) => {
   const [driverStateData] = useAtom(driverStateDataAtom);
+  const [serverDriverStateData] = useAtom(serverDriverStateDataAtom);
+  const [isFastAPISuccess] = useAtom(isFastAPISuccessAtom);
+
+  // 현재 사용할 데이터 결정
+  const activeData = isFastAPISuccess ? driverStateData : serverDriverStateData;
 
   // 실시간 데이터를 저장할 상태 배열
   const [attentionValues, setAttentionValues] = useState<number[]>([]);
   const [meditationValues, setMeditationValues] = useState<number[]>([]);
 
   useEffect(() => {
-    if (driverStateData?.predictions) {
+    if (activeData?.predictions) {
       // 집중도(attention) 업데이트
       setAttentionValues((prev) => {
-        const updated = [...prev, driverStateData.predictions.attention];
-        return updated.slice(-25); // 최근 25개의 데이터만 유지
+        if (activeData.predictions.attention !== null) {
+          const updated = [...prev, activeData.predictions.attention];
+          return updated.slice(-25); // 최근 25개의 데이터만 유지
+        }
+        return prev; // `null`이면 이전 상태를 유지
       });
 
       // 졸음도(meditation) 업데이트
       setMeditationValues((prev) => {
-        const updated = [...prev, driverStateData.predictions.meditation];
-        return updated.slice(-25); // 최근 25개의 데이터만 유지
+        if (activeData.predictions.meditation !== null) {
+          const updated = [...prev, activeData.predictions.meditation];
+          return updated.slice(-25); // 최근 25개의 데이터만 유지
+        }
+        return prev; // `null`이면 이전 상태를 유지
       });
     }
-  }, [driverStateData?.predictions]);
+  }, [activeData?.predictions]);
 
   const labels = Array.from(
     { length: attentionValues.length },
