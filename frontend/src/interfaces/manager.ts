@@ -75,21 +75,27 @@ export interface RealTimeDriver extends DriverResponse {
 
 // 경로 정보의 좌표와 feature 타입
 export interface Coordinate {
-  type: string;
-  coordinates: number[] | number[][]; // lat, lng
+  type: "Point" | "LineString";
+  coordinates: number[] | number[][]; // Point일 경우 number[], LineString일 경우 number[][]
+}
+
+export interface PointProperties {
+  index: number;
+  pointIndex: number;
+  pointType: "S" | "E";
+  totalDistance?: number; // 시작점에만 있는 속성
+}
+
+export interface LineProperties {
+  index: number;
+  lineIndex: number;
+  distance: number;
 }
 
 export interface Feature {
   type: string;
   geometry: Coordinate;
-  properties: {
-    index: number;
-    pointIndex?: number;
-    lineIndex?: number;
-    pointType?: string;
-    distance?: number;
-    totalDistance?: number;
-  };
+  properties: PointProperties | LineProperties;
 }
 
 // geoJSON 형식
@@ -99,20 +105,19 @@ export interface FeatureCollection {
 }
 
 export interface DeliveryRecord {
-  deliveryId: number;
-  driverId: number; // --> Driver랑 연결
+  deliveryId: number; 
+  driverId: number;
+  driverName: string; // 추가
   routeId: string;
   cargoId: number;
   origin: string;
   destination: string;
   length: number;
   departureDate: string;
-  arrivalDate: string;
-  focusSector: number;
+  arrivalDate: string | null; 
   sleepSector: number;
   route_info: FeatureCollection;
-  route_sleep: FeatureCollection; // 졸음 구간
-  route_low_focus: FeatureCollection; // 집중도 낮은 구간
+  route_sleep: FeatureCollection | null; 
 }
 
 export interface DriverWithRoute extends DriverResponse {
