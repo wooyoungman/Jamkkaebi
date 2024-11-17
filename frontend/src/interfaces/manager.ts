@@ -143,6 +143,9 @@ export interface RegisterRequest {
   name: string;
   username: string;
   password: string;
+  region: string;
+  phoneNumber: string;
+  profileImage: string;
 }
 
 export interface RegisterResponse {

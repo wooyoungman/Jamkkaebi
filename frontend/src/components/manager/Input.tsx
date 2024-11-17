@@ -1,11 +1,11 @@
 import styled from "styled-components";
+import { InputHTMLAttributes } from "react";
 
-interface InputProps {
-  type?: string;
+// HTML input 속성들을 확장하면서 필수 props 정의
+interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'name' | 'value' | 'onChange'> {
   name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
   helpText?: string;
   helpLink?: string;
 }
@@ -18,6 +18,7 @@ const Input = ({
   placeholder,
   helpText,
   helpLink,
+  ...restProps  // 나머지 HTML input 속성들을 받음
 }: InputProps) => {
   return (
     <InputContainer>
@@ -27,6 +28,7 @@ const Input = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        {...restProps}  // 나머지 props 전달
       />
       {helpText && helpLink && <HelpText href={helpLink}>{helpText}</HelpText>}
     </InputContainer>
