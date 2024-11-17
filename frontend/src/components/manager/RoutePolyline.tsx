@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { useAtomValue } from "jotai";
 import { mapInstanceAtom } from "@atoms/index";
 import { TMapPolyline, TMapLatLng, TMapInstance } from "@interfaces/Tmap";
@@ -18,55 +18,67 @@ const RoutePolyline = ({
   width = 50,
 }: RoutePolylineProps) => {
   const mapInstance = useAtomValue(mapInstanceAtom);
-  const [polyline, setPolyline] = useState<TMapPolyline | null>(null);
   const polylineRef = useRef<TMapPolyline | null>(null);
 
-  useEffect(() => {
-    if (!mapInstance || !path.length) {
-      console.log("No map instance or empty path");
+  const createPolyline = useCallback(() => {
+    if (!mapInstance || !path.length || !window.Tmapv2) {
+      console.log("맵 인스턴스나 경로가 없음:", {
+        hasMap: !!mapInstance,
+        pathLength: path.length
+      });
       return;
     }
 
-    // 기존 폴리라인 제거
-    if (polylineRef.current) {
-      try {
-        polylineRef.current.setMap(null);
-      } catch (e) {
-        console.warn("폴리라인 제거 중 에러:", e);
-      }
-    }
-
-    const coordinates: TMapLatLng[] = path.map(
-      (point) => new window.Tmapv2.LatLng(point.lat, point.lng)
-    );
-
     try {
+      // 기존 폴리라인 제거 (에러 발생하지 않도록 수정)
+      if (polylineRef.current) {
+        polylineRef.current.setPath([]);  // 경로 초기화
+        polylineRef.current.setMap(null);
+        polylineRef.current = null;
+      }
+
+      const coordinates = path.map(
+        point => new window.Tmapv2.LatLng(point.lat, point.lng)
+      );
+
+      console.log("폴리라인 생성 시도:", {
+        coordinates,
+        color,
+        width
+      });
+
       const newPolyline = new window.Tmapv2.Polyline({
         path: coordinates,
         strokeColor: color,
         strokeWeight: width,
         strokeStyle: "solid",
         strokeOpacity: 0.8,
-        map: mapInstance as TMapInstance,
+        map: mapInstance
       });
 
-      setPolyline(newPolyline);
       polylineRef.current = newPolyline;
-
+      console.log("폴리라인 생성 성공");
+      
     } catch (error) {
-      console.error("Error creating polyline:", error);
+      console.error("폴리라인 생성 중 에러:", error);
     }
+  }, [mapInstance, path, color, width]);
 
+  useEffect(() => {
+    createPolyline();
+    
     return () => {
       if (polylineRef.current) {
         try {
+          polylineRef.current.setPath([]);  // 경로 초기화
           polylineRef.current.setMap(null);
         } catch (e) {
-          // 이미 맵이 제거된 경우 무시
+          console.warn("폴리라인 cleanup 중 무시된 에러");
         }
+        polylineRef.current = null;
       }
     };
-  }, [mapInstance, path, color, width]);
+  }, [createPolyline]);
 
   return null;
 };
