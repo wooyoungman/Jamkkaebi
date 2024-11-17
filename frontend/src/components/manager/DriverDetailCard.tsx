@@ -44,27 +44,6 @@ const DriverDetailCard = ({
           </ProgressBarWrapper>
         </StatItem>
 
-        <StatItem>
-          <StatLabel>피로도</StatLabel>
-          <ProgressBarWrapper>
-            <ProgressBar
-              count={
-                event.fatigueLevel === "강함"
-                  ? 5
-                  : event.fatigueLevel === "보통"
-                    ? 3
-                    : 1
-              }
-              color={event.fatigueLevel === "강함" ? "#FF4141" : "#FFA927"}
-            />
-            <CountText
-              red={event.fatigueLevel === "강함"}
-              orange={event.fatigueLevel === "보통"}
-            >
-              {event.fatigueLevel}
-            </CountText>
-          </ProgressBarWrapper>
-        </StatItem>
       </StatsList>
     </CardWrapper>
   );
