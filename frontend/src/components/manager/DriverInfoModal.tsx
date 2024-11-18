@@ -1,5 +1,12 @@
 import styled from "styled-components";
 import { DriverState, RealTimeDriver } from "@interfaces/manager";
+import { useState, useEffect } from "react";
+
+const STATUS_DISPLAY = {
+  ON_ROUTE: "운행 중",
+  REST: "휴식 중",
+  IDLE: "휴일",
+} as const;
 
 interface DriverInfoModalProps {
   isOpen: boolean;
@@ -8,7 +15,51 @@ interface DriverInfoModalProps {
   realtimeState?: DriverState;
 }
 
-const DriverInfoModal = ({ isOpen, onClose, driver, realtimeState }: DriverInfoModalProps) => {
+const DriverInfoModal = ({
+  isOpen,
+  onClose,
+  driver,
+  realtimeState,
+}: DriverInfoModalProps) => {
+  const [address, setAddress] = useState<string>("");
+  const [isLoadingAddress, setIsLoadingAddress] = useState(false);
+
+  // Tmap 역지오코딩 함수
+  const reverseGeocode = async (lat: number, lng: number) => {
+    try {
+      setIsLoadingAddress(true);
+      const response = await fetch(
+        `https://apis.openapi.sk.com/tmap/geo/reversegeocoding?version=1&lat=${lat}&lon=${lng}&coordType=WGS84GEO&addressType=A10&format=json&callback=result`,
+        {
+          headers: {
+            Accept: "application/json",
+            appKey: import.meta.env.VITE_TMAP_API_KEY,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch address");
+
+      const data = await response.json();
+      if (data.addressInfo) {
+        // 도로명 주소가 있으면 도로명 주소 사용, 없으면 지번 주소 사용
+        const fullAddress = data.addressInfo.fullAddress;
+        setAddress(fullAddress);
+      }
+    } catch (error) {
+      console.error("Error fetching address:", error);
+      setAddress("주소를 불러올 수 없습니다");
+    } finally {
+      setIsLoadingAddress(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen && driver.location) {
+      reverseGeocode(driver.location.lat, driver.location.lng);
+    }
+  }, [isOpen, driver.location]);
+
   if (!isOpen) return null;
 
   return (
@@ -29,13 +80,17 @@ const DriverInfoModal = ({ isOpen, onClose, driver, realtimeState }: DriverInfoM
           </div>
           <div>
             <label>상태:</label>
-            <span>{driver.status}</span>
+            <span>
+              {STATUS_DISPLAY[driver.status as keyof typeof STATUS_DISPLAY]}
+            </span>
           </div>
           <div>
             <label>현재 위치:</label>
-            <span>
-              {driver.location.lat.toFixed(6)}, {driver.location.lng.toFixed(6)}
-            </span>
+            <LocationSpan>
+              {isLoadingAddress
+                ? "주소 검색 중..."
+                : address || "주소를 불러올 수 없습니다"}
+            </LocationSpan>
           </div>
           {realtimeState && (
             <>
@@ -45,7 +100,9 @@ const DriverInfoModal = ({ isOpen, onClose, driver, realtimeState }: DriverInfoM
               </div>
               <div>
                 <label>집중도:</label>
-                <span>{(realtimeState.concentration_level * 100).toFixed(1)}%</span>
+                <span>
+                  {(realtimeState.concentration_level * 100).toFixed(0)}점
+                </span>
               </div>
             </>
           )}
@@ -60,7 +117,6 @@ const DriverInfoModal = ({ isOpen, onClose, driver, realtimeState }: DriverInfoM
     </DriverInfoModal.Overlay>
   );
 };
-
 DriverInfoModal.Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -115,6 +171,11 @@ DriverInfoModal.Body = styled.div`
       color: #666;
     }
   }
+`;
+
+const LocationSpan = styled.span`
+  word-break: keep-all;
+  white-space: pre-wrap;
 `;
 
 export default DriverInfoModal;

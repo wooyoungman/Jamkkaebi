@@ -60,7 +60,6 @@ export interface BrainData {
   coordinate: number[];
 }
 
-
 // 실시간 데이터만을 위한 간단한 타입
 export interface RealTimeDriver extends DriverResponse {
   location: {
@@ -92,6 +91,28 @@ export interface LineProperties {
   distance: number;
 }
 
+// 주간 데이터를 위한 공통 타입
+export interface WeeklyData {
+  lastWeek: (number | null)[];
+  thisWeek: (number | null)[];
+}
+
+export interface ReportDriverInfo {
+  driverName: string;
+  vehicleNumber: string;
+  phoneNumber: string;
+  region: string;
+  status: DriverDetails["status"]; // 기존 status 타입 재사용
+}
+
+export interface ReportData {
+  driverInfo: ReportDriverInfo;
+  distance: WeeklyData;
+  driveTime: WeeklyData;
+  avgSleepIndex: WeeklyData;
+  eegData: WeeklyData;
+}
+
 export interface Feature {
   type: string;
   geometry: Coordinate;
@@ -105,7 +126,7 @@ export interface FeatureCollection {
 }
 
 export interface DeliveryRecord {
-  deliveryId: number; 
+  deliveryId: number;
   driverId: number;
   driverName: string; // 추가
   routeId: string;
@@ -114,10 +135,10 @@ export interface DeliveryRecord {
   destination: string;
   length: number;
   departureDate: string;
-  arrivalDate: string | null; 
+  arrivalDate: string | null;
   sleepSector: number;
   route_info: FeatureCollection;
-  route_sleep: FeatureCollection | null; 
+  route_sleep: FeatureCollection | null;
 }
 
 export interface DriverWithRoute extends DriverResponse {
@@ -173,7 +194,6 @@ export interface DrowsyEvent {
   fatigueLevel: "양호" | "보통" | "강함";
   route: MapDriver["route"]; // MapDriver의 route 타입을 재사용
 }
-
 
 export interface MapDriver {
   id: number;

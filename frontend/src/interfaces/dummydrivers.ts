@@ -10,7 +10,7 @@ export const dummyDrivers: DriverResponse[] = [
     role: "DRIVER",
     vehicleNumber: "서울 123가 4567",
     status: "ON_ROUTE",
-    profileImage: "https://api.dicebear.com/7.x/avataaars/svg?seed=KimDriving&backgroundColor=b6e3f4",
+    profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
   },
   {
     driverId: 2,
@@ -20,7 +20,7 @@ export const dummyDrivers: DriverResponse[] = [
     role: "DRIVER",
     vehicleNumber: "서울 456나 7890",
     status: "REST",
-    profileImage: "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeSafety&backgroundColor=b6e3f4",
+    profileImage: "https://randomuser.me/api/portraits/men/2.jpg",
   },
 ];
 
@@ -29,7 +29,7 @@ export const dummyDrowsyEvents: DrowsyEvent[] = [
   {
     id: 1,
     username: "driver1",
-    profileImage: "https://api.dicebear.com/7.x/avataaars/svg?seed=KimDriving&backgroundColor=b6e3f4",
+    profileImage: "https://picsum.photos/200",
     driverName: "김운전",
     age: 45,
     gender: "남성",
@@ -52,7 +52,7 @@ export const dummyDrowsyEvents: DrowsyEvent[] = [
   {
     id: 2,
     username: "driver2",
-    profileImage: "https://api.dicebear.com/7.x/avataaars/svg?seed=LeeSafety&backgroundColor=b6e3f4",
+    profileImage: "https://picsum.photos/200",
     driverName: "이안전",
     age: 38,
     gender: "남성",

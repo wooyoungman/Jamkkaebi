@@ -1,6 +1,7 @@
 export * from "@queries/manager/auth";
 export * from "@queries/manager/driver";
 export * from "@queries/manager/routes";
+export * from "@queries/manager/report";
 
 export const queryKeys = {
   auth: {
@@ -16,5 +17,11 @@ export const queryKeys = {
   routes: {
     all: ["routes"] as const,
     list: () => [...queryKeys.routes.all, "list"] as const,
+  },
+  report: {
+    all: ["report"] as const,
+    // 단일 report를 위한 키
+    detail: (driverId: number) => [...queryKeys.report.all, driverId] as const,
+    list: () => [...queryKeys.report.all, "list"] as const,
   },
 } as const;

@@ -1,19 +1,19 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
+interface TabProps {
+  active?: boolean; // $ 제거
+}
 const Container = styled.div`
   padding: 2rem;
-  background: #f8fafc;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
 const HeaderSection = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  background: #f0efff;
-  padding: 1rem 1.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 2rem;
 `;
 
 // PurpleButton의 스타일을 덮어씌우기
@@ -188,21 +188,21 @@ const TabGroup = styled.div`
   gap: 0.5rem;
 `;
 
-const Tab = styled.button<{ active?: boolean }>`
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-  border: none;
-  background: ${(props) => (props.active ? "#4F46E5" : "transparent")};
-  color: ${(props) => (props.active ? "white" : "#64748B")};
+const Tab = styled.button<TabProps>`
+  padding: 0.5rem 1rem;
   border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
 
-  &:hover {
-    background: ${(props) => (props.active ? "#4338CA" : "#F1F5F9")};
-  }
+  ${({ active }) =>
+    active &&
+    `  // $ 제거
+    background-color: #E5E7EB;
+    color: #1F2937;
+  `}
 `;
-
 const RadarWrapper = styled.div`
   width: 70%;
   margin: 0 auto;
@@ -210,34 +210,33 @@ const RadarWrapper = styled.div`
 `;
 
 export {
-    Container,
-    HeaderSection,
-    ButtonWrapper,
-    DriverProfile,
-    ProfileImage,
-    DriverName,
-    ReportTitle,
-    StatsContainer,
-    TopStats,
-    MainContent,
-    StatCard,
-    WorkLogCard,
-    IconWrapper,
-    Label,
-    Value,
-    Unit,
-    Change,
-    WorkLogTitle,
-    LogGrid,
-    LogItem,
-    LogLabel,
-    LogValue,
-    ChartsGrid,
-    ChartCard,
-    ChartHeader,
-    ChartTitle,
-    TabGroup,
-    Tab,
-    RadarWrapper,
-  };
-  
+  Container,
+  HeaderSection,
+  ButtonWrapper,
+  DriverProfile,
+  ProfileImage,
+  DriverName,
+  ReportTitle,
+  StatsContainer,
+  TopStats,
+  MainContent,
+  StatCard,
+  WorkLogCard,
+  IconWrapper,
+  Label,
+  Value,
+  Unit,
+  Change,
+  WorkLogTitle,
+  LogGrid,
+  LogItem,
+  LogLabel,
+  LogValue,
+  ChartsGrid,
+  ChartCard,
+  ChartHeader,
+  ChartTitle,
+  TabGroup,
+  Tab,
+  RadarWrapper,
+};

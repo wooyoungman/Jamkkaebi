@@ -59,7 +59,8 @@ const DriverList = () => {
   };
 
   if (isLoading) return <Container>로딩중...</Container>;
-  if (isError) return <Container>관리자 외에는 운전자를 조회할 수 없습니다.</Container>;
+  if (isError)
+    return <Container>관리자 외에는 운전자를 조회할 수 없습니다.</Container>;
 
   return (
     <Container>
@@ -138,10 +139,15 @@ const DriverList = () => {
                 style={{ cursor: "pointer" }}
               >
                 <TD>
-                  <ProfileImage
-                    src={driver.profileImage}
-                    alt={`${driver.memberName} 프로필`}
-                  />
+                  <TD>
+                    <ProfileImage
+                      src={
+                        driver.profileImage ||
+                        `https://randomuser.me/api/portraits/men/${driver.memberId % 100}.jpg` // 0-99 범위의 이미지
+                      }
+                      alt={`${driver.memberName} 프로필`}
+                    />
+                  </TD>
                 </TD>
                 <TD>{driver.memberName}</TD>
                 <TD>{driver.phoneNumber}</TD>

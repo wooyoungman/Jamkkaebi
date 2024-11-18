@@ -2,7 +2,7 @@ import LogoImg from "@assets/logo.png";
 import styled from "styled-components";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { atom, useAtom } from "jotai";
-import { UserCircle, Bell, LogOut } from "lucide-react";
+import { Bell, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import { authAtom, logoutAtom } from "@atoms/manager/user";
 import { useGetUserInfo } from "@queries/index";
@@ -26,6 +26,7 @@ import {
   NotificationMessage,
   NotificationTime,
   EmptyNotification,
+  UserImage,
 } from "@styles/manager/HeaderStyle";
 
 interface Notification {
@@ -47,6 +48,7 @@ const Header = () => {
   const [notifications] = useAtom(notificationsAtom);
   const [showNotifications, setShowNotifications] = useState(false);
   const [, logout] = useAtom(logoutAtom);
+  const userImage = "https://picsum.photos/200";
 
   useEffect(() => {
     setActiveMenu(location.pathname);
@@ -97,15 +99,14 @@ const Header = () => {
         {auth.isAuthenticated && (
           <UserSection>
             <UserInfo>
-            {userInfo?.memberType && (
-            <UserName>
-              {userInfo?.memberName ?? ""}{" "}
-              {userInfo.memberType === "MANAGER" ? "관리자님" : "운전자님"}
-            </UserName>
-          )}
-
+              {userInfo?.memberType && (
+                <UserName>
+                  {userInfo?.memberName ?? ""}{" "}
+                  {userInfo.memberType === "MANAGER" ? "관리자님" : "운전자님"}
+                </UserName>
+              )}
               <IconButton>
-                <UserCircle size={32} />
+                <UserImage src={userImage} alt="User profile" />
               </IconButton>
             </UserInfo>
             <IconWrapper>
