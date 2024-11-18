@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { DriverState, BrainData } from "@interfaces/manager";
+import { DriverState, BrainData, AlertInfo } from "@interfaces/manager";
 
 const SPRING_WS_URL = "wss://k11c106.p.ssafy.io/ws/v1/manager";
 
@@ -38,11 +38,15 @@ export const useWebSocketController = (managerId: number) => {
     Record<string, { lat: number; lng: number }>
   >({});
   const [showAlert, setShowAlert] = useState(false);
-  const [alertInfo, setAlertInfo] = useState({
+  const [alertInfo, setAlertInfo] = useState<AlertInfo>({
     driverName: "",
     eventTime: "",
-    eventLocation: "",
+    eventLocation: {
+      lat: 37.5666805,
+      lng: 126.9784147
+    }
   });
+
 
   const MAX_RECONNECT_ATTEMPTS = 5;
   const RECONNECT_DELAY = 3000;
@@ -112,7 +116,10 @@ export const useWebSocketController = (managerId: number) => {
                 setAlertInfo({
                   driverName: `Driver ${brainData.driverId}`,
                   eventTime: new Date().toLocaleString(),
-                  eventLocation: `위도: ${location.lat.toFixed(6)}, 경도: ${location.lng.toFixed(6)}`,
+                  eventLocation: {
+                    lat: location.lat,
+                    lng: location.lng
+                  }
                 });
                 setShowAlert(true);
               }
