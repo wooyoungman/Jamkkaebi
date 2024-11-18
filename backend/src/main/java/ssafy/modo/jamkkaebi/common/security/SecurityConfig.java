@@ -42,6 +42,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                     config.setAllowedOrigins(List.of(
                             "http://localhost",
                             "http://localhost:5173",
+                            "http://localhost:5174",
                             "https://k11c106.p.ssafy.io"
                     ));
                     config.setAllowedMethods(Collections.singletonList("*"));
