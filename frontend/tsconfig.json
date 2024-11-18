@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      // 절대 경로 다 설정
+      "@/*": ["src/*"],
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
+      "@queries/*": ["src/queries/*"],
+      "@pages/*": ["src/pages/*"],
+      "@atoms/*": ["src/atoms/*"],
+      "@styles/*": ["src/styles/*"],
+      "@interfaces/*": ["src/interfaces/*"],
+      "@hooks/*": ["src/hooks/*"]
+    },
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": false, // 사용하지 않는 지역 변수 에러 끄기
+    "noUnusedParameters": false // 사용하지 않는 매개변수 에러 끄기
+  },
+  "include": ["src", "src/interfaces/Tmap.ts", "custom.d.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

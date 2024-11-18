@@ -1,0 +1,28 @@
+[
+  {
+    "date": "2024-10-01",
+    "departureTime": "08:45",
+    "arrivalTime": "15:30",
+    "departureLocation": "강원특별자치도 강릉시 창해로 245",
+    "arrivalLocation": "목포 신항만",
+    "distance": "205.5km",
+    "duration": "06:45",
+    "averageFocusScore": 85,
+    "averageDrowsinessScore": 15,
+    "drowsinessCount": 0,
+    "focusLossCount": 0
+  },
+  {
+    "date": "2024-10-02",
+    "departureTime": "09:00",
+    "arrivalTime": "16:00",
+    "departureLocation": "목포 신항만",
+    "arrivalLocation": "여수광양 항만공사",
+    "distance": "178.3km",
+    "duration": "07:00",
+    "averageFocusScore": 70,
+    "averageDrowsinessScore": 25,
+    "drowsinessCount": 1,
+    "focusLossCount": 1
+  }
+]
