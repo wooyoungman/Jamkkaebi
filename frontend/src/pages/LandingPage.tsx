@@ -129,9 +129,7 @@ const LandingPage: React.FC = () => {
               • 내비게이션
               <br />
               • 차량 제어
-              <br />
-              • 보고서 작성
-              <br />• 온도 관리
+              <br />• 운전 레포트
             </CardText>
           </StyledCardContent>
         </StyledCard>

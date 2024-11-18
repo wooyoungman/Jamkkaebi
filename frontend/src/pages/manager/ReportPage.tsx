@@ -283,7 +283,13 @@ export const ReportPage = () => {
       <HeaderSection>
         <div>
           <DriverProfile>
-            <ProfileImage src={driver.profileImage} alt={driver.driverName} />
+            <ProfileImage
+              src={
+                driver.profileImage ||
+                `https://randomuser.me/api/portraits/men/${driver.driverId % 100}.jpg`
+              }
+              alt={driver.driverName}
+            />
             <div>
               <DriverName>{driver.driverName} 기사님</DriverName>
               <ReportTitle>운전 보고서</ReportTitle>
