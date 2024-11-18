@@ -74,11 +74,11 @@ const DriverMainRight: React.FC = () => {
             </CustomDriverText>
             <CustomInlineTextDiv gap="7px">
               <CustomDriverText fontSize="13px" fontWeight={400}>
-                Saturday
+                TuesDay
               </CustomDriverText>
               <CustomHRLine />
               <CustomDriverText fontSize="13px" fontWeight={400}>
-                16 Nov 2024
+                18 Nov 2024
               </CustomDriverText>
             </CustomInlineTextDiv>
           </WeatherInfoDiv>

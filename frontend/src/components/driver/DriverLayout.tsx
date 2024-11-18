@@ -72,10 +72,10 @@ const DriverLayout: React.FC = () => {
     }
   }, [setServerDriverStateData, vehicleId, memberId]);
 
-  // 차량 ID가 없으면 DriverLogin 렌더링
-  if (!vehicleId) {
-    return <DriverLogin />;
-  }
+  // // 차량 ID가 없으면 DriverLogin 렌더링
+  // if (!vehicleId) {
+  //   return <DriverLogin />;
+  // }
 
   return (
     <DriverContainer>

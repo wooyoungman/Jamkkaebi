@@ -20,6 +20,7 @@ import HistoryPage from "@pages/manager/HistoryPage";
 
 // LandingPage
 import LandingPage from "@pages/LandingPage";
+import DriverLoginPage from "./pages/driver/DriverLoginPage";
 
 const router = createBrowserRouter([
   {
@@ -77,6 +78,7 @@ const router = createBrowserRouter([
     element: <DriverLayout />,
     children: [
       { path: "", element: <DriverMainPage /> },
+      { path: "login", element: <DriverLoginPage /> },
       { path: "navigation", element: <DriverNaviPage /> },
       { path: "car-control", element: <DriverCarPage /> },
       { path: "report", element: <DriverReportPage /> },

@@ -11,7 +11,7 @@ import {
   TMapPolyline,
 } from "@/interfaces/Tmap"; // 타입 가져오기
 
-const TempMap: React.FC = () => {
+const DriverReportMap: React.FC = () => {
   const API_KEY = import.meta.env.VITE_TMAP_API_KEY;
 
   useEffect(() => {
@@ -227,4 +227,4 @@ const TempMap: React.FC = () => {
   return <div id="map_div" style={{ width: "100%", height: "100%" }}></div>;
 };
 
-export default TempMap;
+export default DriverReportMap;

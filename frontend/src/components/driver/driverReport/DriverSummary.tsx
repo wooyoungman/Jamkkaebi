@@ -53,7 +53,7 @@ const DriverSummary: React.FC = () => {
             </DriverText>
             <UpSVG />
             <DriverText color="#2AC670" fontSize="17px" fontWeight={600}>
-              124
+              12
             </DriverText>
           </CustomInlineTextDiv>
         </ReportSummaryContent>
@@ -66,14 +66,14 @@ const DriverSummary: React.FC = () => {
           </DriverText>
           <CustomInlineTextDiv>
             <DriverText fontSize="25px" fontWeight={800}>
-              76
+              72
             </DriverText>
             <DriverText fontSize="17px" fontWeight={500}>
               점
             </DriverText>
             <DownSVG />
             <DriverText color="#FF6252" fontSize="17px" fontWeight={600}>
-              12
+              8
             </DriverText>
           </CustomInlineTextDiv>
         </ReportSummaryContent>
@@ -86,14 +86,14 @@ const DriverSummary: React.FC = () => {
           </DriverText>
           <CustomInlineTextDiv>
             <DriverText fontSize="25px" fontWeight={800}>
-              76
+              36
             </DriverText>
             <DriverText fontSize="17px" fontWeight={500}>
               점
             </DriverText>
             <DownSVG />
             <DriverText color="#FF6252" fontSize="17px" fontWeight={600}>
-              12
+              4
             </DriverText>
           </CustomInlineTextDiv>
         </ReportSummaryContent>

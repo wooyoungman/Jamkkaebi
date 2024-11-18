@@ -35,6 +35,7 @@ import {
 import { HRLine } from "./DriverReportCSS";
 import DrivingDetailGraphCarousel from "./DrivingDetailGraphCarousel";
 import DriverMap from "../DriverMap";
+import DriverReportMap from "./DriverReportMap";
 
 // const CustomModalGlassDiv = styled(ModalGlassDiv2)`
 //   width: 800px;
@@ -164,6 +165,7 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
           <ReportDetailMain>
             <ReportMapDiv>
               <DriverMap />
+              {/* <DriverReportMap /> */}
             </ReportMapDiv>
             <ReportDetailRightDiv>
               <ReportDetailTextDiv>

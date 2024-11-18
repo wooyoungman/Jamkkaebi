@@ -104,12 +104,14 @@ const DrivingWarningModal: React.FC = () => {
 
       // playWarningVoice("졸음이 감지되었습니다. 휴식을 취하세요.");
 
-      // 음성 반복 재생 설정
-      audioInterval.current = setInterval(() => {
-        playWarningSound();
-      }, 2000); // 2초 간격으로 재생
+      if (activeData !== driverStateData) {
+        // 음성 반복 재생 설정
+        audioInterval.current = setInterval(() => {
+          playWarningSound();
+        }, 2000); // 2초 간격으로 재생
 
-      executeWakeRoutine(vehicleId, token); // API 호출
+        executeWakeRoutine(vehicleId, token); // API 호출
+      }
     }
   }, [activeData?.predictions.classification, vehicleId, token]);
 
@@ -207,14 +209,6 @@ const DrivingWarningModal: React.FC = () => {
             <br />
             안전한 운행을 위해 휴식을 취해주세요.
           </DriverText>
-          {/* <div>
-            <DriverText fontSize="60px" fontWeight={800}>
-              5
-            </DriverText>
-            <DriverText fontSize="15px">
-              초 후에 졸음 감지 장치가 작동합니다.
-            </DriverText>
-          </div> */}
           <CustomButtonDiv onClick={endWakeRoutine}>
             <DriverText fontSize="20px" fontWeight={600}>
               확인

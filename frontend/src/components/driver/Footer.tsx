@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-// import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   CommonButton,
   IconSize,
@@ -10,7 +9,6 @@ import {
   PhoneSvg,
   ReportSvg,
 } from "../../styles/driver/MenuButton";
-// import DrivingWarningModal from "./DrivingWarningModal";
 
 const FooterDiv = styled.div`
   display: flex;
@@ -27,22 +25,9 @@ const Menu = styled.div`
   width: 65%;
 `;
 
-// const ModalOverlay = styled.div`
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background-color: rgba(0, 0, 0, 0.5);
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   z-index: 1000;
-// `;
-
 const Footer: React.FC = () => {
   const navigate = useNavigate();
-  // const [isPhoneModalOpen, setIsPhoneModalOpen] = useState<boolean>(false);
+  const location = useLocation();
 
   // 아이콘과 실제 경로를 포함한 배열
   const iconComponents = [
@@ -57,17 +42,25 @@ const Footer: React.FC = () => {
     if (path) {
       navigate(path);
     }
-    // else {
-    //   setIsPhoneModalOpen(true);
-    // }
   };
+
+  // 현재 경로가 로그인 페이지인지 확인
+  const isOnLoginPage = location.pathname === "/driver/login";
 
   return (
     <>
       <FooterDiv>
         <Menu>
           {iconComponents.map(({ component: Icon, path }, index) => (
-            <CommonButton key={index} onClick={() => handleIconClick(path)}>
+            <CommonButton
+              key={index}
+              onClick={isOnLoginPage ? undefined : () => handleIconClick(path)} // 클릭 비활성화
+              style={{
+                cursor: isOnLoginPage ? "not-allowed" : "pointer", // 클릭 불가 커서
+                opacity: isOnLoginPage ? 0.5 : 1, // 비활성화 시 투명도 조정
+                pointerEvents: isOnLoginPage ? "none" : "auto", // 클릭 이벤트 차단
+              }}
+            >
               <IconSize>
                 <Icon />
               </IconSize>
@@ -75,12 +68,6 @@ const Footer: React.FC = () => {
           ))}
         </Menu>
       </FooterDiv>
-
-      {/* {isPhoneModalOpen && (
-        <ModalOverlay>
-          <DrivingWarningModal onClose={() => setIsPhoneModalOpen(false)} />
-        </ModalOverlay>
-      )} */}
     </>
   );
 };
