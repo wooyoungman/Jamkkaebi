@@ -1,0 +1,29 @@
+# 1. Build 디렉토리 및 빌드 결과물 제외
+build/
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+*.srec
+*.lst
+
+# 2. STM32CubeMX 생성 임시 파일 제외
+*.backup
+
+# 3. IDE 환경 파일 제외 (재생성 가능)
+.settings/
+
+# 4. Debugging 관련 파일 제외
+*.dbg
+*.dep
+
+# 5. 임시 파일 및 OS 생성 파일 제외
+*.log
+*.swp
+*.bak
+*.tmp
+.DS_Store
+Thumbs.db
+
