@@ -8,11 +8,11 @@ import threading
 # 기존 MQTT 설정 (_server 추가)
 mqtt_broker_server = "k11c106.p.ssafy.io"
 mqtt_port_server = 1883
-mqtt_topic_server = "device/***REMOVED***/data"      # 데이터를 송신할 토픽
-control_topic_server = "device/***REMOVED***/control"  # 데이터를 수신할 토픽
+mqtt_topic_server = "device/***REMOVED*** /data"      # 데이터를 송신할 토픽
+control_topic_server = "device/***REMOVED*** /control"  # 데이터를 수신할 토픽
 
 client_server = mqtt.Client()
-client_server.username_pw_set(username="***REMOVED***", password="***REMOVED***")
+client_server.username_pw_set(username="***REMOVED*** ", password="***REMOVED*** ")
 
 # 새로운 MQTT 설정 (_pc 추가)
 mqtt_broker_pc = "192.168.100.104"

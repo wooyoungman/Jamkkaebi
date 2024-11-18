@@ -3,7 +3,7 @@ import paho.mqtt.client as mqtt
 # RabbitMQ MQTT configuration
 HOST = "k11c106.p.ssafy.io"
 PORT = 1883
-UUID = "***REMOVED***"
+UUID = "***REMOVED*** "
 TOPIC = f"device/{UUID}/status"
 
 # The MQTT topic is constructed as: exchange_name/routing_key
@@ -47,7 +47,7 @@ client.on_publish = on_publish
 client.on_message = on_message
 
 # Connect to the broker
-client.username_pw_set(username="***REMOVED***", password="***REMOVED***")
+client.username_pw_set(username="***REMOVED*** ", password="***REMOVED*** ")
 client.connect(HOST, PORT)
 
 # Start the loop

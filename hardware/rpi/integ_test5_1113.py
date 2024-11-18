@@ -10,12 +10,12 @@ import threading
 #mqtt_broker = "192.168.100.104"
 mqtt_broker = "k11c106.p.ssafy.io"
 mqtt_port = 1883
-mqtt_topic = "device/***REMOVED***/data"      # 데이터를 송신할 토픽
-control_topic = "device/***REMOVED***/control"  # 데이터를 수신할 토픽
+mqtt_topic = "device/***REMOVED*** /data"      # 데이터를 송신할 토픽
+control_topic = "device/***REMOVED*** /control"  # 데이터를 수신할 토픽
 
 client = mqtt.Client()
 #client.username_pw_set(username="rpi5", password="ssafyi11C102!!")
-client.username_pw_set(username="***REMOVED***", password="***REMOVED***")
+client.username_pw_set(username="***REMOVED*** ", password="***REMOVED*** ")
 
 driverId = 1
 driverStatus = "NORMAL"

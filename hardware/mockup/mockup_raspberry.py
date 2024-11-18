@@ -8,7 +8,7 @@ import os
 # RabbitMQ MQTT configuration
 HOST = "k11c106.p.ssafy.io"
 PORT = 1883
-UUID = "***REMOVED***"
+UUID = "***REMOVED*** "
 TOPIC = f"device/{UUID}/data"
 
 # The MQTT topic is constructed as: exchange_name/routing_key
@@ -50,7 +50,7 @@ client.on_connect = on_connect
 client.on_publish = on_publish
 
 # Connect to the broker
-client.username_pw_set(username="***REMOVED***", password="***REMOVED***")
+client.username_pw_set(username="***REMOVED*** ", password="***REMOVED*** ")
 client.connect(HOST, PORT)
 
 # Start the loop
@@ -66,7 +66,7 @@ while True:
 
         # CSV 행 데이터를 payload에 매핑
         message = {
-            "uuid": "***REMOVED***",
+            "uuid": "***REMOVED*** ",
             "driverId": 5,
             "driverStatus": row[10],
             "coordinateX": float(row[12]),
@@ -97,7 +97,7 @@ while True:
         print(f"CSV 데이터 처리 중 에러 발생: {e}")
 
     # message = {
-    #     "uuid": "***REMOVED***",
+    #     "uuid": "***REMOVED*** ",
     #     "driverId": 5,
     #     "driverStatus": "NORMAL" if random.randint(0, 1) else "ASLEEP",
     #     "coordinateX": random.uniform(-180, 180),
@@ -120,7 +120,7 @@ while True:
     # }
 
     # message =  {
-    #     "uuid": "***REMOVED***",
+    #     "uuid": "***REMOVED*** ",
     #     "driverId": 5,
     #     "driverStatus": None,
     #     "coordinateX": 126.3549225,

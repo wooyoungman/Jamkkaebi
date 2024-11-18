@@ -10,12 +10,12 @@ import os
 # MQTT 설정
 mqtt_broker = "k11c106.p.ssafy.io"
 mqtt_port = 1883
-mqtt_topic = "device/***REMOVED***/data"      # 데이터를 송신할 토픽
-control_topic = "device/***REMOVED***/control"  # 데이터를 수신할 토픽
-status_topic = "device/***REMOVED***/status"    # 연결 상태 토픽
+mqtt_topic = "device/***REMOVED*** /data"      # 데이터를 송신할 토픽
+control_topic = "device/***REMOVED*** /control"  # 데이터를 수신할 토픽
+status_topic = "device/***REMOVED*** /status"    # 연결 상태 토픽
 
 client = mqtt.Client()
-client.username_pw_set(username="***REMOVED***", password="***REMOVED***")
+client.username_pw_set(username="***REMOVED*** ", password="***REMOVED*** ")
 
 # 라즈베리 파이에서 UART 신호를 수신하기 위한 설정
 ser = serial.Serial('/dev/ttyAMA0', baudrate=9600, timeout=1)
@@ -119,7 +119,7 @@ def read_uart(csv_reader):
 
                         # CSV 행 데이터를 payload에 매핑
                         payload = {
-                            "uuid": "***REMOVED***",
+                            "uuid": "***REMOVED*** ",
                             "driverId": 5,
                             "driverStatus": row[10],
                             "coordinateX": float(row[12]),

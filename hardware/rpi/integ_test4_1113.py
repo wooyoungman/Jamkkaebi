@@ -15,7 +15,7 @@ control_topic = "command/data"  # 데이터를 수신할 토픽
 
 client = mqtt.Client()
 #client.username_pw_set(username="rpi5", password="ssafyi11C102!!")
-client.username_pw_set(username="***REMOVED***", password="testclientC16!!")
+client.username_pw_set(username="***REMOVED*** ", password="testclientC16!!")
 
 driverId = 1
 driverStatus = "NORMAL"
