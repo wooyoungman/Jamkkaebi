@@ -10,7 +10,6 @@ import {
   startPointAtom,
 } from "@/atoms/driver/socket";
 import DrivingWarningModal from "./DrivingWarningModal";
-import DriverLogin from "./DriverLogin";
 
 import { Outlet } from "react-router-dom";
 import {
@@ -72,14 +71,8 @@ const DriverLayout: React.FC = () => {
     }
   }, [setServerDriverStateData, vehicleId, memberId]);
 
-  // // 차량 ID가 없으면 DriverLogin 렌더링
-  // if (!vehicleId) {
-  //   return <DriverLogin />;
-  // }
-
   return (
     <DriverContainer>
-      {/* <DriverLogin /> */}
       <DriverBackground>
         <DrivingWarningModal />
         <Header />
