@@ -10,7 +10,7 @@ export const dummyDrivers: DriverResponse[] = [
     role: "DRIVER",
     vehicleNumber: "서울 123가 4567",
     status: "ON_ROUTE",
-    profileImage: "https://faces.cloudinary.com/random",
+    profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
   },
   {
     driverId: 2,
@@ -20,7 +20,7 @@ export const dummyDrivers: DriverResponse[] = [
     role: "DRIVER",
     vehicleNumber: "서울 456나 7890",
     status: "REST",
-    profileImage: "https://picsum.photos/200",
+    profileImage: "https://randomuser.me/api/portraits/men/2.jpg",
   },
 ];
 
