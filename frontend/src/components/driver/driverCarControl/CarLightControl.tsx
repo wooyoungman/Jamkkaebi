@@ -177,7 +177,7 @@ const CarLightControl: React.FC = () => {
 
   // 슬라이더 변경 후 마우스를 뗄 때 요청 전송
   const handleSliderChangeEnd = () => {
-    sendPatchRequest(3);
+    sendPatchRequest(2);
   };
 
   // power 변경 핸들러 (슬라이더)
@@ -198,7 +198,7 @@ const CarLightControl: React.FC = () => {
   // EclipseRGB 한 번 클릭 핸들러 -> 색상 선택시 요청 전송
   const handleEclipseClick = (color: RGB) => {
     setSelectedRGB(color); // 선택된 RGB 값만 저장
-    sendPatchRequest(2, color);
+    sendPatchRequest(3, color);
   };
 
   // EclipseRGB 더블 클릭 핸들러
@@ -217,7 +217,7 @@ const CarLightControl: React.FC = () => {
   const handleSelect = (hue: number) => {
     const rgb = hueToRgb(hue); // hue 값을 RGB로 변환
     setSelectedRGB(rgb); // 변환된 RGB 값을 상태로 설정
-    sendPatchRequest(2, rgb);
+    sendPatchRequest(3, rgb);
   };
 
   useEffect(() => {
