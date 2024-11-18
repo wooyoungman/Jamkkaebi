@@ -164,8 +164,8 @@ const DrivingReportDetail: React.FC<DrivingReportDetailProps> = ({
           </DriverText>
           <ReportDetailMain>
             <ReportMapDiv>
-              <DriverMap />
-              {/* <DriverReportMap /> */}
+              {/* <DriverMap /> */}
+              <DriverReportMap />
             </ReportMapDiv>
             <ReportDetailRightDiv>
               <ReportDetailTextDiv>

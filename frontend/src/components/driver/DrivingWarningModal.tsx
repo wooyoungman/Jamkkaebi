@@ -96,7 +96,8 @@ const DrivingWarningModal: React.FC = () => {
       activeData?.predictions.classification === "ASLEEP" &&
       vehicleId &&
       token &&
-      !wakeRoutineTriggered.current // `executeWakeRoutine`이 실행되지 않은 경우만 실행
+      !wakeRoutineTriggered.current && // `executeWakeRoutine`이 실행되지 않은 경우만 실행
+      activeData !== driverStateData
     ) {
       console.log("졸음이 감지되었습니다!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
       setIsVisible(true);
@@ -104,14 +105,12 @@ const DrivingWarningModal: React.FC = () => {
 
       // playWarningVoice("졸음이 감지되었습니다. 휴식을 취하세요.");
 
-      if (activeData !== driverStateData) {
-        // 음성 반복 재생 설정
-        audioInterval.current = setInterval(() => {
-          playWarningSound();
-        }, 2000); // 2초 간격으로 재생
+      // 음성 반복 재생 설정
+      audioInterval.current = setInterval(() => {
+        playWarningSound();
+      }, 2000); // 2초 간격으로 재생
 
-        executeWakeRoutine(vehicleId, token); // API 호출
-      }
+      executeWakeRoutine(vehicleId, token); // API 호출
     }
   }, [activeData?.predictions.classification, vehicleId, token]);
 
