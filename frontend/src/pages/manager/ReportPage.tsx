@@ -226,6 +226,10 @@ const ReportPage = () => {
       value: getStatusText(data.driverInfo.status),
     },
   ];
+  console.log(data.eegData, "뇌파 차트");
+  console.log(data.driveTime, "근무 시간");
+  console.log(data.avgSleepIndex, "평균 졸음 지수");
+  console.log(data.distance, "운행 거리");
 
   return (
     <Container id="report-container">
