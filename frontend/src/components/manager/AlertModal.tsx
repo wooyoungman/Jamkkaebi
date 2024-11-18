@@ -1,12 +1,15 @@
-// 졸음 일어났을 때 나오는 알림 모달
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 
 interface AlertModalProps {
   isOpen: boolean;
   onClose: () => void;
   driverName: string;
   eventTime: string;
-  eventLocation: string;
+  eventLocation: {
+    lat: number;
+    lng: number;
+  };
 }
 
 const AlertModal = ({
@@ -16,6 +19,40 @@ const AlertModal = ({
   eventTime,
   eventLocation,
 }: AlertModalProps) => {
+  const [address, setAddress] = useState<string>("주소 검색 중...");
+
+  // Tmap 역지오코딩 함수
+  const reverseGeocode = async (lat: number, lng: number) => {
+    try {
+      const response = await fetch(
+        `https://apis.openapi.sk.com/tmap/geo/reversegeocoding?version=1&lat=${lat}&lon=${lng}&coordType=WGS84GEO&addressType=A10&format=json&callback=result`,
+        {
+          headers: {
+            Accept: "application/json",
+            appKey: import.meta.env.VITE_TMAP_API_KEY,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch address");
+
+      const data = await response.json();
+      if (data.addressInfo) {
+        const fullAddress = data.addressInfo.fullAddress;
+        setAddress(fullAddress);
+      }
+    } catch (error) {
+      console.error("Error fetching address:", error);
+      setAddress("주소를 불러올 수 없습니다");
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen && eventLocation) {
+      reverseGeocode(eventLocation.lat, eventLocation.lng);
+    }
+  }, [isOpen, eventLocation]);
+
   if (!isOpen) return null;
 
   return (
@@ -30,7 +67,12 @@ const AlertModal = ({
             <strong>{driverName}</strong> 운전자 졸음운전 감지
           </p>
           <p>발생시각: {eventTime}</p>
-          <p>발생위치: {eventLocation}</p>
+          <LocationInfo>
+            발생위치: {address}
+            <Coordinates>
+              ({eventLocation.lat.toFixed(6)}, {eventLocation.lng.toFixed(6)})
+            </Coordinates>
+          </LocationInfo>
         </AlertModal.Body>
         <AlertModal.Footer>
           <button onClick={onClose}>확인</button>
@@ -104,6 +146,19 @@ AlertModal.Footer = styled.div`
       background-color: #ff6666;
     }
   }
+`;
+
+const LocationInfo = styled.p`
+  margin: 10px 0;
+  word-break: keep-all;
+  white-space: pre-wrap;
+`;
+
+const Coordinates = styled.span`
+  display: block;
+  font-size: 0.8em;
+  color: #666;
+  margin-top: 4px;
 `;
 
 export default AlertModal;

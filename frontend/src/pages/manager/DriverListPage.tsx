@@ -152,7 +152,7 @@ const DriverList = () => {
                 <TD>{driver.memberName}</TD>
                 <TD>{driver.phoneNumber}</TD>
                 <TD>{driver.vehicleNumber}</TD>
-                <TD>{driver.address}</TD>
+                <TD>{driver.region}</TD>
                 <TD>
                   <StatusBadge status={driver.status}>
                     {

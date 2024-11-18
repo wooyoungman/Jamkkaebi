@@ -29,7 +29,7 @@ export const useDriverListWithFilters = () => {
         const vehicleMatch =
           driver.vehicleNumber?.toLowerCase().includes(searchLower) || false;
         const addressMatch =
-          driver.address?.toLowerCase().includes(searchLower) || false;
+          driver.region?.toLowerCase().includes(searchLower) || false;
 
         return nameMatch || vehicleMatch || addressMatch;
       });

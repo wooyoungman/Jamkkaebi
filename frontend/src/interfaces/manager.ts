@@ -7,7 +7,7 @@ export interface User {
 
 export interface DriverDetails {
   phoneNumber: string | null;
-  address: string | null;
+  region: string | null;
   vehicleNumber: string;
   status: "ON_ROUTE" | "REST" | "IDLE";
   profileImage: string;
@@ -19,7 +19,7 @@ export interface DriverResponse {
   driverId: number;
   driverName: string;
   phoneNumber: string | null;
-  address: string | null;
+  region: string | null;
   role: "DRIVER";
   vehicleNumber: string;
   status: "ON_ROUTE" | "REST" | "IDLE";
@@ -39,7 +39,7 @@ export const convertToDriver = (res: DriverResponse): Driver => {
     memberType: "DRIVER",
     additionalInfo: null,
     phoneNumber: res.phoneNumber,
-    address: res.address,
+    region: res.region,
     vehicleNumber: res.vehicleNumber,
     status: res.status,
     profileImage: res.profileImage,
@@ -211,4 +211,13 @@ export interface MapDriver {
 export interface Location {
   lat: number;
   lng: number;
+}
+
+export interface AlertInfo {
+  driverName: string;
+  eventTime: string;
+  eventLocation: {
+    lat: number;
+    lng: number;
+  };
 }
