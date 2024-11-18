@@ -1,4 +1,5 @@
 import { dummyDrivers } from "@interfaces/dummydrivers";
+import exportToPDF from "@hooks/exportToPDF";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import PurpleButton from "@/components/manager/PurpleButton";
@@ -44,26 +45,16 @@ import {
   TopStats,
   MainContent,
   StatCard,
-  WorkLogCard,
   IconWrapper,
   Label,
   Value,
-  Unit,
-  Change,
-  WorkLogTitle,
-  LogGrid,
-  LogItem,
-  LogLabel,
-  LogValue,
   ChartsGrid,
   ChartCard,
   ChartHeader,
   ChartTitle,
   TabGroup,
   Tab,
-  RadarWrapper,
-} from '@styles/manager/ReportPageStyle'
-
+} from "@styles/manager/ReportPageStyle";
 
 export const ReportPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -71,12 +62,31 @@ export const ReportPage = () => {
   const { data: driver } = useQuery<DriverResponse>({
     queryKey: ["driver", id],
     queryFn: () => {
-      const foundDriver = dummyDrivers.find((driver) => driver.driverId === Number(id));
+      const foundDriver = dummyDrivers.find(
+        (driver) => driver.driverId === Number(id)
+      );
       if (!foundDriver) throw new Error("Driver not found");
       return foundDriver;
     },
     enabled: !!id,
   });
+
+  const handleExport = async () => {
+    const driverName = driver?.driverName || "driver";
+    const fileName = `${driverName}-report-${new Date().toISOString().split("T")[0]}.pdf`;
+
+    const success = await exportToPDF("report-container", fileName);
+
+    if (success) {
+      // 성공 메시지나 토스트 알림을 표시할 수 있습니다
+      console.log("PDF exported successfully");
+    } else {
+      // 실패 메시지나 토스트 알림을 표시할 수 있습니다
+      console.error("Failed to export PDF");
+    }
+  };
+
+  if (!driver) return <div>Loading...</div>;
 
   // 집중 시간 비교 임의 데이터
   const concentrationData = {
@@ -222,33 +232,6 @@ export const ReportPage = () => {
     },
   };
 
-  const radarOptions = {
-    scales: {
-      r: {
-        beginAtZero: true,
-        max: 100,
-        ticks: {
-          stepSize: 20,
-          display: false,
-        },
-        grid: {
-          color: "#E5E7EB",
-        },
-        pointLabels: {
-          font: {
-            size: 12,
-          },
-          color: "#64748B",
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
-  };
-
   const barOptions = {
     responsive: true,
     scales: {
@@ -298,7 +281,7 @@ export const ReportPage = () => {
   if (!driver) return <div>Loading...</div>;
 
   return (
-    <Container>
+    <Container id="report-container">
       <HeaderSection>
         <div>
           <DriverProfile>
@@ -347,71 +330,19 @@ export const ReportPage = () => {
           </TopStats>
         </div>
         <ButtonWrapper>
-          <PurpleButton>
+          <PurpleButton onClick={handleExport}>
             <Share size={18} className="mr-2" /> Export
           </PurpleButton>
         </ButtonWrapper>
       </HeaderSection>
 
       <StatsContainer>
-        {/* <WorkLogCard>
-          <WorkLogTitle>근무 일지</WorkLogTitle>
-          <LogGrid>
-            <LogItem>
-              <LogLabel>차량 번호</LogLabel>
-              <LogValue>{driver.vehicleNumber}</LogValue>
-            </LogItem>
-            <LogItem>
-              <LogLabel>연락처</LogLabel>
-              <LogValue>{driver.phoneNumber || "미등록"}</LogValue>
-            </LogItem>
-            <LogItem>
-              <LogLabel>주소</LogLabel>
-              <LogValue>{driver.address || "미등록"}</LogValue>
-            </LogItem>
-            <LogItem>
-              <LogLabel>현재 상태</LogLabel>
-              <LogValue>
-                {driver.status === "ON_ROUTE" && "운행중"}
-                {driver.status === "REST" && "휴식중"}
-                {driver.status === "IDLE" && "대기중"}
-              </LogValue>
-            </LogItem>
-          </LogGrid>
-        </WorkLogCard> */}
-
         <MainContent>
           <ChartsGrid>
             <ChartCard>
               <ChartHeader>
                 <ChartTitle>뇌파 차트</ChartTitle>
                 <TabGroup>
-                  <Tab>시간별</Tab>
-                  <Tab>일별</Tab>
-                  <Tab active>주간</Tab>
-                </TabGroup>
-              </ChartHeader>
-              <Line data={brainwaveData} options={chartOptions} />
-            </ChartCard>
-
-            <ChartCard>
-              <ChartHeader>
-                <ChartTitle>집중 시간 비교</ChartTitle>
-                <TabGroup>
-                  <Tab active>Day</Tab>
-                  <Tab>Week</Tab>
-                  <Tab>Month</Tab>
-                </TabGroup>
-              </ChartHeader>
-              <Line data={concentrationData} options={chartOptions} />
-            </ChartCard>
-
-            <ChartCard>
-              <ChartHeader>
-                <ChartTitle>근전도 차트</ChartTitle>
-                <TabGroup>
-                  <Tab>시간별</Tab>
-                  <Tab>일별</Tab>
                   <Tab active>주간</Tab>
                 </TabGroup>
               </ChartHeader>
@@ -422,12 +353,30 @@ export const ReportPage = () => {
               <ChartHeader>
                 <ChartTitle>근무 시간</ChartTitle>
                 <TabGroup>
-                  <Tab>Day</Tab>
                   <Tab active>Week</Tab>
-                  <Tab>Month</Tab>
                 </TabGroup>
               </ChartHeader>
               <Bar data={workTimeData} options={barOptions} />
+            </ChartCard>
+
+            <ChartCard>
+              <ChartHeader>
+                <ChartTitle>근전도 차트</ChartTitle>
+                <TabGroup>
+                  <Tab active>주간</Tab>
+                </TabGroup>
+              </ChartHeader>
+              <Line data={brainwaveData} options={chartOptions} />
+            </ChartCard>
+
+            <ChartCard>
+              <ChartHeader>
+                <ChartTitle>운행 기록</ChartTitle>
+                <TabGroup>
+                  <Tab active>Day</Tab>
+                </TabGroup>
+              </ChartHeader>
+              <Line data={concentrationData} options={chartOptions} />
             </ChartCard>
           </ChartsGrid>
         </MainContent>
@@ -435,7 +384,5 @@ export const ReportPage = () => {
     </Container>
   );
 };
-
-
 
 export default ReportPage;
