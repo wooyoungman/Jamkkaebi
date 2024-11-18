@@ -1,10 +1,5 @@
-import { dummyDrivers } from "@interfaces/dummydrivers";
-import exportToPDF from "@hooks/exportToPDF";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import PurpleButton from "@/components/manager/PurpleButton";
 import { Share } from "lucide-react";
-import { DriverResponse } from "@/interfaces/manager";
 import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -19,20 +14,10 @@ import {
   RadialLinearScale,
   RadarController,
 } from "chart.js";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  RadialLinearScale,
-  RadarController,
-  Title,
-  Tooltip,
-  Legend
-);
-
+import { useReportData } from "@/queries/manager/report";
+import exportToPDF from "@/hooks/exportToPDF";
+import PurpleButton from "@/components/manager/PurpleButton";
+import { ReportDriverInfo } from "@/interfaces/manager";
 import {
   Container,
   HeaderSection,
@@ -54,229 +39,193 @@ import {
   ChartTitle,
   TabGroup,
   Tab,
-} from "@styles/manager/ReportPageStyle";
+} from "@/styles/manager/ReportPageStyle";
 
-export const ReportPage = () => {
-  const { id } = useParams<{ id: string }>();
+// Chart.js 등록
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  RadialLinearScale,
+  RadarController,
+  Title,
+  Tooltip,
+  Legend
+);
 
-  const { data: driver } = useQuery<DriverResponse>({
-    queryKey: ["driver", id],
-    queryFn: () => {
-      const foundDriver = dummyDrivers.find(
-        (driver) => driver.driverId === Number(id)
-      );
-      if (!foundDriver) throw new Error("Driver not found");
-      return foundDriver;
+// 차트 옵션 정의
+const commonChartOptions = {
+  responsive: true,
+  scales: {
+    y: {
+      beginAtZero: false,
+      grid: {
+        color: "#E5E7EB",
+        drawBorder: false,
+      },
+      ticks: {
+        stepSize: 50,
+        font: { size: 12 },
+        color: "#64748B",
+      },
     },
-    enabled: !!id,
-  });
+    x: {
+      grid: {
+        color: "#E5E7EB",
+        drawBorder: false,
+      },
+      ticks: {
+        font: { size: 12 },
+        color: "#64748B",
+      },
+    },
+  },
+  plugins: {
+    legend: {
+      position: "top" as const,
+      align: "center" as const,
+      labels: {
+        usePointStyle: true,
+        boxWidth: 6,
+        boxHeight: 6,
+        padding: 20,
+        font: { size: 12 },
+        color: "#64748B",
+      },
+    },
+    tooltip: {
+      backgroundColor: "#1E293B",
+      padding: 12,
+      titleFont: { size: 12 },
+      bodyFont: { size: 12 },
+      displayColors: false,
+    },
+  },
+  elements: {
+    point: {
+      radius: 3,
+      hitRadius: 10,
+      hoverRadius: 5,
+      backgroundColor: "white",
+      borderWidth: 2,
+    },
+    line: {
+      borderWidth: 2,
+    },
+  },
+};
+
+const getStatusText = (status: ReportDriverInfo["status"]) => {
+  const statusMap = {
+    ON_ROUTE: "운행중",
+    REST: "휴식중",
+    IDLE: "대기중",
+  };
+  return statusMap[status];
+};
+
+interface WeeklyChartProps {
+  data: {
+    lastWeek: (number | null)[];
+    thisWeek: (number | null)[];
+  } | null;
+  title: string;
+  type?: "line" | "bar";
+}
+
+const WeeklyChart = ({ data, title, type = "line" }: WeeklyChartProps) => {
+  if (!data) {
+    return (
+      <ChartCard>
+        <ChartHeader>
+          <ChartTitle>{title}</ChartTitle>
+          <TabGroup>
+            <Tab active>주간</Tab>
+          </TabGroup>
+        </ChartHeader>
+        <div className="p-4 text-center text-gray-500">데이터가 없습니다.</div>
+      </ChartCard>
+    );
+  }
+
+  const chartData = {
+    labels: ["일", "월", "화", "수", "목", "금", "토"],
+    datasets: [
+      {
+        label: "저번 주",
+        data: data.lastWeek,
+        borderColor: "#4F46E5",
+        backgroundColor: type === "bar" ? "#4F46E5" : undefined,
+        tension: 0.4,
+      },
+      {
+        label: "이번 주",
+        data: data.thisWeek,
+        borderColor: "#EC4899",
+        backgroundColor: type === "bar" ? "#EC4899" : undefined,
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const ChartComponent = type === "line" ? Line : Bar;
+
+  return (
+    <ChartCard>
+      <ChartHeader>
+        <ChartTitle>{title}</ChartTitle>
+        <TabGroup>
+          <Tab active>주간</Tab>
+        </TabGroup>
+      </ChartHeader>
+      <ChartComponent data={chartData} options={commonChartOptions} />
+    </ChartCard>
+  );
+};
+
+const ReportPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const { data, isLoading, error } = useReportData(Number(id));
+
+  if (isLoading) return <div>로딩중...</div>;
+  if (error) return <div>에러가 발생했습니다</div>;
+  if (!data) return <div>운전자 정보를 찾을 수 없습니다.</div>;
 
   const handleExport = async () => {
-    const driverName = driver?.driverName || "driver";
-    const fileName = `${driverName}-report-${new Date().toISOString().split("T")[0]}.pdf`;
+    const fileName = `${data.driverInfo.driverName}-report-${
+      new Date().toISOString().split("T")[0]
+    }.pdf`;
 
     const success = await exportToPDF("report-container", fileName);
-
-    if (success) {
-      console.log("PDF exported successfully");
-    } else {
+    if (!success) {
       console.error("Failed to export PDF");
     }
   };
 
-  if (!driver) return <div>로딩중...</div>;
-
-  // 집중 시간 비교 임의 데이터
-  const concentrationData = {
-    labels: ["May 5", "May 6", "May 7", "May 8", "May 9", "May 10", "May 11"],
-    datasets: [
-      {
-        label: "운전 시간",
-        data: [200, 180, 276, 230, 190, 180, 170],
-        borderColor: "#22C55E",
-        backgroundColor: "#22C55E",
-        tension: 0.4,
-        fill: false,
-      },
-      {
-        label: "휴식 시간",
-        data: [100, 90, 150, 120, 100, 90, 85],
-        borderColor: "#F59E0B",
-        backgroundColor: "#F59E0B",
-        tension: 0.4,
-        fill: false,
-      },
-    ],
-  };
-
-  // 근무 시간 임의 데이터
-  const workTimeData = {
-    labels: [
-      "일요일",
-      "월요일",
-      "화요일",
-      "수요일",
-      "목요일",
-      "금요일",
-      "토요일",
-    ],
-    datasets: [
-      {
-        label: "이번 주",
-        data: [120, 80, 100, 40, 60, 130, 90],
-        backgroundColor: "#38BDF8",
-      },
-      {
-        label: "저번 주",
-        data: [150, 60, 110, 50, 60, 140, 60],
-        backgroundColor: "#FB923C",
-      },
-    ],
-  };
-
-  // 뇌파 차트 임의 데이터
-  const brainwaveData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "Mai", "Jun"],
-    datasets: [
-      {
-        label: "Content 1",
-        data: [20, -15, -20, 40, 25, -15],
-        borderColor: "#4F46E5",
-        tension: 0.4,
-      },
-      {
-        label: "Content 2",
-        data: [40, 20, 10, -10, 10, 30],
-        borderColor: "#EC4899",
-        tension: 0.4,
-      },
-      {
-        label: "Content 3",
-        data: [-15, 30, 30, 20, -15, 60],
-        borderColor: "#F43F5E",
-        tension: 0.4,
-      },
-    ],
-  };
-
-  const chartOptions = {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: false,
-        grid: {
-          color: "#E5E7EB",
-          drawBorder: false,
-        },
-        ticks: {
-          stepSize: 50,
-          font: {
-            size: 12,
-          },
-          color: "#64748B",
-        },
-      },
-      x: {
-        grid: {
-          color: "#E5E7EB",
-          drawBorder: false,
-        },
-        ticks: {
-          font: {
-            size: 12,
-          },
-          color: "#64748B",
-        },
-      },
+  const stats = [
+    {
+      icon: "🚗",
+      label: "차량 번호",
+      value: data.driverInfo.vehicleNumber,
     },
-    plugins: {
-      legend: {
-        position: "top" as const,
-        align: "center" as const,
-        labels: {
-          usePointStyle: true,
-          boxWidth: 6,
-          boxHeight: 6,
-          padding: 20,
-          font: {
-            size: 12,
-          },
-          color: "#64748B",
-        },
-      },
-      tooltip: {
-        backgroundColor: "#1E293B",
-        padding: 12,
-        titleFont: {
-          size: 12,
-        },
-        bodyFont: {
-          size: 12,
-        },
-        displayColors: false,
-      },
+    {
+      icon: "📱",
+      label: "연락처",
+      value: data.driverInfo.phoneNumber || "미등록",
     },
-    elements: {
-      point: {
-        radius: 3,
-        hitRadius: 10,
-        hoverRadius: 5,
-        backgroundColor: "white",
-        borderWidth: 2,
-      },
-      line: {
-        borderWidth: 2,
-      },
+    {
+      icon: "📍",
+      label: "지역",
+      value: data.driverInfo.region,
     },
-  };
-
-  const barOptions = {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
-        grid: {
-          color: "#E5E7EB",
-          drawBorder: false,
-        },
-        ticks: {
-          font: {
-            size: 12,
-          },
-          color: "#64748B",
-        },
-      },
-      x: {
-        grid: {
-          display: false,
-        },
-        ticks: {
-          font: {
-            size: 12,
-          },
-          color: "#64748B",
-        },
-      },
+    {
+      icon: "⚡",
+      label: "현재 상태",
+      value: getStatusText(data.driverInfo.status),
     },
-    plugins: {
-      legend: {
-        position: "top" as const,
-        align: "end" as const,
-        labels: {
-          usePointStyle: true,
-          boxWidth: 6,
-          boxHeight: 6,
-          padding: 20,
-          font: {
-            size: 12,
-          },
-          color: "#64748B",
-        },
-      },
-    },
-  };
-
-  if (!driver) return <div>Loading...</div>;
+  ];
 
   return (
     <Container id="report-container">
@@ -284,55 +233,28 @@ export const ReportPage = () => {
         <div>
           <DriverProfile>
             <ProfileImage
-              src={
-                driver.profileImage ||
-                `https://randomuser.me/api/portraits/men/${driver.driverId % 100}.jpg`
-              }
-              alt={driver.driverName}
+              src={`https://api.dicebear.com/7.x/personas/svg?seed=${id}`}
+              alt={data.driverInfo.driverName}
             />
             <div>
-              <DriverName>{driver.driverName} 기사님</DriverName>
+              <DriverName>{data.driverInfo.driverName} 기사님</DriverName>
               <ReportTitle>운전 보고서</ReportTitle>
             </div>
           </DriverProfile>
+
           <TopStats>
-            <StatCard>
-              <IconWrapper>🚗</IconWrapper>
-              <div>
-                <Label>차량 번호</Label>
-                <Value>{driver.vehicleNumber}</Value>
-              </div>
-            </StatCard>
-
-            <StatCard>
-              <IconWrapper>📱</IconWrapper>
-              <div>
-                <Label>연락처</Label>
-                <Value>{driver.phoneNumber || "미등록"}</Value>
-              </div>
-            </StatCard>
-
-            <StatCard>
-              <IconWrapper>📍</IconWrapper>
-              <div>
-                <Label>주소</Label>
-                <Value>{driver.address || "미등록"}</Value>
-              </div>
-            </StatCard>
-
-            <StatCard>
-              <IconWrapper>⚡</IconWrapper>
-              <div>
-                <Label>현재 상태</Label>
-                <Value>
-                  {driver.status === "ON_ROUTE" && "운행중"}
-                  {driver.status === "REST" && "휴식중"}
-                  {driver.status === "IDLE" && "대기중"}
-                </Value>
-              </div>
-            </StatCard>
+            {stats.map((stat, index) => (
+              <StatCard key={index}>
+                <IconWrapper>{stat.icon}</IconWrapper>
+                <div>
+                  <Label>{stat.label}</Label>
+                  <Value>{stat.value}</Value>
+                </div>
+              </StatCard>
+            ))}
           </TopStats>
         </div>
+
         <ButtonWrapper>
           <PurpleButton onClick={handleExport}>
             <Share size={18} className="mr-2" /> Export
@@ -343,45 +265,10 @@ export const ReportPage = () => {
       <StatsContainer>
         <MainContent>
           <ChartsGrid>
-            <ChartCard>
-              <ChartHeader>
-                <ChartTitle>뇌파 차트</ChartTitle>
-                <TabGroup>
-                  <Tab active>주간</Tab>
-                </TabGroup>
-              </ChartHeader>
-              <Line data={brainwaveData} options={chartOptions} />
-            </ChartCard>
-
-            <ChartCard>
-              <ChartHeader>
-                <ChartTitle>근무 시간</ChartTitle>
-                <TabGroup>
-                  <Tab active>Week</Tab>
-                </TabGroup>
-              </ChartHeader>
-              <Bar data={workTimeData} options={barOptions} />
-            </ChartCard>
-
-            <ChartCard>
-              <ChartHeader>
-                <ChartTitle>근전도 차트</ChartTitle>
-                <TabGroup>
-                  <Tab active>주간</Tab>
-                </TabGroup>
-              </ChartHeader>
-              <Line data={brainwaveData} options={chartOptions} />
-            </ChartCard>
-
-            <ChartCard>
-              <ChartHeader>
-                <ChartTitle>운행 기록</ChartTitle>
-                <TabGroup>
-                  <Tab active>Day</Tab>
-                </TabGroup>
-              </ChartHeader>
-              <Line data={concentrationData} options={chartOptions} />
-            </ChartCard>
+            <WeeklyChart data={data.eegData} title="뇌파 차트" />
+            <WeeklyChart data={data.driveTime} title="근무 시간" type="bar" />
+            <WeeklyChart data={data.avgSleepIndex} title="평균 졸음 지수" />
+            <WeeklyChart data={data.distance} title="운행 거리" />
           </ChartsGrid>
         </MainContent>
       </StatsContainer>

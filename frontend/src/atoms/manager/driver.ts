@@ -5,7 +5,7 @@ import { Driver, convertToDriver } from "@interfaces/manager";
 
 export const searchQueryAtom = atom("");
 export const sortByAtom = atom<"latest" | "name">("latest");
-export const driverTypeAtom = atom<"managed" | "unmanaged">("unmanaged");
+export const driverTypeAtom = atom<"managed" | "unmanaged">("managed");
 
 export const useDriverListWithFilters = () => {
   const searchQuery = useAtomValue(searchQueryAtom);
@@ -22,11 +22,14 @@ export const useDriverListWithFilters = () => {
     if (searchQuery) {
       filtered = filtered.filter((driver: Driver) => {
         const searchLower = searchQuery.toLowerCase();
-        
+
         // null 체크를 추가하고 optional chaining 사용
-        const nameMatch = driver.memberName?.toLowerCase().includes(searchLower) || false;
-        const vehicleMatch = driver.vehicleNumber?.toLowerCase().includes(searchLower) || false;
-        const addressMatch = driver.address?.toLowerCase().includes(searchLower) || false;
+        const nameMatch =
+          driver.memberName?.toLowerCase().includes(searchLower) || false;
+        const vehicleMatch =
+          driver.vehicleNumber?.toLowerCase().includes(searchLower) || false;
+        const addressMatch =
+          driver.address?.toLowerCase().includes(searchLower) || false;
 
         return nameMatch || vehicleMatch || addressMatch;
       });

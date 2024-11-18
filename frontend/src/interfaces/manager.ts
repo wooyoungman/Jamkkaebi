@@ -91,6 +91,28 @@ export interface LineProperties {
   distance: number;
 }
 
+// 주간 데이터를 위한 공통 타입
+export interface WeeklyData {
+  lastWeek: (number | null)[];
+  thisWeek: (number | null)[];
+}
+
+export interface ReportDriverInfo {
+  driverName: string;
+  vehicleNumber: string;
+  phoneNumber: string;
+  region: string;
+  status: DriverDetails["status"]; // 기존 status 타입 재사용
+}
+
+export interface ReportData {
+  driverInfo: ReportDriverInfo;
+  distance: WeeklyData;
+  driveTime: WeeklyData;
+  avgSleepIndex: WeeklyData;
+  eegData: WeeklyData;
+}
+
 export interface Feature {
   type: string;
   geometry: Coordinate;
