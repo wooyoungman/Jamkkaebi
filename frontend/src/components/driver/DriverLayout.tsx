@@ -7,6 +7,7 @@ import {
   serverDriverStateDataAtom,
   initializeServerWebSocket,
   isFastAPISuccessAtom,
+  startPointAtom,
 } from "@/atoms/driver/socket";
 import DrivingWarningModal from "./DrivingWarningModal";
 import DriverLogin from "./DriverLogin";
@@ -26,6 +27,7 @@ const DriverLayout: React.FC = () => {
   const setDriverStateData = useSetAtom(driverStateDataAtom); // Jotai Atom 업데이트 함수 가져오기
   const setServerDriverStateData = useSetAtom(serverDriverStateDataAtom);
   const setIsFastAPISuccess = useSetAtom(isFastAPISuccessAtom);
+  const setStartPoint = useSetAtom(startPointAtom);
 
   // WebSocket 인스턴스를 추적 (중복 방지)
   const fastAPISocketRef = useRef<WebSocket | null>(null);
@@ -55,6 +57,7 @@ const DriverLayout: React.FC = () => {
     if (vehicleId && memberId) {
       const serverSocket = initializeServerWebSocket(
         setServerDriverStateData,
+        setStartPoint,
         memberId
       );
       serverSocketRef.current = serverSocket;

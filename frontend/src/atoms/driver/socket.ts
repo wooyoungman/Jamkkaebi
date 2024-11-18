@@ -45,6 +45,10 @@ interface ServerData {
 export const driverStateDataAtom = atom<FastAPIData | null>(null);
 export const serverDriverStateDataAtom = atom<ServerData | null>(null);
 export const isFastAPISuccessAtom = atom<boolean | null>(null);
+export const startPointAtom = atom<{ lat: number; lon: number } | null>({
+  lat: 34.75746280159556,
+  lon: 126.35492245670288,
+});
 
 // FastAPI WebSocket 연결 상태 관리
 export const initializeWebSocket = (
@@ -94,6 +98,7 @@ export const initializeWebSocket = (
 // 서버 WebSocket 연결 상태 관리
 export const initializeServerWebSocket = (
   setServerDriverStateData: (value: ServerData) => void,
+  setStartPoint: (value: { lat: number; lon: number }) => void, // 추가
   driverId: number
 ) => {
   const serverSocket = new WebSocket("wss://k11c106.p.ssafy.io/ws/v1/driver");
@@ -113,7 +118,21 @@ export const initializeServerWebSocket = (
 
   serverSocket.onmessage = (event) => {
     const data = JSON.parse(event.data);
+
     setServerDriverStateData(data);
+
+    // startPointAtom 업데이트
+    if (
+      data.coordinate &&
+      Array.isArray(data.coordinate) &&
+      data.coordinate.length === 2
+    ) {
+      const [lon, lat] = data.coordinate; // WebSocket에서 받은 좌표
+      setStartPoint({ lat, lon }); // startPointAtom 업데이트
+      console.log("Updated startPointAtom with coordinates:", { lat, lon });
+    } else {
+      console.error("Invalid coordinate data:", data.coordinate);
+    }
   };
 
   serverSocket.onclose = () => {

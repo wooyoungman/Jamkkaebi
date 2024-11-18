@@ -21,7 +21,7 @@ import {
   isFastAPISuccessAtom,
   serverDriverStateDataAtom,
 } from "@/atoms/driver/socket"; // atoms.ts 경로에 맞게 수정하세요
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 const DriverMainLeft: React.FC = () => {
   // Jotai에서 WebSocket 데이터를 관리
@@ -36,14 +36,14 @@ const DriverMainLeft: React.FC = () => {
   const attentionScore = Math.round(activeData?.predictions?.attention || 0);
   const meditationScore = Math.round(activeData?.predictions?.meditation || 0);
 
-  // 현재 활성화된 데이터만 console에 출력
-  useEffect(() => {
-    if (isFastAPISuccess) {
-      console.log("Active Data (FastAPI):", driverStateData);
-    } else {
-      console.log("Active Data (Spring Server):", serverDriverStateData);
-    }
-  }, [isFastAPISuccess, driverStateData, serverDriverStateData]);
+  // // 현재 활성화된 데이터만 console에 출력
+  // useEffect(() => {
+  //   if (isFastAPISuccess) {
+  //     console.log("Active Data (FastAPI):", driverStateData);
+  //   } else {
+  //     console.log("Active Data (Spring Server):", serverDriverStateData);
+  //   }
+  // }, [isFastAPISuccess, driverStateData, serverDriverStateData]);
 
   return (
     <>
