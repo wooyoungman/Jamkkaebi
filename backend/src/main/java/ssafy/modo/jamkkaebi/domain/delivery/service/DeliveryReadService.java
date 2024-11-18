@@ -19,6 +19,7 @@ import ssafy.modo.jamkkaebi.domain.vehicle.entity.Vehicle;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 import static ssafy.modo.jamkkaebi.domain.manager.dto.response.ReportResponseDto.*;
@@ -72,9 +73,9 @@ public class DeliveryReadService {
         Member driver = vehicle.getDriver();
 
         List<Delivery> lastWeekDeliveries = deliveryRepository.findAllByVehicleAndDepartureDateBetween(
-                vehicle, lastWeek.get(0).atStartOfDay(), lastWeek.get(1).atStartOfDay());
+                vehicle, lastWeek.get(0).atStartOfDay(), lastWeek.get(1).atTime(LocalTime.MAX));
         List<Delivery> thisWeekDeliveries = deliveryRepository.findAllByVehicleAndDepartureDateBetween(
-                vehicle, thisWeek.get(0).atStartOfDay(), thisWeek.get(1).atStartOfDay());
+                vehicle, thisWeek.get(0).atStartOfDay(), thisWeek.get(1).atTime(LocalTime.MAX));
 
         List<Long> lastWeekDistance = getDailyDistance(lastWeekDeliveries, lastWeekDates);
         List<Long> lastWeekDriveTime = getDailyDriveTime(lastWeekDeliveries, lastWeekDates);
@@ -119,7 +120,6 @@ public class DeliveryReadService {
             currentDate = currentDate.plusDays(1);
         }
 
-        log.info("Calculated dates: {}", dates);
         return dates;
     }
 
