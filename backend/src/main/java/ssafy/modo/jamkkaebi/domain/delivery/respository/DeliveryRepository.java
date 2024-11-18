@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 import ssafy.modo.jamkkaebi.domain.delivery.entity.Delivery;
 import ssafy.modo.jamkkaebi.domain.vehicle.entity.Vehicle;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
 
     @Query("""
@@ -22,4 +25,6 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
             WHERE d.uuid = :uuid AND dl.hasArrived IS FALSE
             """)
     Delivery findByDeviceUuidAndHasArrivedIsFalse(String uuid);
+
+    List<Delivery> findAllByVehicleAndDepartureDateBetween(Vehicle vehicle, LocalDateTime from, LocalDateTime to);
 }
