@@ -183,7 +183,7 @@ public class DeliveryReadService {
 
             if (arrivalDate != null && driveTimePerDay.containsKey(date)) {
                 long currentDriveTime = driveTimePerDay.get(date);
-                long duration = Duration.between(arrivalDate, departureDate).toMinutes();
+                long duration = Duration.between(departureDate, arrivalDate).toMinutes();
                 driveTimePerDay.put(date, currentDriveTime + duration);
             }
         }
