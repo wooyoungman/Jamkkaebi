@@ -10,6 +10,7 @@ import { useDriversWithRoutes } from "@queries/manager/routes";
 import { useMapController } from "@/hooks/useMapController";
 import { useWebSocketController } from "@/hooks/useWebSocketController";
 import { useGetUserInfo } from "@queries/index";
+import { RealTimeDriver, DriverResponse, Location } from "@interfaces/manager"; // 타입 import 추가
 
 const ROUTE_COLORS = [
   "#9361ff",
@@ -45,13 +46,14 @@ const DashboardPage = () => {
   const driversWithRoutesQueries = useDriversWithRoutes(driverList);
 
   // 실시간 위치 정보만을 사용하는 드라이버 목록
-  const driversWithRealtimeLocations =
-    driverList?.drivers.map((driver) => ({
+  const driversWithRealtimeLocations: RealTimeDriver[] =
+    driverList?.drivers.map((driver: DriverResponse) => ({
       ...driver,
       location: realtimeLocations[driver.driverId] || {
         lat: 37.5666805,
         lng: 126.9784147,
       },
+      route: [], // 초기 빈 경로 배열 추가
     })) || [];
 
   const { handleDriverClick } = useMapController(driversWithRealtimeLocations);
@@ -84,35 +86,36 @@ const DashboardPage = () => {
           height="100%"
           initialCenter={{ lat: 37.5666805, lng: 126.9784147 }}
         >
-          {driversWithRealtimeLocations.map((driver, index) => (
-            <div key={`driver-group-${driver.driverId}`}>
-              <DriverMarker
-                position={driver.location}
-                driverId={driver.driverId}
-                onClick={() => onDriverClick(driver.driverId)}
-                status={
-                  realtimeDriverStates.find(
-                    (state) => state.driverId === driver.driverId
-                  )?.drowsy_level === 1
-                    ? "drowsy"
-                    : (realtimeDriverStates.find(
-                          (state) => state.driverId === driver.driverId
-                        )?.concentration_level ?? 1) < 0.3
-                      ? "low_focus"
-                      : "normal"
-                }
-              />
-              {/* 선택된 드라이버의 경로만 표시 */}
-              {selectedDriver === driver.driverId &&
-                selectedDriverRouteQuery?.data?.route && (
-                  <RoutePolyline
-                    path={selectedDriverRouteQuery.data.route}
-                    color={ROUTE_COLORS[index % ROUTE_COLORS.length]}
-                    width={15}
-                  />
-                )}
-            </div>
-          ))}
+          {driversWithRealtimeLocations.map(
+            (driver: RealTimeDriver, index: number) => (
+              <div key={`driver-group-${driver.driverId}`}>
+                <DriverMarker
+                  position={driver.location}
+                  driverId={driver.driverId}
+                  onClick={() => onDriverClick(driver.driverId)}
+                  status={
+                    realtimeDriverStates.find(
+                      (state) => state.driverId === driver.driverId
+                    )?.drowsy_level === 1
+                      ? "drowsy"
+                      : (realtimeDriverStates.find(
+                            (state) => state.driverId === driver.driverId
+                          )?.concentration_level ?? 1) < 0.3
+                        ? "low_focus"
+                        : "normal"
+                  }
+                />
+                {selectedDriver === driver.driverId &&
+                  selectedDriverRouteQuery?.data?.route && (
+                    <RoutePolyline
+                      path={selectedDriverRouteQuery.data.route}
+                      color={ROUTE_COLORS[index % ROUTE_COLORS.length]}
+                      width={15}
+                    />
+                  )}
+              </div>
+            )
+          )}
         </MapContainer>
 
         {showDriverInfo && selectedDriver && (
@@ -121,11 +124,11 @@ const DashboardPage = () => {
               isOpen={showDriverInfo}
               onClose={() => {
                 setShowDriverInfo(false);
-                setSelectedDriver(null); // 모달을 닫을 때 선택된 드라이버도 초기화
+                setSelectedDriver(null);
               }}
               driver={
                 driversWithRealtimeLocations.find(
-                  (d) => d.driverId === selectedDriver
+                  (d: RealTimeDriver) => d.driverId === selectedDriver
                 )!
               }
               realtimeState={realtimeDriverStates.find(
