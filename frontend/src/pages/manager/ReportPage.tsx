@@ -78,15 +78,13 @@ export const ReportPage = () => {
     const success = await exportToPDF("report-container", fileName);
 
     if (success) {
-      // 성공 메시지나 토스트 알림을 표시할 수 있습니다
       console.log("PDF exported successfully");
     } else {
-      // 실패 메시지나 토스트 알림을 표시할 수 있습니다
       console.error("Failed to export PDF");
     }
   };
 
-  if (!driver) return <div>Loading...</div>;
+  if (!driver) return <div>로딩중...</div>;
 
   // 집중 시간 비교 임의 데이터
   const concentrationData = {
