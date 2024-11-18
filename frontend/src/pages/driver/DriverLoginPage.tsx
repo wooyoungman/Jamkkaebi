@@ -104,7 +104,7 @@ const DriverLoginPage = () => {
       console.log("refreshToken : ", refreshToken);
       console.log("memberId : ", memberId);
       console.log("grantType : ", grantType);
-      setToken(accessToken);
+      setToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpYW1ub3Rkcml2ZXIiLCJ0eXBlIjoiYWNjZXNzIiwiYXV0aG9yaXRpZXMiOiJST0xFX0RSSVZFUiIsImV4cCI6MTczMjgzODEzNH0.8aG43nLMzDSsRUBD9pxA0DFKVRQdbahj_LwQWscB_jc");
       setRefreshToken(refreshToken);
       setMemberId(memberId);
       setGrantType(grantType);
