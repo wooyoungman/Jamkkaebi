@@ -31,16 +31,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = resolveToken(request);
 
-//        if (token != null && jwtService.validateToken(token)) {
-        if (token != null) {
+        if (token != null && jwtService.validateToken(token)) {
             Member member = userDetailsService.loadUserByUsername(jwtService.getUsername(token));
-            try {
-                Authentication authentication = jwtService.getAuthentication(member);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.info("Passed Token filter for token {}", token);
-            } catch (Exception e) {
-                log.error(e.getMessage());
-            }
+            Authentication authentication = jwtService.getAuthentication(member);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.info("Passed Token filter for token {}", token);
         } else {
             log.info("Cannot validate token {}", token);
         }
