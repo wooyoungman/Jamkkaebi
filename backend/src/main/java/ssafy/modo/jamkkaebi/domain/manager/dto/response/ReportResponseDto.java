@@ -33,7 +33,7 @@ public class ReportResponseDto {
     @Data
     @Builder
     public static class WeekData {
-        private List<Integer> lastWeek;
-        private List<Integer> thisWeek;
+        private List<Long> lastWeek;
+        private List<Long> thisWeek;
     }
 }
