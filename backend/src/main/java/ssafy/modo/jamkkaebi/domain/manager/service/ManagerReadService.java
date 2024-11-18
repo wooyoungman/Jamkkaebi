@@ -79,6 +79,10 @@ public class ManagerReadService {
 
         Vehicle vehicle = vehicleRepository.findByDriverId(driverId).orElseThrow(VehicleNotFoundException::new);
         Delivery delivery = deliveryRepository.findFirstByVehicleAndHasArrivedIsFalse(vehicle);
+
+        if (delivery == null) {
+            return null;
+        }
         return deliveryReadService.getDeliveryDetail(delivery);
     }
 
