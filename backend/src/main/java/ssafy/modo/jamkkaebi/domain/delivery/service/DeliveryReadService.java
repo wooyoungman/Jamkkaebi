@@ -76,13 +76,13 @@ public class DeliveryReadService {
         List<Delivery> thisWeekDeliveries = deliveryRepository.findAllByVehicleAndDepartureDateBetween(
                 vehicle, thisWeek.get(0).atStartOfDay(), thisWeek.get(1).atStartOfDay());
 
-        List<Integer> lastWeekDistance = getDailyDistance(lastWeekDeliveries, lastWeekDates);
-        List<Integer> lastWeekDriveTime = getDailyDriveTime(lastWeekDeliveries, lastWeekDates);
-        List<Integer> lastWeekSleepIndex = getAverageSleepIndex(lastWeekDeliveries, lastWeekDates);
+        List<Long> lastWeekDistance = getDailyDistance(lastWeekDeliveries, lastWeekDates);
+        List<Long> lastWeekDriveTime = getDailyDriveTime(lastWeekDeliveries, lastWeekDates);
+        List<Long> lastWeekSleepIndex = getAverageSleepIndex(lastWeekDeliveries, lastWeekDates);
 
-        List<Integer> thisWeekDistance = getDailyDistance(thisWeekDeliveries, thisWeekDates);
-        List<Integer> thisWeekDriveTime = getDailyDriveTime(thisWeekDeliveries, thisWeekDates);
-        List<Integer> thisWeekSleepIndex = getAverageSleepIndex(thisWeekDeliveries, thisWeekDates);
+        List<Long> thisWeekDistance = getDailyDistance(thisWeekDeliveries, thisWeekDates);
+        List<Long> thisWeekDriveTime = getDailyDriveTime(thisWeekDeliveries, thisWeekDates);
+        List<Long> thisWeekSleepIndex = getAverageSleepIndex(thisWeekDeliveries, thisWeekDates);
 
         return builder()
                 .driverInfo(DriverInfo.builder()
@@ -123,7 +123,7 @@ public class DeliveryReadService {
         return dates;
     }
 
-    private List<Integer> getAverageSleepIndex(List<Delivery> deliveries, List<LocalDate> weekDates) {
+    private List<Long> getAverageSleepIndex(List<Delivery> deliveries, List<LocalDate> weekDates) {
 
         Map<LocalDate, List<Integer>> sleepIndicesPerDay = new LinkedHashMap<>();
 
@@ -138,22 +138,22 @@ public class DeliveryReadService {
             }
         }
 
-        List<Integer> averageSleepIndices = new ArrayList<>();
+        List<Long> averageSleepIndices = new ArrayList<>();
         for (List<Integer> indices : sleepIndicesPerDay.values()) {
             int average = indices.isEmpty() ? 0 :
                     (int) indices.stream().mapToInt(Integer::intValue).average().orElse(0);
-            averageSleepIndices.add(average);
+            averageSleepIndices.add(((Number) average).longValue());
         }
 
         return averageSleepIndices;
     }
 
-    private List<Integer> getDailyDistance(List<Delivery> deliveries, List<LocalDate> weekDates) {
+    private List<Long> getDailyDistance(List<Delivery> deliveries, List<LocalDate> weekDates) {
 
-        Map<LocalDate, Integer> distancePerDay = new HashMap<>();
+        Map<LocalDate, Long> distancePerDay = new HashMap<>();
 
         for (LocalDate date : weekDates) {
-            distancePerDay.put(date, 0);
+            distancePerDay.put(date, 0L);
         }
 
         for (Delivery delivery : deliveries) {
@@ -167,12 +167,12 @@ public class DeliveryReadService {
         return buildResult(weekDates, distancePerDay);
     }
 
-    private List<Integer> getDailyDriveTime(List<Delivery> deliveries, List<LocalDate> weekDates) {
+    private List<Long> getDailyDriveTime(List<Delivery> deliveries, List<LocalDate> weekDates) {
 
-        Map<LocalDate, Integer> driveTimePerDay = new HashMap<>();
+        Map<LocalDate, Long> driveTimePerDay = new HashMap<>();
 
         for (LocalDate date : weekDates) {
-            driveTimePerDay.put(date, 0);
+            driveTimePerDay.put(date, 0L);
         }
 
         for (Delivery delivery : deliveries) {
@@ -182,8 +182,8 @@ public class DeliveryReadService {
             LocalDate date = departureDate.toLocalDate();
 
             if (arrivalDate != null && driveTimePerDay.containsKey(date)) {
-                int currentDriveTime = driveTimePerDay.get(date);
-                int duration = (int) Duration.between(arrivalDate, departureDate).toMinutes();
+                long currentDriveTime = driveTimePerDay.get(date);
+                long duration = Duration.between(arrivalDate, departureDate).toMinutes();
                 driveTimePerDay.put(date, currentDriveTime + duration);
             }
         }
@@ -191,9 +191,9 @@ public class DeliveryReadService {
         return buildResult(weekDates, driveTimePerDay);
     }
 
-    private List<Integer> buildResult(List<LocalDate> weekDates, Map<LocalDate, Integer> map) {
+    private List<Long> buildResult(List<LocalDate> weekDates, Map<LocalDate, Long> map) {
 
-        List<Integer> result = new ArrayList<>();
+        List<Long> result = new ArrayList<>();
         for (LocalDate date : weekDates) {
             result.add(map.get(date));
         }
