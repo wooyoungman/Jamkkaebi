@@ -212,3 +212,12 @@ export interface Location {
   lat: number;
   lng: number;
 }
+
+export interface AlertInfo {
+  driverName: string;
+  eventTime: string;
+  eventLocation: {
+    lat: number;
+    lng: number;
+  };
+}

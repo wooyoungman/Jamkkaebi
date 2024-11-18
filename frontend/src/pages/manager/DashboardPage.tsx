@@ -10,7 +10,16 @@ import { useDriversWithRoutes } from "@queries/manager/routes";
 import { useMapController } from "@/hooks/useMapController";
 import { useWebSocketController } from "@/hooks/useWebSocketController";
 import { useGetUserInfo } from "@queries/index";
-import { RealTimeDriver, DriverResponse, Location } from "@interfaces/manager"; // 타입 import 추가
+import { RealTimeDriver, DriverResponse } from "@interfaces/manager";
+
+interface AlertInfo {
+  driverName: string;
+  eventTime: string;
+  eventLocation: {
+    lat: number;
+    lng: number;
+  };
+}
 
 const ROUTE_COLORS = [
   "#9361ff",
@@ -142,7 +151,9 @@ const DashboardPage = () => {
       <AlertModal
         isOpen={showAlert}
         onClose={() => setShowAlert(false)}
-        {...alertInfo}
+        driverName={alertInfo?.driverName || ''}
+        eventTime={alertInfo?.eventTime || ''}
+        eventLocation={alertInfo?.eventLocation || { lat: 37.5666805, lng: 126.9784147 }}
       />
     </DashboardPage.Container>
   );

@@ -17,33 +17,28 @@ interface DriverMarkerProps {
 const DriverMarker = ({ position, driverId, onClick, status = "normal" }: DriverMarkerProps) => {
   const mapInstance = useAtomValue(mapInstanceAtom);
   const markerRef = useRef<TMapMarker | null>(null);
+  const iconRef = useRef<HTMLImageElement | null>(null);
 
-  const createMarker = useCallback(() => {
-    if (!mapInstance || !window.Tmapv2) {
-      console.log("맵 초기화 대기 중...");
+  // 아이콘 이미지 미리 로드
+  useEffect(() => {
+    const icon = new Image();
+    icon.src = circlechr;
+    icon.onload = () => {
+      iconRef.current = icon;
+    };
+  }, []);
+
+  const updateMarkerPosition = useCallback(() => {
+    if (!mapInstance || !window.Tmapv2 || !iconRef.current) {
+      console.log("맵 초기화 또는 아이콘 로드 대기 중...");
       return;
     }
 
-    // 기존 마커 정리
-    if (markerRef.current) {
-      markerRef.current.setMap(null);
-      markerRef.current = null;
-    }
-
     try {
-      console.log("마커 생성 시도:", {
-        position,
-        driverId,
-        iconPath: circlechr
-      });
-
       const markerPosition = new window.Tmapv2.LatLng(position.lat, position.lng);
-      
-      // 아이콘 이미지를 미리 로드
-      const icon = new Image();
-      icon.src = circlechr;
-      
-      icon.onload = () => {
+
+      if (!markerRef.current) {
+        // 최초 마커 생성
         const newMarker = new window.Tmapv2.Marker({
           position: markerPosition,
           icon: circlechr,
@@ -51,33 +46,23 @@ const DriverMarker = ({ position, driverId, onClick, status = "normal" }: Driver
           map: mapInstance,
           title: `Driver ${driverId}`,
           offset: new window.Tmapv2.Point(27, 27),
-          zIndex: 100  // 마커가 폴리라인 위에 표시되도록
+          zIndex: 100
         });
 
         newMarker.addListener("click", onClick);
         markerRef.current = newMarker;
-        
-        // 명시적으로 지도에 마커 설정
-        newMarker.setMap(mapInstance);
-
-        console.log("마커 생성 및 지도 표시 완료:", {
-          driverId,
-          position: { lat: position.lat, lng: position.lng },
-          mapInstance: !!mapInstance
-        });
-      };
-
-      icon.onerror = (error) => {
-        console.error("마커 이미지 로드 실패:", error);
-      };
+      } else {
+        // 기존 마커 위치만 업데이트
+        markerRef.current.setPosition(markerPosition);
+      }
 
     } catch (error) {
-      console.error("마커 생성 중 에러:", error);
+      console.error("마커 업데이트 중 에러:", error);
     }
   }, [mapInstance, position.lat, position.lng, driverId, onClick]);
 
   useEffect(() => {
-    createMarker();
+    updateMarkerPosition();
 
     return () => {
       if (markerRef.current) {
@@ -85,7 +70,7 @@ const DriverMarker = ({ position, driverId, onClick, status = "normal" }: Driver
         markerRef.current = null;
       }
     };
-  }, [createMarker]);
+  }, [updateMarkerPosition]);
 
   return null;
 };
