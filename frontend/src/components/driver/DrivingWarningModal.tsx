@@ -96,7 +96,8 @@ const DrivingWarningModal: React.FC = () => {
       activeData?.predictions.classification === "ASLEEP" &&
       vehicleId &&
       token &&
-      !wakeRoutineTriggered.current // `executeWakeRoutine`이 실행되지 않은 경우만 실행
+      !wakeRoutineTriggered.current && // `executeWakeRoutine`이 실행되지 않은 경우만 실행
+      activeData !== driverStateData
     ) {
       console.log("졸음이 감지되었습니다!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
       setIsVisible(true);
@@ -207,14 +208,6 @@ const DrivingWarningModal: React.FC = () => {
             <br />
             안전한 운행을 위해 휴식을 취해주세요.
           </DriverText>
-          {/* <div>
-            <DriverText fontSize="60px" fontWeight={800}>
-              5
-            </DriverText>
-            <DriverText fontSize="15px">
-              초 후에 졸음 감지 장치가 작동합니다.
-            </DriverText>
-          </div> */}
           <CustomButtonDiv onClick={endWakeRoutine}>
             <DriverText fontSize="20px" fontWeight={600}>
               확인

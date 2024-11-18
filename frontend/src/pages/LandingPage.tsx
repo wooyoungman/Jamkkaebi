@@ -106,7 +106,11 @@ const LandingPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleRoleSelect = (role: RoleType): void => {
-    navigate(`/${role}`);
+    if (role === "driver") {
+      navigate(`/driver/login`); // driver 클릭 시 login 페이지로 이동
+    } else {
+      navigate(`/${role}`); // manager 클릭 시 기본 경로로 이동
+    }
   };
 
   return (

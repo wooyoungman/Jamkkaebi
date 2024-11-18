@@ -145,7 +145,8 @@ const BulbSVG: React.FC<{
           />
           <feGaussianBlur
             // 변해야 할 지점
-            stdDeviation={isWhite ? 20 + power * 0.3 : 50 - power * 0.3}
+            // stdDeviation={isWhite ? 20 + power * 0.3 : 50 - power * 0.3}
+            stdDeviation={20 + power * 0.3}
             result="effect1_foregroundBlur_453_816"
           />
         </filter>

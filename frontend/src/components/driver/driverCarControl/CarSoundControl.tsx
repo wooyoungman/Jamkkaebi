@@ -16,6 +16,9 @@ import styled, { keyframes, css } from "styled-components";
 import { useAtom } from "jotai";
 import { soundOnOffAtom, soundPowerAtom } from "@/atoms/driver/carControl";
 
+import wakeUp from "@/assets/wakeUp.wav";
+import React from "react";
+
 // 진동 애니메이션 keyframes 정의
 const vibrate = keyframes`
   0% { transform: rotate(0deg); }
@@ -83,6 +86,8 @@ const CarSoundControl: React.FC = () => {
   const [isOn, setIsOn] = useAtom(soundOnOffAtom);
   const [power, setPower] = useAtom(soundPowerAtom);
 
+  const audioInterval = React.useRef<NodeJS.Timeout | null>(null);
+
   // 슬라이더 변경 후 마우스를 뗄 때 요청 전송
   const handleSliderChangeEnd = () => {
     return;
@@ -95,6 +100,38 @@ const CarSoundControl: React.FC = () => {
   const togglePower = () => {
     setIsOn((prev) => !prev);
   };
+
+  // 경고음 재생 관리
+  React.useEffect(() => {
+    const playWarningSound = () => {
+      const audio = new Audio(wakeUp);
+      audio.play().catch((error) => {
+        console.error("Audio playback failed:", error);
+      });
+    };
+
+    if (isOn) {
+      // 경고음 반복 재생 시작
+      playWarningSound(); // 즉시 재생
+      audioInterval.current = setInterval(() => {
+        playWarningSound();
+      }, 2000); // 2초 간격으로 재생
+    } else {
+      // 경고음 재생 중단
+      if (audioInterval.current) {
+        clearInterval(audioInterval.current);
+        audioInterval.current = null;
+      }
+    }
+
+    return () => {
+      // 컴포넌트 언마운트 시 경고음 정지
+      if (audioInterval.current) {
+        clearInterval(audioInterval.current);
+        audioInterval.current = null;
+      }
+    };
+  }, [isOn]);
 
   return (
     <>

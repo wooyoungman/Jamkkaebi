@@ -12,6 +12,8 @@ import {
   ConditionGraphDiv,
 } from "./DriverMainCSS";
 import DriverConditionGraph from "./DriverConditionGraph";
+import { useState, useEffect } from "react";
+import { userInfoAtom } from "@/atoms/driver/carInfo";
 
 import driverImg from "@/assets/driverImg.png";
 
@@ -21,13 +23,38 @@ import {
   isFastAPISuccessAtom,
   serverDriverStateDataAtom,
 } from "@/atoms/driver/socket"; // atoms.ts 경로에 맞게 수정하세요
-// import { useEffect } from "react";
+
+// 초기값 설정
+const INITIAL_DISTANCE = 204;
+const INITIAL_MINUTES = 27;
 
 const DriverMainLeft: React.FC = () => {
   // Jotai에서 WebSocket 데이터를 관리
   const [driverStateData] = useAtom(driverStateDataAtom);
   const [serverDriverStateData] = useAtom(serverDriverStateDataAtom);
   const [isFastAPISuccess] = useAtom(isFastAPISuccessAtom);
+  const [userInfo] = useAtom(userInfoAtom);
+
+  const [distance, setDistance] = useState(INITIAL_DISTANCE); // 거리 상태 관리
+  const [minutes, setMinutes] = useState(INITIAL_MINUTES); // 분 상태
+
+  useEffect(() => {
+    // 1분마다 distance 증가
+    const distanceInterval = setInterval(() => {
+      setDistance((prev) => prev + 1); // 1분마다 거리 증가
+    }, 60000); // 1분 = 60,000ms
+
+    return () => clearInterval(distanceInterval); // 타이머 정리
+  }, []);
+
+  useEffect(() => {
+    // 1분마다 minutes 감소
+    const minutesInterval = setInterval(() => {
+      setMinutes((prev) => (prev <= 0 ? INITIAL_MINUTES : prev - 1)); // 0이면 초기값으로
+    }, 60000); // 1분 = 60,000ms
+
+    return () => clearInterval(minutesInterval); // 타이머 정리
+  }, []);
 
   // 현재 사용할 데이터 결정
   const activeData = isFastAPISuccess ? driverStateData : serverDriverStateData;
@@ -53,7 +80,7 @@ const DriverMainLeft: React.FC = () => {
             <DriverImage src={driverImg} alt="Driver Image" />
             <DriverTextDiv>
               <InlineTextDiv>
-                <DriverText fontSize="27px">김싸피</DriverText>
+                <DriverText fontSize="27px">{userInfo.memberName}</DriverText>
                 <DriverText fontSize="18px">님</DriverText>
               </InlineTextDiv>
               <DriverText fontSize="15px">오늘도 안전운행 하세요!</DriverText>
@@ -68,7 +95,7 @@ const DriverMainLeft: React.FC = () => {
             </DriverText>
             <InlineTextDiv gap="6px">
               <DriverText fontSize="30px" fontWeight={800}>
-                204
+                {distance}
               </DriverText>
               <DriverText fontSize="18px" fontWeight={400}>
                 km
@@ -87,7 +114,7 @@ const DriverMainLeft: React.FC = () => {
                 H
               </DriverText>
               <DriverText fontSize="28px" fontWeight={800}>
-                25
+                {minutes}
               </DriverText>
               <DriverText fontSize="18px" fontWeight={400}>
                 M

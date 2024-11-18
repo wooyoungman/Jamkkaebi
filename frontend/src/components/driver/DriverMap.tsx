@@ -29,10 +29,9 @@ const DriverMap: React.FC = () => {
   const [serverDriverStateData] = useAtom(serverDriverStateDataAtom);
   const [token] = useAtom(tokenAtom);
 
-  // "llStart" 마커 상태
+  // "llStart" 마커 상태를 단일 마커로 관리
   const [llStartMarker, setLlStartMarker] = useState<any | null>(null);
 
-  const markerList: CustomTMapMarker[] = [];
   const polylineList: any[] = [];
 
   const initTmap = () => {
@@ -54,7 +53,9 @@ const DriverMap: React.FC = () => {
     setTMapValue(map);
 
     if (startPoint) {
-      addMarker(map, "llStart", startPoint.lon, startPoint.lat, 1);
+      setLlStartMarker(
+        addMarker(map, "llStart", startPoint.lon, startPoint.lat, 1)
+      );
       map.setCenter(new window.Tmapv2.LatLng(startPoint.lat, startPoint.lon));
     }
 
@@ -96,7 +97,6 @@ const DriverMap: React.FC = () => {
     }) as CustomTMapMarker;
 
     marker.tag = tag;
-    markerList.push(marker);
 
     if (status === "llPass") {
       setRestStops((prev) => [...prev, { lat, lon, tag }]);
@@ -106,7 +106,6 @@ const DriverMap: React.FC = () => {
   };
 
   const drawData = (data: any, map: any) => {
-    let i = 0;
     for (const feature of data.features) {
       if (feature.geometry.type === "LineString") {
         const ar_line = feature.geometry.coordinates.map(
@@ -124,9 +123,13 @@ const DriverMap: React.FC = () => {
     }
   };
 
-  // const clearMap = () => {
-
-  // }
+  const clearMarker = () => {
+    if (llStartMarker) {
+      llStartMarker.setMap(null); // 지도에서 기존 마커 제거
+      setLlStartMarker(null); // 상태 초기화
+      // console.log("Start marker cleared");
+    }
+  };
 
   const fetchRouteData = async () => {
     try {
@@ -151,21 +154,16 @@ const DriverMap: React.FC = () => {
   useEffect(() => {
     if (serverDriverStateData?.coordinate) {
       const [lon, lat] = serverDriverStateData.coordinate;
-
       setStartPoint({ lat, lon });
 
       if (tmapValue) {
         tmapValue.setCenter(new window.Tmapv2.LatLng(lat, lon));
-      }
 
-      // tag 값이 1인 marker만 삭제
-      markerList.forEach((marker, index) => {
-        if (marker.tag === 1) {
-          marker.setMap(null); // 지도에서 마커 제거
-          markerList.splice(index, 1); // markerList에서 해당 마커 제거
-        }
-      });
-      addMarker(tmapValue, "llStart", lon, lat, 1); // 새로운 마커 추가
+        // 기존 마커 제거 후 새 마커 추가
+        clearMarker();
+        setLlStartMarker(addMarker(tmapValue, "llStart", lon, lat, 1));
+        // console.log("New start marker added at:", { lat, lon });
+      }
     }
   }, [serverDriverStateData, tmapValue]);
 
