@@ -9,6 +9,7 @@ import ssafy.modo.jamkkaebi.domain.delivery.dto.response.DeliveryDetailResponseD
 import ssafy.modo.jamkkaebi.domain.manager.dto.request.VehicleMapRequestDto;
 import ssafy.modo.jamkkaebi.domain.manager.dto.response.DriversResponseDto;
 import ssafy.modo.jamkkaebi.domain.manager.dto.response.ManageConnectResponseDto;
+import ssafy.modo.jamkkaebi.domain.manager.dto.response.ReportResponseDto;
 import ssafy.modo.jamkkaebi.domain.manager.dto.response.VehicleMapResponseDto;
 import ssafy.modo.jamkkaebi.domain.manager.entity.DriversType;
 import ssafy.modo.jamkkaebi.domain.manager.service.ManagerReadService;
@@ -53,5 +54,10 @@ public class ManagerController {
     public ApiResponse<DeliveryDetailResponseDto> getCurrentVehicleInfo(
             @Valid @RequestParam("driver_id") Long driverId) {
         return ApiResponse.success(managerReadService.getDriverDeliveryInfo(driverId));
+    }
+
+    @GetMapping(path = "/report", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<ReportResponseDto> getDriverReport(@Valid @RequestParam("driver_id") Long driverId) {
+        return ApiResponse.success(managerReadService.getDriverReport(driverId));
     }
 }

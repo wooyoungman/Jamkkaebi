@@ -8,6 +8,7 @@ import ssafy.modo.jamkkaebi.domain.delivery.entity.Delivery;
 import ssafy.modo.jamkkaebi.domain.delivery.respository.DeliveryRepository;
 import ssafy.modo.jamkkaebi.domain.delivery.service.DeliveryReadService;
 import ssafy.modo.jamkkaebi.domain.manager.dto.response.DriversResponseDto;
+import ssafy.modo.jamkkaebi.domain.manager.dto.response.ReportResponseDto;
 import ssafy.modo.jamkkaebi.domain.manager.dto.response.SimpleDriverInfo;
 import ssafy.modo.jamkkaebi.domain.manager.entity.DriversType;
 import ssafy.modo.jamkkaebi.domain.member.entity.Member;
@@ -79,5 +80,11 @@ public class ManagerReadService {
         Vehicle vehicle = vehicleRepository.findByDriverId(driverId).orElseThrow(VehicleNotFoundException::new);
         Delivery delivery = deliveryRepository.findFirstByVehicleAndHasArrivedIsFalse(vehicle);
         return deliveryReadService.getDeliveryDetail(delivery);
+    }
+
+    public ReportResponseDto getDriverReport(Long driverId) {
+
+        Vehicle vehicle = vehicleRepository.findByDriverId(driverId).orElseThrow(VehicleNotFoundException::new);
+        return deliveryReadService.getDeliveryReport(vehicle);
     }
 }
