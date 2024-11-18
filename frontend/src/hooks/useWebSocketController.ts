@@ -31,8 +31,12 @@ export const useWebSocketController = (managerId: number) => {
   const [springSocket, setSpringSocket] = useState<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [connectionAttempts, setConnectionAttempts] = useState(0);
-  const [realtimeDriverStates, setRealtimeDriverStates] = useState<DriverState[]>([]);
-  const [realtimeLocations, setRealtimeLocations] = useState<Record<string, { lat: number; lng: number }>>({});
+  const [realtimeDriverStates, setRealtimeDriverStates] = useState<
+    DriverState[]
+  >([]);
+  const [realtimeLocations, setRealtimeLocations] = useState<
+    Record<string, { lat: number; lng: number }>
+  >({});
   const [showAlert, setShowAlert] = useState(false);
   const [alertInfo, setAlertInfo] = useState({
     driverName: "",
@@ -44,17 +48,19 @@ export const useWebSocketController = (managerId: number) => {
   const RECONNECT_DELAY = 3000;
 
   // 데이터 요청 함수
-  const requestData = useCallback((socket: WebSocket) => {
-    if (socket.readyState === WebSocket.OPEN) {
-      const requestPayload = {
-        type: "GET",
-        managerId: managerId
-      };
-      socket.send(JSON.stringify(requestPayload));
-      console.log("Data request sent:", requestPayload);
-    }
-  }, [managerId]);
-
+  const requestData = useCallback(
+    (socket: WebSocket) => {
+      if (socket.readyState === WebSocket.OPEN) {
+        const requestPayload = {
+          type: "GET",
+          managerId: managerId,
+        };
+        socket.send(JSON.stringify(requestPayload));
+        console.log("Data request sent:", requestPayload);
+      }
+    },
+    [managerId]
+  );
 
   // Spring WebSocket 연결 함수
   const connectSpringSocket = useCallback(() => {
@@ -76,39 +82,56 @@ export const useWebSocketController = (managerId: number) => {
       newSpringSocket.onmessage = (event) => {
         try {
           const response = JSON.parse(event.data) as WebSocketResponse;
-          
-          response.data.forEach(data => {
+
+          response.data.forEach((data) => {
             // BrainData 형식으로 변환하여 처리
             const brainData: BrainData = {
               driverId: data.driverId,
-              predictions: data.predictions ? {
-                classification: data.predictions.classification || "NORMAL"
-              } : undefined,
-              coordinate: data.coordinate
+              predictions: data.predictions
+                ? {
+                    classification: data.predictions.classification || "NORMAL",
+                  }
+                : undefined,
+              coordinate: data.coordinate,
             };
 
             // 위치 정보 업데이트
             if (brainData.coordinate) {
-              setRealtimeLocations(prev => ({
+              const location = {
+                lng: brainData.coordinate[0],
+                lat: brainData.coordinate[1],
+              };
+
+              setRealtimeLocations((prev) => ({
                 ...prev,
-                [brainData.driverId]: {
-                  lng: brainData.coordinate[0],
-                  lat: brainData.coordinate[1],
-                },
+                [brainData.driverId]: location,
               }));
+
+              // 졸음 상태 확인 및 알림 설정
+              if (data.predictions?.classification === "ASLEEP") {
+                setAlertInfo({
+                  driverName: `Driver ${brainData.driverId}`,
+                  eventTime: new Date().toLocaleString(),
+                  eventLocation: `위도: ${location.lat.toFixed(6)}, 경도: ${location.lng.toFixed(6)}`,
+                });
+                setShowAlert(true);
+              }
             }
 
             // 운전자 상태 업데이트
             if (data.predictions?.classification) {
-              setRealtimeDriverStates(prev => {
+              setRealtimeDriverStates((prev) => {
                 const existingIndex = prev.findIndex(
-                  state => state.driverId === brainData.driverId
+                  (state) => state.driverId === brainData.driverId
                 );
-                
+
                 const newState: DriverState = {
                   driverId: brainData.driverId,
-                  drowsy_level: data.predictions?.classification === "ASLEEP" ? 1 : 0,
-                  concentration_level: data.predictions?.attention ? data.predictions.attention / 100 : 1,
+                  drowsy_level:
+                    data.predictions?.classification === "ASLEEP" ? 1 : 0,
+                  concentration_level: data.predictions?.attention
+                    ? data.predictions.attention / 100
+                    : 1,
                 };
 
                 if (existingIndex >= 0) {
@@ -117,7 +140,8 @@ export const useWebSocketController = (managerId: number) => {
                   return newStates;
                 }
                 return [...prev, newState];
-              });}
+              });
+            }
           });
         } catch (error) {
           console.error("Error parsing Spring WebSocket message:", error);
