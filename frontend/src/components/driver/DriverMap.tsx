@@ -137,7 +137,7 @@ const DriverMap: React.FC = () => {
         "https://k11c106.p.ssafy.io/api/v1/driver/delivery/current",
         {
           headers: {
-            Authorization: `Bearer ${token}`, // 토큰 추가
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpYW1ub3Rkcml2ZXIiLCJ0eXBlIjoiYWNjZXNzIiwiYXV0aG9yaXRpZXMiOiJST0xFX0RSSVZFUiIsImV4cCI6MTczMjgzODEzNH0.8aG43nLMzDSsRUBD9pxA0DFKVRQdbahj_LwQWscB_jc`, // 토큰 추가
           },
         }
       );
