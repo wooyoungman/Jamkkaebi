@@ -114,7 +114,7 @@ const DriverLoginPage = () => {
         "https://k11c106.p.ssafy.io/api/v1/member/info/simple",
         {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpYW1ub3Rkcml2ZXIiLCJ0eXBlIjoiYWNjZXNzIiwiYXV0aG9yaXRpZXMiOiJST0xFX0RSSVZFUiIsImV4cCI6MTczMjgzODEzNH0.8aG43nLMzDSsRUBD9pxA0DFKVRQdbahj_LwQWscB_jc`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -136,7 +136,7 @@ const DriverLoginPage = () => {
         "https://k11c106.p.ssafy.io/api/v1/driver/vehicle/info",
         {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpYW1ub3Rkcml2ZXIiLCJ0eXBlIjoiYWNjZXNzIiwiYXV0aG9yaXRpZXMiOiJST0xFX0RSSVZFUiIsImV4cCI6MTczMjgzODEzNH0.8aG43nLMzDSsRUBD9pxA0DFKVRQdbahj_LwQWscB_jc`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
