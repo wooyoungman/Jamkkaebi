@@ -119,7 +119,7 @@ const DrivingWarningModal: React.FC = () => {
       const API_URL = `https://k11c106.p.ssafy.io/api/v1/vehicle/control/wake/${vehicleId}`;
       const response = await axios.post(API_URL, null, {
         headers: {
-          Authorization: `Bearer ${token}`, // 토큰 추가
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpYW1ub3Rkcml2ZXIiLCJ0eXBlIjoiYWNjZXNzIiwiYXV0aG9yaXRpZXMiOiJST0xFX0RSSVZFUiIsImV4cCI6MTczMjgzODEzNH0.8aG43nLMzDSsRUBD9pxA0DFKVRQdbahj_LwQWscB_jc`, // 토큰 추가
         },
       });
       console.log("졸음 깨우기 루틴 실행 성공:", response.data);
@@ -139,7 +139,7 @@ const DrivingWarningModal: React.FC = () => {
       const API_URL = `https://k11c106.p.ssafy.io/api/v1/vehicle/control/awake/${vehicleId}`;
       const response = await axios.post(API_URL, null, {
         headers: {
-          Authorization: `Bearer ${token}`, // 토큰 추가
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpYW1ub3Rkcml2ZXIiLCJ0eXBlIjoiYWNjZXNzIiwiYXV0aG9yaXRpZXMiOiJST0xFX0RSSVZFUiIsImV4cCI6MTczMjgzODEzNH0.8aG43nLMzDSsRUBD9pxA0DFKVRQdbahj_LwQWscB_jc`, // 토큰 추가
         },
       });
       console.log("졸음 깨우기 루틴 종료 성공:", response.data);
