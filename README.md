@@ -119,7 +119,7 @@
 <br><br>
 
 ## 🚔 기능 소개
-### 1. 뇌파와 근전도를 활용한 상태 모니터링
+### 1. 뇌파를 활용한 상태 모니터링
 <p style="display: flex; justify-content: space-between;">
   <img alt="func1.1" src="./assets/이정준_뇌파_얼굴.PNG" width="45%">
   <img alt="func1.1" src="./assets/이정준_뇌파_데이터.PNG" width="45%">
